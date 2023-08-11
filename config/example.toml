@@ -1,0 +1,16 @@
+[Discord]
+Token = ''
+OwnerID = ''
+GuildLimit = -1
+DisabledCommands = []
+
+[Postgres]
+Host = 'localhost'
+Port = 0
+Database = ''
+Username = ''
+Password = ''
+
+[Permissions]
+UserRules = ['+dm.chat.*', '+dm.etc.*']
+AdminRules = ['+dm.guild.*', '+dm.chat.*', '+dm.etc.*']
