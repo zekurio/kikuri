@@ -61,3 +61,26 @@ type GuildReduced struct {
 	MemberCount       int       `json:"member_count"`
 	OnlineMemberCount int       `json:"online_member_count,omitempty"`
 }
+
+type SystemInfo struct {
+	Version    string `json:"version"`
+	CommitHash string `json:"commit_hash"`
+	GoVersion  string `json:"go_version"`
+
+	Uptime    int64  `json:"uptime"`
+	UptimeStr string `json:"uptime_str"`
+
+	OS          string `json:"os"`
+	Arch        string `json:"arch"`
+	CPUs        int    `json:"cpus"`
+	GoRoutines  int    `json:"go_routines"`
+	StackUse    uint64 `json:"stack_use"`
+	StackUseStr string `json:"stack_use_str"`
+	HeapUse     uint64 `json:"heap_use"`
+	HeapUseStr  string `json:"heap_use_str"`
+
+	BotUserID string `json:"bot_user_id"`
+	BotInvite string `json:"bot_invite"`
+
+	Guilds int `json:"guilds"`
+}

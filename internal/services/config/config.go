@@ -23,6 +23,8 @@ var DefaultConfig = Config{
 		PublicAddr: "http://localhost:8080",
 		TLS: TLSConfig{
 			Enabled: false,
+			Cert:    "",
+			Key:     "",
 		},
 	},
 }
