@@ -6,6 +6,7 @@ import (
 	"github.com/sarulabs/di/v2"
 	"github.com/zekurio/daemon/internal/services/config"
 	v1 "github.com/zekurio/daemon/internal/services/webserver/v1"
+	"github.com/zekurio/daemon/internal/services/webserver/v1/controllers"
 	"github.com/zekurio/daemon/internal/util/static"
 )
 
@@ -28,7 +29,8 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 		ProxyHeader:           "X-Forwarded-For",
 	})
 
-	ws.registerRouter(new(v1.Router), []string{"/api/v1", "/api"})
+	new(controllers.InviteController).Setup(ws.container, ws.app.Group("/invite"))
+	ws.registerRouter(new(v1.Router), []string{"/api"})
 
 	return ws, nil
 }

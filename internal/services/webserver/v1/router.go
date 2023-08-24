@@ -16,4 +16,5 @@ func (r *Router) SetContainer(container di.Container) {
 
 func (r *Router) Route(router fiber.Router) {
 	new(controllers.PublicController).Setup(r.container, router.Group("/public"))
+	new(controllers.OthersController).Setup(r.container, router.Group("/others"))
 }

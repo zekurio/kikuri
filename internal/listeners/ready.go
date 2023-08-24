@@ -68,7 +68,9 @@ func (l *ListenerReady) Handler(s *discordgo.Session, e *discordgo.Ready) {
 	if err != nil {
 		return
 	}
-	log.Info("Signed in!", "Username", fmt.Sprintf("%s#%s", e.User.Username, e.User.Discriminator), "ID", e.User.ID)
+	log.Info("Signed in!",
+		"Username", fmt.Sprintf("%s#%s", e.User.Username, e.User.Discriminator),
+		"ID", e.User.ID)
 	log.Infof("Invite link: %s", discordutils.GetInviteLink(s))
 
 	l.sched.Start()
