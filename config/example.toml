@@ -14,3 +14,13 @@ Password = ''
 [Permissions]
 UserRules = ['+dm.chat.*', '+dm.etc.*']
 AdminRules = ['+dm.guild.*', '+dm.chat.*', '+dm.etc.*']
+
+[Webserver]
+Enabled = true
+Addr = 'localhost:8080'
+PublicAddr = 'localhost:8080'
+
+[Webserver.TLS]
+Enabled = false
+CertFile = ''
+KeyFile = ''

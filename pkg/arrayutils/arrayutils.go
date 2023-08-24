@@ -64,3 +64,29 @@ func ContainsAny[T comparable](s []T, elements ...T) bool {
 	}
 	return false
 }
+
+// EqualsInOrder returns true if the two specified slices are equal and in the same order.
+func EqualsInOrder[T comparable](s1, s2 []T) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+	for i, e := range s1 {
+		if e != s2[i] {
+			return false
+		}
+	}
+	return true
+}
+
+// Equals returns true if the two specified slices are equal.
+func Equals[T comparable](s1, s2 []T) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+	for _, e := range s1 {
+		if !Contains(s2, e) {
+			return false
+		}
+	}
+	return true
+}

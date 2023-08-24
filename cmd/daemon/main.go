@@ -28,7 +28,7 @@ func main() {
 	flag.Parse()
 
 	if embedded.Release == "true" {
-		log.SetLevel(log.InfoLevel)
+		log.SetLevel(log.DebugLevel)
 	} else {
 		log.SetLevel(log.DebugLevel)
 	}
@@ -72,7 +72,7 @@ func main() {
 	}
 
 	// Initialize discord bot session and shutdown routine
-	diBuilder.Add(di.Def{
+	err = diBuilder.Add(di.Def{
 		Name: static.DiDiscordSession,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return discordgo.New("")
@@ -80,10 +80,16 @@ func main() {
 		Close: func(obj interface{}) error {
 			session := obj.(*discordgo.Session)
 			log.Info("Shutting down bot session...")
-			session.Close()
+			err := session.Close()
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 	})
+	if err != nil {
+		return
+	}
 
 	// Permissions
 	err = diBuilder.Add(di.Def{
@@ -121,6 +127,14 @@ func main() {
 		log.With(err).Fatal("Scheduler creation failed")
 	}
 
+	// Webserver
+	err = diBuilder.Add(di.Def{
+		Name: static.DiWebserver,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return inits.InitWebserver(ctn), nil
+		},
+	})
+
 	// Build dependency injection container
 	ctn := diBuilder.Build()
 	// Tear down dependency instances
@@ -137,6 +151,8 @@ func main() {
 	if err != nil {
 		log.With(err).Fatal("Failed to initialize discord session")
 	}
+
+	ctn.Get(static.DiWebserver)
 
 	ctn.Get(static.DiDatabase)
 
