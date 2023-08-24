@@ -144,3 +144,39 @@ func TestContainsAny(t *testing.T) {
 	assert.Equal(t, true, ContainsAny(strArr, "x", "c", "e", "z"))
 
 }
+
+func TestEqualsInOrder(t *testing.T) {
+
+	intArr1 := []int{1, 2, 3, 4, 5}
+	intArr2 := []int{1, 2, 3, 4, 5}
+	intArr3 := []int{1, 2, 3, 5, 4}
+
+	strArr1 := []string{"a", "b", "c", "d", "e"}
+	strArr2 := []string{"a", "b", "c", "d", "e"}
+	strArr3 := []string{"a", "b", "c", "e", "d"}
+
+	assert.True(t, EqualsInOrder(intArr1, intArr2))
+	assert.False(t, EqualsInOrder(intArr1, intArr3))
+
+	assert.True(t, EqualsInOrder(strArr1, strArr2))
+	assert.False(t, EqualsInOrder(strArr1, strArr3))
+
+}
+
+func TestEquals(t *testing.T) {
+
+	intArr1 := []int{1, 2, 3, 4, 5}
+	intArr2 := []int{1, 2, 3, 4, 5}
+	intArr3 := []int{1, 2, 3, 5, 4}
+
+	strArr1 := []string{"a", "b", "c", "d", "e"}
+	strArr2 := []string{"a", "b", "c", "d", "e"}
+	strArr3 := []string{"a", "b", "c", "e", "d"}
+
+	assert.True(t, Equals(intArr1, intArr2))
+	assert.True(t, Equals(intArr1, intArr3))
+
+	assert.True(t, Equals(strArr1, strArr2))
+	assert.True(t, Equals(strArr1, strArr3))
+
+}

@@ -1,4 +1,4 @@
-# compose file for daemon development
+# compose file for daemon developmenterror getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
 name: daemon-dev
 
 volumes:
@@ -10,11 +10,11 @@ services:
     container_name: daemon-pg-container
     ports:
       - "5432:5432"
-    image: 'postgres:alpine'
+    image: 'postgres'
     volumes:
       - 'daemon-pg:/var/lib/postgresql/data'
     environment:
       POSTGRES_PASSWORD: 'daemon'
       POSTGRES_USER: 'daemon'
       POSTGRES_DB: 'daemon'
-    restart: 'unless-stopped'
+    restart: 'on-failure'

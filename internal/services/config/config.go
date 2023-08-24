@@ -17,6 +17,14 @@ var DefaultConfig = Config{
 		UserRules:  static.DefaultUserRules,
 		AdminRules: static.DefaultAdminRules,
 	},
+	Webserver: WebserverConfig{
+		Enabled:    true,
+		Addr:       ":8080",
+		PublicAddr: "http://localhost:8080",
+		TLS: TLSConfig{
+			Enabled: false,
+		},
+	},
 }
 
 type DiscordConfig struct {
@@ -39,8 +47,22 @@ type PermissionRules struct {
 	AdminRules []string
 }
 
+type WebserverConfig struct {
+	Enabled    bool
+	Addr       string
+	PublicAddr string
+	TLS        TLSConfig
+}
+
+type TLSConfig struct {
+	Enabled bool
+	Cert    string
+	Key     string
+}
+
 type Config struct {
 	Discord     DiscordConfig
 	Postgres    PostgresConfig
 	Permissions PermissionRules
+	Webserver   WebserverConfig
 }
