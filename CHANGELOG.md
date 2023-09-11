@@ -9,6 +9,7 @@
     - autovoice in a simple form
     - voting, with buttons
     - autorole, in a simple form
+    - webserver, at least the beginnings
 
 - some things that might be coming in the future:
 
