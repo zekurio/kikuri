@@ -5,6 +5,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
+	models2 "github.com/zekurio/daemon/internal/models"
 	"github.com/zekurio/daemon/internal/services/webserver/v1/models"
 	"github.com/zekurio/daemon/internal/util"
 	"github.com/zekurio/daemon/internal/util/embedded"
@@ -15,13 +16,16 @@ import (
 )
 
 type OthersController struct {
+	cfg     *models2.Config
 	session *discordgo.Session
 }
 
-func (c *OthersController) Setup(container di.Container, router fiber.Router) {
-	c.session = container.Get(static.DiDiscordSession).(*discordgo.Session)
+func (c *OthersController) Setup(ctn di.Container, router fiber.Router) {
+	c.cfg = ctn.Get(static.DiConfig).(*models2.Config)
+	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
 
 	router.Get("/sysinfo", c.getSysinfo)
+	router.Get("/privacyinfo", c.getPrivacyInfo)
 }
 
 // @Summary System Information
@@ -64,4 +68,15 @@ func (c *OthersController) getSysinfo(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.JSON(res)
+}
+
+// @Summary Privacy Information
+// @Description Returns information about the privacy policy.
+// @Tags Etc
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.Privacy
+// @Router /privacyinfo [get]
+func (c *OthersController) getPrivacyInfo(ctx *fiber.Ctx) error {
+	return ctx.JSON(c.cfg.Privacy)
 }

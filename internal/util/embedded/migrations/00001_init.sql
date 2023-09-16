@@ -30,6 +30,15 @@ CREATE TABLE IF NOT EXISTS autovoice
     PRIMARY KEY (user_id)
 );
 
+CREATE TABLE IF NOT EXISTS guildapi
+(
+    guild_id      VARCHAR(25) NOT NULL DEFAULT '',
+    enabled       BOOLEAN     NOT NULL DEFAULT TRUE,
+    origins       TEXT        NOT NULL DEFAULT '',
+    token_hash    TEXT        NOT NULL DEFAULT '',
+    PRIMARY KEY (guild_id)
+);
+
 -- +goose Down
 DROP TABLE IF EXISTS guilds;
 DROP TABLE IF EXISTS permissions;

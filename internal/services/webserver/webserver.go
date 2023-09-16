@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/config"
+	"github.com/zekurio/daemon/internal/models"
 	v1 "github.com/zekurio/daemon/internal/services/webserver/v1"
 	"github.com/zekurio/daemon/internal/services/webserver/v1/controllers"
 	"github.com/zekurio/daemon/internal/util/static"
@@ -12,7 +12,7 @@ import (
 
 type WebServer struct {
 	app       *fiber.App
-	cfg       config.Config
+	cfg       models.Config
 	container di.Container
 }
 
@@ -21,7 +21,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 
 	ws.container = ctn
 
-	ws.cfg = ctn.Get(static.DiConfig).(config.Config)
+	ws.cfg = ctn.Get(static.DiConfig).(models.Config)
 
 	ws.app = fiber.New(fiber.Config{
 		AppName:               "daemon",

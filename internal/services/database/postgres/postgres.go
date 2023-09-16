@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"github.com/zekurio/daemon/internal/models"
 	"strings"
 
 	"github.com/zekurio/daemon/internal/util"
@@ -10,7 +11,6 @@ import (
 	"github.com/charmbracelet/log"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
-	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
 	"github.com/zekurio/daemon/internal/util/embedded"
@@ -27,7 +27,7 @@ var (
 	guildTables                   = []string{"guilds", "permissions"}
 )
 
-func InitPostgres(c config.PostgresConfig) (*Postgres, error) {
+func InitPostgres(c models.Postgres) (*Postgres, error) {
 	var (
 		p   Postgres
 		err error
@@ -190,6 +190,19 @@ func (p *Postgres) AddUpdateVote(v vote.Vote) error {
 func (p *Postgres) DeleteVote(voteID string) error {
 	_, err := p.db.Exec(`DELETE FROM votes WHERE id = $1`, voteID)
 	return err
+}
+
+// GUILDAPI
+
+func (p *Postgres) GetGuildAPI(guildID string) (settings models.GuildAPISettings, err error) {
+	// get everything from the guilds table
+	err = p.db.QueryRow(`SELECT * FROM guilds WHERE guild_id = $1`, guildID).Scan(
+		&settings.Enabled, &settings.AllowedOrigins, &settings.Protected, &settings.TokenHash)
+	if err != nil {
+		return settings, p.wrapErr(err)
+	}
+
+	return
 }
 
 // DATA MANAGEMENT

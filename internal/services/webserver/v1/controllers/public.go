@@ -16,9 +16,9 @@ type PublicController struct {
 	db      database.Database
 }
 
-func (c *PublicController) Setup(container di.Container, router fiber.Router) {
-	c.session = container.Get(static.DiDiscordSession).(*discordgo.Session)
-	c.db = container.Get(static.DiDatabase).(database.Database)
+func (c *PublicController) Setup(ctn di.Container, router fiber.Router) {
+	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
+	c.db = ctn.Get(static.DiDatabase).(database.Database)
 
 	router.Get("/guilds/:guildid", c.getGuild)
 }

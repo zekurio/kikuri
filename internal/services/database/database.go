@@ -1,6 +1,7 @@
 package database
 
 import (
+	"github.com/zekurio/daemon/internal/models"
 	"github.com/zekurio/daemon/internal/util/vote"
 	"github.com/zekurio/daemon/pkg/perms"
 )
@@ -28,6 +29,10 @@ type Database interface {
 	GetVotes() (map[string]vote.Vote, error)
 	AddUpdateVote(vote vote.Vote) error
 	DeleteVote(voteID string) error
+
+	// Guildapi
+
+	GetGuildAPI(guildID string) (settings models.GuildAPISettings, err error)
 
 	// Data management
 

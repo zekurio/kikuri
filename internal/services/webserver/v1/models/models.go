@@ -84,3 +84,12 @@ type SystemInfo struct {
 
 	Guilds int `json:"guilds"`
 }
+
+type ListResponse[T any] struct {
+	N    int `json:"n"`
+	Data []T `json:"data"`
+}
+
+func NewListResp[T any](data []T) ListResponse[T] {
+	return ListResponse[T]{len(data), data}
+}
