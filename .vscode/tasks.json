@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+	  {
+		"label": "run-react-app",
+		"type": "shell",
+		"command": "yarn",
+		"args": ["start"],
+		"options": {
+		  "cwd": "${workspaceFolder}/web/"
+		},
+		"isBackground": true
+	  }
+	]
+  }
