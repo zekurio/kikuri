@@ -15,22 +15,25 @@ import (
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/embedded"
 	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/daemon/pkg/debug"
 )
 
 var (
 	flagConfigPath = flag.String("c", "config.toml", "Path to config file")
+	flagDebug      = flag.Bool("debug", false, "Enable debug mode")
 )
 
 func main() {
 
 	flag.Parse()
 
-	if embedded.Release == "true" {
+	debug.SetEnabled(*flagDebug)
+
+	if debug.Enabled() {
 		log.SetLevel(log.DebugLevel)
 	} else {
-		log.SetLevel(log.DebugLevel)
+		log.SetLevel(log.InfoLevel)
 	}
 
 	diBuilder, err := di.NewBuilder()

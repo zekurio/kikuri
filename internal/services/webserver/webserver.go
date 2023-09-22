@@ -1,12 +1,14 @@
 package webserver
 
 import (
+	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekurio/daemon/internal/services/config"
 	v1 "github.com/zekurio/daemon/internal/services/webserver/v1"
 	"github.com/zekurio/daemon/internal/services/webserver/v1/controllers"
 	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/daemon/pkg/debug"
 )
 
 type WebServer struct {
@@ -29,8 +31,17 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 		ProxyHeader:           "X-Forwarded-For",
 	})
 
+	if debug.Enabled() {
+		const corsOrigin = "http://localhost:5173"
+		log.Warnf("CORS enabled for address %s", corsOrigin)
+		ws.app.Use(func(c *fiber.Ctx) error {
+			c.Set("Access-Control-Allow-Origin", corsOrigin)
+			return c.Next()
+		})
+	}
+
 	new(controllers.InviteController).Setup(ws.container, ws.app.Group("/invite"))
-	ws.registerRouter(new(v1.Router), []string{"/api"})
+	ws.registerRouter(new(v1.Router), []string{"/api/v1"})
 
 	return ws, nil
 }
@@ -43,5 +54,13 @@ func (ws *WebServer) registerRouter(router Router, routes []string, middlewares 
 }
 
 func (ws *WebServer) ListenAndServeBlocking() error {
+	tls := ws.cfg.Webserver.TLS
+
+	if tls.Enabled {
+		log.Infof("Starting webserver on %s (TLS enabled)", ws.cfg.Webserver.Addr)
+		return ws.app.ListenTLS(ws.cfg.Webserver.Addr, tls.Cert, tls.Key)
+	}
+
+	log.Infof("Starting webserver on %s", ws.cfg.Webserver.Addr)
 	return ws.app.Listen(ws.cfg.Webserver.Addr)
 }
