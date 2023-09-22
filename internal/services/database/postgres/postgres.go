@@ -3,16 +3,17 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"github.com/zekurio/daemon/internal/models"
 	"strings"
-
-	"github.com/zekurio/daemon/internal/util"
 
 	"github.com/charmbracelet/log"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
+
+	"github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
+	"github.com/zekurio/daemon/internal/util"
 	"github.com/zekurio/daemon/internal/util/embedded"
 	"github.com/zekurio/daemon/internal/util/vote"
 	"github.com/zekurio/daemon/pkg/perms"
@@ -27,7 +28,7 @@ var (
 	guildTables                   = []string{"guilds", "permissions"}
 )
 
-func InitPostgres(c models.Postgres) (*Postgres, error) {
+func InitPostgres(c config.Postgres) (*Postgres, error) {
 	var (
 		p   Postgres
 		err error

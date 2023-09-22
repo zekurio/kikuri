@@ -3,40 +3,50 @@ package config
 import "github.com/zekurio/daemon/internal/util/static"
 
 var DefaultConfig = Config{
-	Discord: DiscordConfig{
+	Discord: Discord{
 		Token:            "",
 		OwnerID:          "",
 		GuildLimit:       -1,
 		DisabledCommands: []string{},
 	},
-	Postgres: PostgresConfig{
+	Postgres: Postgres{
 		Host: "localhost",
 		Port: 5432,
 	},
-	Permissions: PermissionRules{
+	Permissions: Permission{
 		UserRules:  static.DefaultUserRules,
 		AdminRules: static.DefaultAdminRules,
 	},
-	Webserver: WebserverConfig{
+	Webserver: Webserver{
 		Enabled:    true,
 		Addr:       ":8080",
 		PublicAddr: "http://localhost:8080",
-		TLS: TLSConfig{
+		TLS: WebserverTLS{
 			Enabled: false,
 			Cert:    "",
 			Key:     "",
 		},
 	},
+	Privacy: Privacy{
+		NoticeURL: "",
+		Contact: []Contact{
+			{
+				Title: "Example",
+				Value: "Example Value",
+				URL:   "https://example.com",
+			},
+		},
+	},
 }
 
-type DiscordConfig struct {
+type Discord struct {
 	Token            string
 	OwnerID          string
 	GuildLimit       int
 	DisabledCommands []string
 }
 
-type PostgresConfig struct {
+type Postgres struct {
 	Host     string
 	Port     int
 	Database string
@@ -44,27 +54,39 @@ type PostgresConfig struct {
 	Password string
 }
 
-type PermissionRules struct {
+type Permission struct {
 	UserRules  []string
 	AdminRules []string
 }
 
-type WebserverConfig struct {
+type Webserver struct {
 	Enabled    bool
 	Addr       string
 	PublicAddr string
-	TLS        TLSConfig
+	TLS        WebserverTLS
 }
 
-type TLSConfig struct {
+type WebserverTLS struct {
 	Enabled bool
 	Cert    string
 	Key     string
 }
 
+type Privacy struct {
+	NoticeURL string
+	Contact   []Contact
+}
+
+type Contact struct {
+	Title string
+	Value string
+	URL   string
+}
+
 type Config struct {
-	Discord     DiscordConfig
-	Postgres    PostgresConfig
-	Permissions PermissionRules
-	Webserver   WebserverConfig
+	Discord     Discord
+	Postgres    Postgres
+	Permissions Permission
+	Webserver   Webserver
+	Privacy     Privacy
 }

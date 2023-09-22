@@ -2,10 +2,10 @@
 	"version": "2.0.0",
 	"tasks": [
 	  {
-		"label": "run-react-app",
+		"label": "run-web-app",
 		"type": "shell",
 		"command": "yarn",
-		"args": ["start"],
+		"args": ["dev"],
 		"options": {
 		  "cwd": "${workspaceFolder}/web/"
 		},

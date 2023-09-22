@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"github.com/zekurio/daemon/internal/models"
 	"os"
 	"os/signal"
 	"syscall"
@@ -43,7 +42,7 @@ func main() {
 	err = diBuilder.Add(di.Def{
 		Name: static.DiConfig,
 		Build: func(ctn di.Container) (interface{}, error) {
-			return config.Parse(*flagConfigPath, "DAEMON_", models.DefaultConfig)
+			return config.Parse(*flagConfigPath, "DAEMON_", config.DefaultConfig)
 		},
 	})
 	if err != nil {
@@ -135,6 +134,9 @@ func main() {
 			return inits.InitWebserver(ctn), nil
 		},
 	})
+	if err != nil {
+		log.With(err).Fatal("Webserver creation failed")
+	}
 
 	// Build dependency injection container
 	ctn := diBuilder.Build()

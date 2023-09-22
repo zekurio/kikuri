@@ -2,26 +2,27 @@ package controllers
 
 import (
 	"fmt"
+	"runtime"
+	"time"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
-	models2 "github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/webserver/v1/models"
 	"github.com/zekurio/daemon/internal/util"
 	"github.com/zekurio/daemon/internal/util/embedded"
 	"github.com/zekurio/daemon/internal/util/static"
 	"github.com/zekurio/daemon/pkg/discordutils"
-	"runtime"
-	"time"
 )
 
 type OthersController struct {
-	cfg     *models2.Config
+	cfg     config.Config
 	session *discordgo.Session
 }
 
 func (c *OthersController) Setup(ctn di.Container, router fiber.Router) {
-	c.cfg = ctn.Get(static.DiConfig).(*models2.Config)
+	c.cfg = ctn.Get(static.DiConfig).(config.Config)
 	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
 
 	router.Get("/sysinfo", c.getSysinfo)

@@ -6,8 +6,3 @@ type GuildAPISettings struct {
 	Protected      bool   `json:"protected"`
 	TokenHash      string `json:"token_hash,omitempty"`
 }
-
-func (g *GuildAPISettings) Hydrate() *GuildAPISettings {
-	g.Protected = g.TokenHash != ""
-	return g
-}

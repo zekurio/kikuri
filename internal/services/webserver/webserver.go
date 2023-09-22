@@ -1,10 +1,9 @@
 package webserver
 
 import (
-	"errors"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/daemon/internal/services/config"
 	v1 "github.com/zekurio/daemon/internal/services/webserver/v1"
 	"github.com/zekurio/daemon/internal/services/webserver/v1/controllers"
 	"github.com/zekurio/daemon/internal/util/static"
@@ -12,16 +11,17 @@ import (
 
 type WebServer struct {
 	app       *fiber.App
-	cfg       models.Config
+	cfg       config.Config
 	container di.Container
 }
 
 func New(ctn di.Container) (ws *WebServer, err error) {
+
 	ws = new(WebServer)
 
 	ws.container = ctn
 
-	ws.cfg = ctn.Get(static.DiConfig).(models.Config)
+	ws.cfg = ctn.Get(static.DiConfig).(config.Config)
 
 	ws.app = fiber.New(fiber.Config{
 		AppName:               "daemon",
@@ -43,14 +43,5 @@ func (ws *WebServer) registerRouter(router Router, routes []string, middlewares 
 }
 
 func (ws *WebServer) ListenAndServeBlocking() error {
-	tls := ws.cfg.Webserver.TLS
-
-	if tls.Enabled {
-		if tls.Cert == "" || tls.Key == "" {
-			return errors.New("cert file and key file must be specified")
-		}
-		return ws.app.ListenTLS(ws.cfg.Webserver.Addr, tls.Cert, tls.Key)
-	}
-
 	return ws.app.Listen(ws.cfg.Webserver.Addr)
 }
