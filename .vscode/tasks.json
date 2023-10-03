@@ -1,15 +1,21 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-	  {
-		"label": "run-web-app",
-		"type": "shell",
-		"command": "yarn",
-		"args": ["dev"],
-		"options": {
-		  "cwd": "${workspaceFolder}/web/"
-		},
-		"isBackground": true
-	  }
-	]
-  }
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run-vite-server",
+            "type": "shell",
+            "command": "npx vite dev",
+            "options": {
+                "cwd": "${workspaceFolder}/web"
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "isBackground": true,
+        }
+    ]
+}

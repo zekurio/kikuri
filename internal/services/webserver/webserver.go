@@ -3,6 +3,7 @@ package webserver
 import (
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekurio/daemon/internal/services/config"
 	v1 "github.com/zekurio/daemon/internal/services/webserver/v1"
@@ -34,10 +35,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 	if debug.Enabled() {
 		const corsOrigin = "http://localhost:5173"
 		log.Warnf("CORS enabled for address %s", corsOrigin)
-		ws.app.Use(func(c *fiber.Ctx) error {
-			c.Set("Access-Control-Allow-Origin", corsOrigin)
-			return c.Next()
-		})
+		ws.app.Use(cors.New())
 	}
 
 	new(controllers.InviteController).Setup(ws.container, ws.app.Group("/invite"))

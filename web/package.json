@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "daemon-webapp",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,25 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/color": "^3.0.4",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-router-dom": "^5.3.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-svgr": "^4.0.0"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-transform-class-properties": "^7.22.5",
+    "@babel/plugin-transform-object-rest-spread": "^7.22.15",
+    "@tabler/icons-react": "^2.36.0",
+    "color": "^4.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "styled-components": "^6.0.8",
+    "zustand": "^4.4.1"
   }
 }
