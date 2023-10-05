@@ -8,4 +8,6 @@ const (
 	DiPermissions    = "di-permissions"
 	DiScheduler      = "di-scheduler"
 	DiWebserver      = "di-webserver"
+	DiDiscordOAuth   = "di-discordoauth"
+	DiOAuthHandler   = "di-oauthhandler"
 )

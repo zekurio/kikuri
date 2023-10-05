@@ -1,16 +1,21 @@
-import { HTTP_ENDPOINT } from "./static";
+import { HTTP_ENDPOINT } from './static';
 
-export type HttpMethod = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'PATCH' | 'OPTIONS';
+export type HttpMethod =
+  | 'GET'
+  | 'PUT'
+  | 'POST'
+  | 'DELETE'
+  | 'PATCH'
+  | 'OPTIONS';
 
 export type HttpHeadersMap = { [key: string]: string };
 
 export class HTTPClient {
-
   async req<T>(
     method: HttpMethod,
     path: string,
     body?: object,
-    headers: HttpHeadersMap = {},
+    headers: HttpHeadersMap = {}
   ): Promise<T> {
     const res = await fetch(HTTP_ENDPOINT + path, {
       method,
@@ -27,5 +32,4 @@ export class HTTPClient {
 
     return res.json();
   }
-
 }

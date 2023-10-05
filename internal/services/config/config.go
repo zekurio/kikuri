@@ -40,6 +40,8 @@ var DefaultConfig = Config{
 }
 
 type Discord struct {
+	ClientID         string
+	ClientSecret     string
 	Token            string
 	OwnerID          string
 	GuildLimit       int

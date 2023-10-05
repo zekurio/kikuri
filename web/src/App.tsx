@@ -28,19 +28,19 @@ const Outlet = styled.div`
 `;
 
 const App: React.FC = () => {
-    return (
-        <ThemeProvider theme={DarkTheme}>
-          <Outlet>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={ <MainRoute/> } />
-                <Route path="/debug" element={ <DebugRoute/> } />
-              </Routes>
-            </BrowserRouter>
-          </Outlet>
-          <GlobalStyle />
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider theme={DarkTheme}>
+      <Outlet>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MainRoute />} />
+            <Route path="/debug" element={<DebugRoute />} />
+          </Routes>
+        </BrowserRouter>
+      </Outlet>
+      <GlobalStyle />
+    </ThemeProvider>
+  );
 };
 
 export default App;

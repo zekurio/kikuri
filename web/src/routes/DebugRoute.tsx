@@ -34,9 +34,7 @@ export const DebugRoute: React.FC<Props> = ({}) => {
         <li>
           <strong>/others/sysinfo</strong>:
           {sysinfo ? (
-            <SyntaxHighlighter
-              language="json"
-            >
+            <SyntaxHighlighter language="json">
               {JSON.stringify(sysinfo, null, 2)}
             </SyntaxHighlighter>
           ) : (

@@ -1,7 +1,6 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 type Store = {
-
   loggedIn: boolean;
   setLoggedIn: (loggedIn: boolean) => void;
 

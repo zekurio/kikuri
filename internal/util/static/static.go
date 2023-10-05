@@ -25,6 +25,8 @@ const (
 		discordgo.IntentsGuildMembers |
 		discordgo.IntentsGuildVoiceStates |
 		discordgo.IntentsDirectMessages
+
+	EndpointAuthCB = "/api/auth/oauthcallback"
 )
 
 var (
