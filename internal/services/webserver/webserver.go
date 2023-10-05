@@ -39,7 +39,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 	}
 
 	new(controllers.InviteController).Setup(ws.container, ws.app.Group("/invite"))
-	ws.registerRouter(new(v1.Router), []string{"/api/v1"})
+	ws.registerRouter(new(v1.Router), []string{"/api"}) // moving to /api since we only have one version
 
 	return ws, nil
 }

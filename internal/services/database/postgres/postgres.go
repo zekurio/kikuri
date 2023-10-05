@@ -9,10 +9,10 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
 
-	"github.com/zekurio/daemon/internal/models"
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
+	"github.com/zekurio/daemon/internal/services/database/models"
 	"github.com/zekurio/daemon/internal/util"
 	"github.com/zekurio/daemon/internal/util/embedded"
 	"github.com/zekurio/daemon/internal/util/vote"

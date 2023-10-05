@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/daemon/internal/services/database/models"
 	"github.com/zekurio/daemon/internal/util/vote"
 	"github.com/zekurio/daemon/pkg/perms"
 )
