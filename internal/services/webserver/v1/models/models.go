@@ -51,10 +51,9 @@ func NewListResponse[T any](data []T) ListResponse[T] {
 type User struct {
 	*discordgo.User
 
-	AvatarURL       string    `json:"avatar_url"`
-	CreatedAt       time.Time `json:"created_at"`
-	BotOwner        bool      `json:"bot_owner"`
-	CaptchaVerified bool      `json:"captcha_verified"`
+	AvatarURL string    `json:"avatar_url"`
+	CreatedAt time.Time `json:"created_at"`
+	BotOwner  bool      `json:"bot_owner"`
 }
 
 // FlatUser shrinks the user object to the only
@@ -308,14 +307,6 @@ type ChannelWithPermissions struct {
 
 	CanRead  bool `json:"can_read"`
 	CanWrite bool `json:"can_write"`
-}
-
-type CaptchaSiteKey struct {
-	SiteKey string `json:"sitekey"`
-}
-
-type CaptchaVerificationRequest struct {
-	Token string `json:"token"`
 }
 
 type CodeExecSettings struct {

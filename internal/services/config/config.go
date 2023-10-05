@@ -56,6 +56,26 @@ type Postgres struct {
 	Password string
 }
 
+type Redis struct {
+	Host      string
+	Port      int
+	Password  string
+	Lifetimes CacheLifetimes
+}
+
+type CacheLifetimes struct {
+	General,
+	Guild,
+	Member,
+	User,
+	Role,
+	Channel,
+	Emoji,
+	Message,
+	VoiceState,
+	Presence string
+}
+
 type Permission struct {
 	UserRules  []string
 	AdminRules []string
@@ -88,6 +108,7 @@ type Contact struct {
 type Config struct {
 	Discord     Discord
 	Postgres    Postgres
+	Redis       Redis
 	Permissions Permission
 	Webserver   Webserver
 	Privacy     Privacy

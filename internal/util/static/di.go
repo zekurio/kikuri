@@ -10,4 +10,5 @@ const (
 	DiWebserver      = "di-webserver"
 	DiDiscordOAuth   = "di-discordoauth"
 	DiOAuthHandler   = "di-oauthhandler"
+	DiRedis          = "di-redis"
 )
