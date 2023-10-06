@@ -41,12 +41,12 @@ func (g *ListenerGuildCreate) Handler(s *discordgo.Session, e *discordgo.GuildCr
 		_, err := discordutils.SendMessageDM(s, e.OwnerID,
 			fmt.Sprintf("Sorry, the instance owner disallowed me to join more than %d guilds.", limit))
 		if err != nil {
-			log.With(err).Error("Failed to send message", "GuildID", e.Guild.ID, "UserID", e.OwnerID)
+			log.With("err", err).Error("Failed to send message", "GuildID", e.Guild.ID, "UserID", e.OwnerID)
 			return
 		}
 		err = s.GuildLeave(e.Guild.ID)
 		if err != nil {
-			log.With(err).Error("Failed to leave guild", "GuildID", e.Guild.ID)
+			log.With("err", err).Error("Failed to leave guild", "GuildID", e.Guild.ID)
 			return
 		}
 	}

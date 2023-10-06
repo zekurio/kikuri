@@ -38,7 +38,7 @@ func main() {
 
 	diBuilder, err := di.NewBuilder()
 	if err != nil {
-		log.With(err).Fatal("Failed to create DI builder")
+		log.With("err", err).Fatal("Failed to create DI builder")
 	}
 
 	// Config
@@ -49,7 +49,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.With(err).Fatal("Config parsing failed")
+		log.With("err", err).Fatal("Config parsing failed")
 	}
 
 	// Database
@@ -68,10 +68,8 @@ func main() {
 			return nil
 		},
 	})
-	if err != nil && err.Error() == "unknown database driver" {
-		log.With(err).Fatal("Database creation failed, unknown driver")
-	} else if err != nil {
-		log.With(err).Fatal("Database creation failed")
+	if err != nil {
+		log.With("err", err).Fatal("Database creation failed")
 	}
 
 	// Initialize discord bot session and shutdown routine
@@ -91,7 +89,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		return
+		log.With("err", err).Fatal("Discord session creation failed")
 	}
 
 	// Permissions
@@ -102,7 +100,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.With(err).Fatal("Permissions creation failed")
+		log.With("err", err).Fatal("Permissions creation failed")
 	}
 
 	// Ken
@@ -116,7 +114,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.With(err).Fatal("Command handler creation failed")
+		log.With("err", err).Fatal("Command handler creation failed")
 	}
 
 	// Scheduler
@@ -127,7 +125,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.With(err).Fatal("Scheduler creation failed")
+		log.With("err", err).Fatal("Scheduler creation failed")
 	}
 
 	// Webserver
@@ -138,7 +136,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.With(err).Fatal("Webserver creation failed")
+		log.With("err", err).Fatal("Webserver creation failed")
 	}
 
 	// Build dependency injection container
@@ -147,7 +145,7 @@ func main() {
 	defer func(ctn di.Container) {
 		err := ctn.DeleteWithSubContainers()
 		if err != nil {
-			log.With(err).Fatal("Failed to tear down dependency instances")
+			log.With("err", err).Fatal("Failed to tear down dependency instances")
 		}
 	}(ctn)
 
@@ -155,7 +153,7 @@ func main() {
 
 	err = inits.InitDiscord(ctn)
 	if err != nil {
-		log.With(err).Fatal("Failed to initialize discord session")
+		log.With("err", err).Fatal("Failed to initialize discord session")
 	}
 
 	ctn.Get(static.DiWebserver)
@@ -168,6 +166,6 @@ func main() {
 
 	log.Info("Initialization finished")
 	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
 }

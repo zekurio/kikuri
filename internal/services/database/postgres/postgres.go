@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/charmbracelet/log"
 	_ "github.com/lib/pq"
@@ -204,6 +205,16 @@ func (p *Postgres) GetGuildAPI(guildID string) (settings models.GuildAPISettings
 	}
 
 	return
+}
+
+// REFRESH TOKENS
+
+func (p *Postgres) GetUserRefreshToken(userID string) (token string, err error) {
+	return GetValue[string](p, "refreshtokens", "refresh_token", "user_id", userID)
+}
+
+func (p *Postgres) SetUserRefreshToken(userID, token string, expires time.Time) error {
+	return SetValue(p, "refreshtokens", "refresh_token", token, "user_id", userID)
 }
 
 // DATA MANAGEMENT

@@ -1,6 +1,10 @@
 package static
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"time"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 const (
 	ColorRed     = 0xEA8A8A
@@ -27,6 +31,10 @@ const (
 		discordgo.IntentsDirectMessages
 
 	EndpointAuthCB = "/api/auth/oauthcallback"
+
+	AuthSessionExpiration  = 7 * 24 * time.Hour
+	ApiTokenExpiration     = 365 * 24 * time.Hour
+	RefreshTokenCookieName = "refreshToken"
 )
 
 var (

@@ -39,8 +39,19 @@ CREATE TABLE IF NOT EXISTS guildapi
     PRIMARY KEY (guild_id)
 );
 
+CREATE TABLE IF NOT EXISTS refreshtokens
+(
+    user_id       VARCHAR(25) NOT NULL DEFAULT '',
+    refresh_token TEXT        NOT NULL DEFAULT '',
+    expires_at    BIGINT      NOT NULL DEFAULT 0,
+    PRIMARY KEY (user_id)
+);
+
 -- +goose Down
+
 DROP TABLE IF EXISTS guilds;
 DROP TABLE IF EXISTS permissions;
 DROP TABLE IF EXISTS votes;
 DROP TABLE IF EXISTS autovoice;
+DROP TABLE IF EXISTS guildapi;
+DROP TABLE IF EXISTS refreshtokens;

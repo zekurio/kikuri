@@ -1,6 +1,8 @@
 package database
 
 import (
+	"time"
+
 	"github.com/zekurio/daemon/internal/services/database/models"
 	"github.com/zekurio/daemon/internal/util/vote"
 	"github.com/zekurio/daemon/pkg/perms"
@@ -33,6 +35,11 @@ type Database interface {
 	// Guildapi
 
 	GetGuildAPI(guildID string) (settings models.GuildAPISettings, err error)
+
+	// User refresh tokens
+
+	GetUserRefreshToken(userID string) (token string, err error)
+	SetUserRefreshToken(userID, token string, expires time.Time) error
 
 	// Data management
 
