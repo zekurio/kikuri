@@ -7,7 +7,7 @@ import (
 )
 
 type stateClaims struct {
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 	Payload map[string]string `json:"pld,omitempty"`
 }
 
@@ -20,11 +20,11 @@ func (d *DiscordOAuth) getHandler() jwt.Keyfunc {
 func (d *DiscordOAuth) encodeAndSignWithPayload(payload map[string]string) (string, error) {
 	now := time.Now()
 	claims := stateClaims{
-		StandardClaims: jwt.StandardClaims{
+		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    d.clientID,
-			IssuedAt:  now.Unix(),
-			NotBefore: now.Unix(),
-			ExpiresAt: now.Add(5 * time.Minute).Unix(),
+			IssuedAt:  jwt.NewNumericDate(now),
+			NotBefore: jwt.NewNumericDate(now),
+			ExpiresAt: jwt.NewNumericDate(now.Add(5 * time.Minute)),
 		},
 		Payload: payload,
 	}

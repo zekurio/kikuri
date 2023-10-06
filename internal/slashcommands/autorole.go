@@ -106,7 +106,7 @@ func (c *Autorole) Run(ctx ken.Context) (err error) {
 func (c *Autorole) list(ctx ken.SubCommandContext) (err error) {
 	db := ctx.Get(static.DiDatabase).(database.Database)
 
-	autoroles, err := db.GetAutoRoles(ctx.GetEvent().GuildID)
+	autoroles, err := db.GetGuildAutoRoles(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return err
 	}
@@ -133,7 +133,7 @@ func (c *Autorole) add(ctx ken.SubCommandContext) (err error) {
 	role := ctx.Options().Get(0).
 		RoleValue(ctx)
 
-	autoroles, err := db.GetAutoRoles(ctx.GetEvent().GuildID)
+	autoroles, err := db.GetGuildAutoRoles(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return
 	}
@@ -143,7 +143,7 @@ func (c *Autorole) add(ctx ken.SubCommandContext) (err error) {
 		return
 	}
 
-	if err = db.SetAutoRoles(ctx.GetEvent().GuildID, append(autoroles, role.ID)); err != nil {
+	if err = db.SetGuildAutoRoles(ctx.GetEvent().GuildID, append(autoroles, role.ID)); err != nil {
 		return
 	}
 
@@ -161,7 +161,7 @@ func (c *Autorole) remove(ctx ken.SubCommandContext) (err error) {
 	role := ctx.Options().Get(0).
 		RoleValue(ctx)
 
-	autoroles, err := db.GetAutoRoles(ctx.GetEvent().GuildID)
+	autoroles, err := db.GetGuildAutoRoles(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return
 	}
@@ -172,7 +172,7 @@ func (c *Autorole) remove(ctx ken.SubCommandContext) (err error) {
 	}
 
 	autoroles = arrayutils.RemoveLazy(autoroles, role.ID)
-	if err = db.SetAutoRoles(ctx.GetEvent().GuildID, autoroles); err != nil {
+	if err = db.SetGuildAutoRoles(ctx.GetEvent().GuildID, autoroles); err != nil {
 		return
 	}
 
@@ -187,7 +187,7 @@ func (c *Autorole) remove(ctx ken.SubCommandContext) (err error) {
 func (c *Autorole) purge(ctx ken.SubCommandContext) (err error) {
 	db := ctx.Get(static.DiDatabase).(database.Database)
 
-	if err = db.SetAutoRoles(ctx.GetEvent().GuildID, []string{}); err != nil && err != dberr.ErrNotFound {
+	if err = db.SetGuildAutoRoles(ctx.GetEvent().GuildID, []string{}); err != nil && err != dberr.ErrNotFound {
 		return
 	}
 

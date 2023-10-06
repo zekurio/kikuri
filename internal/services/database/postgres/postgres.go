@@ -46,11 +46,6 @@ func InitPostgres(c config.Postgres) (*Postgres, error) {
 		return nil, err
 	}
 
-	err = p.handleMigrations()
-	if err != nil {
-		return nil, err
-	}
-
 	goose.SetBaseFS(embedded.Migrations)
 	err = goose.SetDialect("postgres")
 	if err != nil {
@@ -63,23 +58,15 @@ func InitPostgres(c config.Postgres) (*Postgres, error) {
 	}
 
 	return &p, nil
-
-}
-
-func (p *Postgres) handleMigrations() error {
-
-	return nil
-
 }
 
 func (p *Postgres) Close() error {
 	return p.db.Close()
-
 }
 
 // GUILDS
 
-func (p *Postgres) GetAutoRoles(guildID string) ([]string, error) {
+func (p *Postgres) GetGuildAutoRoles(guildID string) ([]string, error) {
 	roleStr, err := GetValue[string](p, "guilds", "autorole_ids", "guild_id", guildID)
 	if roleStr == "" {
 		return []string{}, err
@@ -88,11 +75,11 @@ func (p *Postgres) GetAutoRoles(guildID string) ([]string, error) {
 	return strings.Split(roleStr, ";"), nil
 }
 
-func (p *Postgres) SetAutoRoles(guildID string, roleIDs []string) error {
+func (p *Postgres) SetGuildAutoRoles(guildID string, roleIDs []string) error {
 	return SetValue(p, "guilds", "autorole_ids", strings.Join(roleIDs, ";"), "guild_id", guildID)
 }
 
-func (p *Postgres) GetAutoVoice(guildID string) ([]string, error) {
+func (p *Postgres) GetGuildAutoVoice(guildID string) ([]string, error) {
 	chStr, err := GetValue[string](p, "guilds", "autovoice_ids", "guild_id", guildID)
 	if chStr == "" {
 		return []string{}, err
@@ -101,7 +88,7 @@ func (p *Postgres) GetAutoVoice(guildID string) ([]string, error) {
 	return strings.Split(chStr, ";"), nil
 }
 
-func (p *Postgres) SetAutoVoice(guildID string, channelIDs []string) error {
+func (p *Postgres) SetGuildAutoVoice(guildID string, channelIDs []string) error {
 	return SetValue(p, "guilds", "autovoice_ids", strings.Join(channelIDs, ","), "guild_id", guildID)
 }
 
@@ -191,7 +178,7 @@ func (p *Postgres) AddUpdateVote(v vote.Vote) error {
 
 func (p *Postgres) DeleteVote(voteID string) error {
 	_, err := p.db.Exec(`DELETE FROM votes WHERE id = $1`, voteID)
-	return err
+	return p.wrapErr(err)
 }
 
 // GUILDAPI
@@ -207,6 +194,12 @@ func (p *Postgres) GetGuildAPI(guildID string) (settings models.GuildAPISettings
 	return
 }
 
+func (p *Postgres) SetGuildAPI(guildID string, settings models.GuildAPISettings) error {
+	_, err := p.db.Exec(`INSERT INTO guilds (guild_id, enabled, allowed_origins, protected, token_hash) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (guild_id) DO UPDATE SET enabled = $2, allowed_origins = $3, protected = $4, token_hash = $5`,
+		guildID, settings.Enabled, settings.AllowedOrigins, settings.Protected, settings.TokenHash)
+	return p.wrapErr(err)
+}
+
 // REFRESH TOKENS
 
 func (p *Postgres) GetUserRefreshToken(userID string) (token string, err error) {
@@ -215,6 +208,49 @@ func (p *Postgres) GetUserRefreshToken(userID string) (token string, err error) 
 
 func (p *Postgres) SetUserRefreshToken(userID, token string, expires time.Time) error {
 	return SetValue(p, "refreshtokens", "refresh_token", token, "user_id", userID)
+}
+
+func (p *Postgres) GetUserByRefreshToken(token string) (userID string, expires time.Time, err error) {
+	err = p.db.QueryRow(`SELECT user_id, expires FROM refreshtokens WHERE refresh_token = $1`, token).Scan(&userID, &expires)
+	if err != nil {
+		return "", time.Time{}, p.wrapErr(err)
+	}
+
+	return
+}
+
+func (p *Postgres) RevokeUserRefreshToken(userID string) error {
+	_, err := p.db.Exec(`DELETE FROM refreshtokens WHERE user_id = $1`, userID)
+	return err
+}
+
+// API TOKENS
+
+func (p *Postgres) GetAPIToken(userID string) (models.APITokenEntry, error) {
+	var token models.APITokenEntry
+
+	row := p.db.QueryRow("SELECT salt, created_at, expires_at, last_accessed_at, hits FROM apitokens WHERE user_id = $1", userID)
+	err := row.Scan(&token.Salt, &token.Created, &token.Expires, &token.LastAccess, &token.Hits)
+	if err != nil {
+		return token, p.wrapErr(err)
+	}
+
+	token.UserID = userID
+
+	return token, nil
+}
+
+func (p *Postgres) SetAPIToken(token models.APITokenEntry) error {
+	_, err := p.db.Exec("INSERT INTO apitokens (user_id, salt, created_at, expires_at, last_accessed_at, hits) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (user_id) DO UPDATE SET salt = $2, created_at = $3, expires_at = $4, last_accessed_at = $5, hits = $6",
+		token.UserID, token.Salt, token.Created, token.Expires, token.LastAccess, token.Hits)
+
+	return p.wrapErr(err)
+}
+
+func (p *Postgres) DeleteAPIToken(userID string) error {
+	_, err := p.db.Exec("DELETE FROM apitokens WHERE user_id = $1", userID)
+
+	return p.wrapErr(err)
 }
 
 // DATA MANAGEMENT

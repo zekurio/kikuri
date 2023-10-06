@@ -1,106 +1,205 @@
 package database
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"time"
+	"strings"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/jmoiron/sqlx"
+	"github.com/zekurio/daemon/internal/services/database"
+	"github.com/zekurio/daemon/internal/services/database/models"
 )
 
-type RedisDatabase struct {
-	redisClient *redis.Client
-	pgDatabase  *sqlx.DB
+const (
+	keyGuildAutoRoles = "GUILD:AUTOROLES"
+	keyGuildAutoVoice = "GUILD:AUTOVOICE"
+	keyGuildAPI       = "GUILD:API"
+
+	keyUserAPIToken = "USER:APITOKEN"
+)
+
+type RedisMiddleware struct {
+	database.Database
+
+	client *redis.Client
 }
 
-func NewRedisDatabase(redisClient *redis.Client, pgDatabase *sqlx.DB) *RedisDatabase {
-	return &RedisDatabase{
-		redisClient: redisClient,
-		pgDatabase:  pgDatabase,
+var _ database.Database = (*RedisMiddleware)(nil)
+
+// NewRedisMiddleware creates a new RedisMiddleware, which wraps a Database
+// and adds Redis caching to it.
+func NewRedisMiddleware(db database.Database, rd *redis.Client) *RedisMiddleware {
+	return &RedisMiddleware{
+		Database: db,
+		client:   rd,
 	}
 }
 
-func (r *RedisDatabase) Close() error {
-	if err := r.redisClient.Close(); err != nil {
+func (r *RedisMiddleware) Close() error {
+	if err := r.client.Close(); err != nil {
 		return fmt.Errorf("failed to close Redis client: %w", err)
 	}
 
-	if err := r.pgDatabase.Close(); err != nil {
+	if err := r.Close(); err != nil {
 		return fmt.Errorf("failed to close Postgres database: %w", err)
 	}
 
 	return nil
 }
 
-func (r *RedisDatabase) GetAutoRoles(guildID string) ([]string, error) {
-	key := fmt.Sprintf("guild:%s:auto_roles", guildID)
+func (r *RedisMiddleware) GetGuildAutoRoles(guildID string) ([]string, error) {
+	var key = fmt.Sprintf("%s:%s", keyGuildAutoRoles, guildID)
 
-	val, err := r.redisClient.Get(r.redisClient.Context(), key).Result()
+	valC, err := r.client.Get(context.Background(), key).Result()
+	val := strings.Split(valC, ";")
 	if err == redis.Nil {
-		// Cache miss, fetch from Postgres
-		var roles []string
-		err = r.pgDatabase.Select(&roles, "SELECT role_id FROM auto_roles WHERE guild_id = $1", guildID)
+		val, err = r.Database.GetGuildAutoRoles(guildID)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get auto roles from Postgres: %w", err)
+			return nil, err
 		}
 
-		// Cache the result in Redis
-		if len(roles) > 0 {
-			err = r.redisClient.Set(r.redisClient.Context(), key, roles, 5*time.Minute).Err()
-			if err != nil {
-				return nil, fmt.Errorf("failed to cache auto roles in Redis: %w", err)
-			}
-		}
-
-		return roles, nil
-	} else if err != nil {
-		return nil, fmt.Errorf("failed to get auto roles from Redis: %w", err)
+		err = r.client.Set(context.Background(), key, strings.Join(val, ";"), 0).Err()
+		return val, err
 	}
-
-	// Cache hit, unmarshal the result
-	var roles []string
-	err = json.Unmarshal([]byte(val), &roles)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal auto roles from Redis: %w", err)
+		return nil, err
 	}
 
-	return roles, nil
+	if valC == "" {
+		return []string{}, nil
+	}
+
+	return val, nil
 }
 
-func (r *RedisDatabase) SetAutoRoles(guildID string, roleIDs []string) error {
-	key := fmt.Sprintf("guild:%s:auto_roles", guildID)
+func (r *RedisMiddleware) SetGuildAutoRoles(guildID string, roleIDs []string) error {
+	var key = fmt.Sprintf("%s:%s", keyGuildAutoRoles, guildID)
 
-	// Update Postgres
-	_, err := r.pgDatabase.Exec("DELETE FROM auto_roles WHERE guild_id = $1", guildID)
+	err := r.Database.SetGuildAutoRoles(guildID, roleIDs)
 	if err != nil {
-		return fmt.Errorf("failed to delete auto roles from Postgres: %w", err)
+		return err
 	}
 
-	if len(roleIDs) > 0 {
-		query, args, err := sqlx.In("INSERT INTO auto_roles (guild_id, role_id) VALUES (?, ?)", guildID, roleIDs)
-		if err != nil {
-			return fmt.Errorf("failed to create SQL query for auto roles: %w", err)
-		}
+	return r.client.Set(context.Background(), key, strings.Join(roleIDs, ";"), 0).Err()
+}
 
-		_, err = r.pgDatabase.Exec(query, args...)
-		if err != nil {
-			return fmt.Errorf("failed to insert auto roles into Postgres: %w", err)
-		}
-	}
+func (r *RedisMiddleware) GetGuildAutoVoice(guildID string) ([]string, error) {
+	var key = fmt.Sprintf("%s:%s", keyGuildAutoVoice, guildID)
 
-	// Update Redis
-	if len(roleIDs) > 0 {
-		err = r.redisClient.Set(r.redisClient.Context(), key, roleIDs, 5*time.Minute).Err()
+	valC, err := r.client.Get(context.Background(), key).Result()
+	val := strings.Split(valC, ";")
+	if err == redis.Nil {
+		val, err = r.Database.GetGuildAutoVoice(guildID)
 		if err != nil {
-			return fmt.Errorf("failed to cache auto roles in Redis: %w", err)
-		}
-	} else {
-		err = r.redisClient.Del(r.redisClient.Context(), key).Err()
-		if err != nil {
-			return fmt.Errorf("failed to delete auto roles from Redis: %w", err)
+			return nil, err
 		}
 	}
 
-	return nil
+	val, err = r.Database.GetGuildAutoVoice(guildID)
+	if err != nil {
+		return nil, err
+	}
+
+	err = r.client.Set(context.Background(), key, strings.Join(val, ";"), 0).Err()
+	return val, err
+}
+
+func (r *RedisMiddleware) SetGuildAutoVoice(guildID string, channelIDs []string) error {
+	var key = fmt.Sprintf("%s:%s", keyGuildAutoVoice, guildID)
+
+	err := r.Database.SetGuildAutoVoice(guildID, channelIDs)
+	if err != nil {
+		return err
+	}
+
+	return r.client.Set(context.Background(), key, strings.Join(channelIDs, ";"), 0).Err()
+}
+
+func (r *RedisMiddleware) GetGuildAPI(guildID string) (settings models.GuildAPISettings, err error) {
+	var key = fmt.Sprintf("%s:%s", keyGuildAPI, guildID)
+
+	resStr, err := r.client.Get(context.Background(), key).Result()
+	if err == redis.Nil {
+		if settings, err = r.Database.GetGuildAPI(guildID); err != nil {
+			return
+		}
+		var resB []byte
+		resB, err = json.Marshal(settings)
+		if err != nil {
+			return
+		}
+		if err = r.client.Set(context.Background(), key, resB, 0).Err(); err != nil {
+			return
+		}
+		return
+	}
+
+	err = json.Unmarshal([]byte(resStr), &settings)
+
+	return
+}
+
+func (r *RedisMiddleware) SetGuildAPI(guildID string, settings models.GuildAPISettings) error {
+	var key = fmt.Sprintf("%s:%s", keyGuildAPI, guildID)
+
+	data, err := json.Marshal(settings)
+	if err != nil {
+		return err
+	}
+
+	if err = r.client.Set(context.Background(), key, data, 0).Err(); err != nil {
+		return err
+	}
+
+	return r.Database.SetGuildAPI(guildID, settings)
+}
+
+func (r *RedisMiddleware) GetAPIToken(userID string) (t models.APITokenEntry, err error) {
+	var key = fmt.Sprintf("%s:%s", keyUserAPIToken, userID)
+
+	resStr, err := r.client.Get(context.Background(), key).Result()
+	if err == redis.Nil {
+		if t, err = r.Database.GetAPIToken(userID); err != nil {
+			return
+		}
+		var resB []byte
+		resB, err = json.Marshal(t)
+		if err != nil {
+			return
+		}
+		if err = r.client.Set(context.Background(), key, resB, 0).Err(); err != nil {
+			return
+		}
+		return
+	}
+
+	err = json.Unmarshal([]byte(resStr), &t)
+
+	return
+}
+
+func (r *RedisMiddleware) SetAPIToken(token models.APITokenEntry) (err error) {
+	var key = fmt.Sprintf("%s:%s", keyUserAPIToken, token.UserID)
+
+	data, err := json.Marshal(token)
+	if err != nil {
+		return
+	}
+
+	if err = r.client.Set(context.Background(), key, data, 0).Err(); err != nil {
+		return
+	}
+
+	return r.Database.SetAPIToken(token)
+}
+
+func (r *RedisMiddleware) DeleteAPIToken(userID string) (err error) {
+	var key = fmt.Sprintf("%s:%s", keyUserAPIToken, userID)
+
+	if err = r.client.Del(context.Background(), key).Err(); err != nil {
+		return
+	}
+
+	return r.Database.DeleteAPIToken(userID)
 }

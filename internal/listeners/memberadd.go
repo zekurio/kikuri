@@ -22,7 +22,7 @@ func NewListenerMemberAdd(ctn di.Container) *ListenerMemberAdd {
 }
 
 func (g *ListenerMemberAdd) Handler(s *discordgo.Session, e *discordgo.GuildMemberAdd) {
-	autoroleIDs, err := g.db.GetAutoRoles(e.GuildID)
+	autoroleIDs, err := g.db.GetGuildAutoRoles(e.GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		log.With("err", err).Error("Failed getting auto role settings")
 		return
@@ -45,7 +45,7 @@ func (g *ListenerMemberAdd) Handler(s *discordgo.Session, e *discordgo.GuildMemb
 				newAutoRoleIDs = append(newAutoRoleIDs, rid)
 			}
 		}
-		err = g.db.SetAutoRoles(e.GuildID, newAutoRoleIDs)
+		err = g.db.SetGuildAutoRoles(e.GuildID, newAutoRoleIDs)
 		if err != nil {
 			log.With("err", err).Error("Failed updating auto role settings")
 		}

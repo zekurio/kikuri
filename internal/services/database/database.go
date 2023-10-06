@@ -15,11 +15,11 @@ type Database interface {
 
 	// Guild settings
 
-	GetAutoRoles(guildID string) ([]string, error)
-	SetAutoRoles(guildID string, roleIDs []string) error
+	GetGuildAutoRoles(guildID string) ([]string, error)
+	SetGuildAutoRoles(guildID string, roleIDs []string) error
 
-	GetAutoVoice(guildID string) ([]string, error)
-	SetAutoVoice(guildID string, channelIDs []string) error
+	GetGuildAutoVoice(guildID string) ([]string, error)
+	SetGuildAutoVoice(guildID string, channelIDs []string) error
 
 	// Permissions
 
@@ -35,11 +35,21 @@ type Database interface {
 	// Guildapi
 
 	GetGuildAPI(guildID string) (settings models.GuildAPISettings, err error)
+	SetGuildAPI(guildID string, settings models.GuildAPISettings) error
 
 	// User refresh tokens
 
 	GetUserRefreshToken(userID string) (token string, err error)
 	SetUserRefreshToken(userID, token string, expires time.Time) error
+	RevokeUserRefreshToken(userID string) error
+
+	GetUserByRefreshToken(token string) (userID string, expires time.Time, err error)
+
+	// API tokens
+
+	SetAPIToken(token models.APITokenEntry) error
+	GetAPIToken(userID string) (models.APITokenEntry, error)
+	DeleteAPIToken(userID string) error
 
 	// Data management
 

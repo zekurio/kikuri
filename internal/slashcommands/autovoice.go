@@ -107,7 +107,7 @@ func (c *Autovoice) Run(ctx ken.Context) (err error) {
 func (c *Autovoice) list(ctx ken.SubCommandContext) (err error) {
 	db := ctx.Get(static.DiDatabase).(database.Database)
 
-	autovoice, err := db.GetAutoVoice(ctx.GetEvent().GuildID)
+	autovoice, err := db.GetGuildAutoVoice(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return err
 	}
@@ -139,7 +139,7 @@ func (c *Autovoice) add(ctx ken.SubCommandContext) (err error) {
 		return ctx.FollowUpError("The given channel is not a voice channel.", "Argument Error").Send().Error
 	}
 
-	autovoice, err := db.GetAutoVoice(ctx.GetEvent().GuildID)
+	autovoice, err := db.GetGuildAutoVoice(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return ctx.FollowUpError("An error occurred while fetching autovoice channels.", "Database Error").Send().Error
 	}
@@ -148,7 +148,7 @@ func (c *Autovoice) add(ctx ken.SubCommandContext) (err error) {
 		return ctx.FollowUpError("The given autovoice is already assigned.", "").Send().Error
 	}
 
-	if err = db.SetAutoVoice(ctx.GetEvent().GuildID, append(autovoice, channel.ID)); err != nil {
+	if err = db.SetGuildAutoVoice(ctx.GetEvent().GuildID, append(autovoice, channel.ID)); err != nil {
 		return
 	}
 
@@ -165,7 +165,7 @@ func (c *Autovoice) remove(ctx ken.SubCommandContext) (err error) {
 	channel := ctx.Options().Get(0).
 		ChannelValue(ctx)
 
-	autovoice, err := db.GetAutoVoice(ctx.GetEvent().GuildID)
+	autovoice, err := db.GetGuildAutoVoice(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return
 	}
@@ -176,7 +176,7 @@ func (c *Autovoice) remove(ctx ken.SubCommandContext) (err error) {
 	}
 
 	autovoice = arrayutils.RemoveLazy(autovoice, channel.ID)
-	if err = db.SetAutoVoice(ctx.GetEvent().GuildID, autovoice); err != nil {
+	if err = db.SetGuildAutoVoice(ctx.GetEvent().GuildID, autovoice); err != nil {
 		return
 	}
 
@@ -190,7 +190,7 @@ func (c *Autovoice) remove(ctx ken.SubCommandContext) (err error) {
 func (c *Autovoice) purge(ctx ken.SubCommandContext) (err error) {
 	db := ctx.Get(static.DiDatabase).(database.Database)
 
-	if err = db.SetAutoVoice(ctx.GetEvent().GuildID, []string{}); err != nil && err != dberr.ErrNotFound {
+	if err = db.SetGuildAutoVoice(ctx.GetEvent().GuildID, []string{}); err != nil && err != dberr.ErrNotFound {
 		return
 	}
 

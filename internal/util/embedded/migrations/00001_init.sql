@@ -43,7 +43,18 @@ CREATE TABLE IF NOT EXISTS refreshtokens
 (
     user_id       VARCHAR(25) NOT NULL DEFAULT '',
     refresh_token TEXT        NOT NULL DEFAULT '',
-    expires_at    BIGINT      NOT NULL DEFAULT 0,
+    expires_at    TIMESTAMP      NOT NULL DEFAULT 0,
+    PRIMARY KEY (user_id)
+);
+
+CREATE TABLE IF NOT EXISTS apitokens
+(
+    user_id             VARCHAR(25) NOT NULL DEFAULT '',
+    salt                TEXT        NOT NULL DEFAULT '',
+    created_at          TIMESTAMP      NOT NULL DEFAULT 0,
+    expires_at          TIMESTAMP      NOT NULL DEFAULT 0,
+    last_accessed_at    TIMESTAMP      NOT NULL DEFAULT 0,
+    hits                INT      NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id)
 );
 

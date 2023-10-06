@@ -39,7 +39,7 @@ func (l *ListenerVoiceStateUpdate) Handler(s *discordgo.Session, e *discordgo.Vo
 
 	l.voiceStateCache[e.UserID] = vsNew
 
-	avIDs, err := l.db.GetAutoVoice(e.GuildID)
+	avIDs, err := l.db.GetGuildAutoVoice(e.GuildID)
 	if err != nil {
 		return
 	}
