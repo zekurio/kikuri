@@ -129,22 +129,22 @@ type GuildReduced struct {
 // permissions.PermissionsArra as response
 // model.
 type PermissionsResponse struct {
-	Permissions perms.Array `json:"permissions"`
+	Permissions perms.PermsArray `json:"permissions"`
 }
 
 // GuildSettings is the response model for
 // guild settings and preferences.
 type GuildSettings struct {
-	Prefix              string                 `json:"prefix"`
-	Perms               map[string]perms.Array `json:"perms"`
-	AutoRoles           []string               `json:"autoroles"`
-	ModLogChannel       string                 `json:"modlogchannel"`
-	ModNotChannel       string                 `json:"modnotchannel"`
-	VoiceLogChannel     string                 `json:"voicelogchannel"`
-	JoinMessageChannel  string                 `json:"joinmessagechannel"`
-	JoinMessageText     string                 `json:"joinmessagetext"`
-	LeaveMessageChannel string                 `json:"leavemessagechannel"`
-	LeaveMessageText    string                 `json:"leavemessagetext"`
+	Prefix              string                      `json:"prefix"`
+	Perms               map[string]perms.PermsArray `json:"perms"`
+	AutoRoles           []string                    `json:"autoroles"`
+	ModLogChannel       string                      `json:"modlogchannel"`
+	ModNotChannel       string                      `json:"modnotchannel"`
+	VoiceLogChannel     string                      `json:"voicelogchannel"`
+	JoinMessageChannel  string                      `json:"joinmessagechannel"`
+	JoinMessageText     string                      `json:"joinmessagetext"`
+	LeaveMessageChannel string                      `json:"leavemessagechannel"`
+	LeaveMessageText    string                      `json:"leavemessagetext"`
 }
 
 // PermissionsUpdate is the request model to
@@ -268,7 +268,7 @@ type UsersettingsPrivacy struct {
 	StarboardOptout bool `json:"starboard_optout"`
 }
 
-type PermissionsMap map[string]perms.Array
+type PermissionsMap map[string]perms.PermsArray
 
 type EnableStatus struct {
 	Enabled bool `json:"enabled"`

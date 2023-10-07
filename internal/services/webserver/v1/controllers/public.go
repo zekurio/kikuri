@@ -4,7 +4,6 @@ import (
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/webserver/v1/models"
 	"github.com/zekurio/daemon/internal/util/static"
-	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"
@@ -55,21 +54,4 @@ func (c *PublicController) getGuild(ctx *fiber.Ctx) error {
 	ctx.Set("Access-Control-Allow-Headers", "*")
 
 	return ctx.JSON(guildReduced)
-}
-
-func (c *PublicController) obtainToken(ctx *fiber.Ctx) (token string) {
-	token = ctx.Query("token")
-
-	if token == "" {
-		split := strings.SplitN(ctx.Get("Authorization"), " ", 2)
-		if len(split) < 2 {
-			return
-		}
-		if strings.ToLower(split[0]) != "bearer" {
-			return
-		}
-		token = split[1]
-	}
-
-	return
 }

@@ -23,8 +23,8 @@ type Database interface {
 
 	// Permissions
 
-	GetPermissions(guildID string) (map[string]perms.Array, error)
-	SetPermissions(guildID, roleID string, perms perms.Array) error
+	GetPermissions(guildID string) (map[string]perms.PermsArray, error)
+	SetPermissions(guildID, roleID string, perms perms.PermsArray) error
 
 	// Votes
 

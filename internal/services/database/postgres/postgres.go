@@ -94,8 +94,8 @@ func (p *Postgres) SetGuildAutoVoice(guildID string, channelIDs []string) error 
 
 // PERMISSIONS
 
-func (p *Postgres) GetPermissions(guildID string) (map[string]perms.Array, error) {
-	results := make(map[string]perms.Array)
+func (p *Postgres) GetPermissions(guildID string) (map[string]perms.PermsArray, error) {
+	results := make(map[string]perms.PermsArray)
 	rows, err := p.db.Query(`SELECT role_id, perms FROM permissions WHERE guild_id = $1`, guildID)
 	if err != nil {
 		return nil, p.wrapErr(err)
@@ -116,7 +116,7 @@ func (p *Postgres) GetPermissions(guildID string) (map[string]perms.Array, error
 	return results, nil
 }
 
-func (p *Postgres) SetPermissions(guildID, roleID string, perms perms.Array) error {
+func (p *Postgres) SetPermissions(guildID, roleID string, perms perms.PermsArray) error {
 
 	if len(perms) == 0 {
 		_, err := p.db.Exec(`DELETE FROM permissions WHERE guild_id = $1 AND role_id = $2`, guildID, roleID)
