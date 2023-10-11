@@ -21,6 +21,7 @@ func (r *Router) Route(router fiber.Router) {
 
 	new(controllers.PublicController).Setup(r.container, router.Group("/public"))
 	new(controllers.OthersController).Setup(r.container, router.Group("/others"))
+	new(controllers.InviteController).Setup(r.container, router.Group("/invite"))
 	new(controllers.AuthController).Setup(r.container, router.Group("/auth"))
 
 	// Requires authentication token

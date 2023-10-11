@@ -7,6 +7,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
 	"github.com/zekurio/daemon/internal/services/database"
@@ -18,6 +19,7 @@ import (
 
 type ListenerReady struct {
 	db    database.Database
+	st    *dgrs.State
 	ken   ken.IKen
 	sched scheduler.Provider
 }
@@ -25,6 +27,7 @@ type ListenerReady struct {
 func NewListenerReady(ctn di.Container) *ListenerReady {
 	return &ListenerReady{
 		db:    ctn.Get(static.DiDatabase).(database.Database),
+		st:    ctn.Get(static.DiState).(*dgrs.State),
 		ken:   ctn.Get(static.DiCommandHandler).(ken.IKen),
 		sched: ctn.Get(static.DiScheduler).(scheduler.Provider),
 	}
@@ -74,7 +77,13 @@ func (l *ListenerReady) Handler(s *discordgo.Session, e *discordgo.Ready) {
 	log.Info("Signed in!",
 		"Username", fmt.Sprintf("%s#%s", e.User.Username, e.User.Discriminator),
 		"ID", e.User.ID)
-	log.Infof("Invite link: %s", discordutils.GetInviteLink(s))
+
+	self, err := l.st.SelfUser()
+	if err != nil {
+		return
+	}
+
+	log.Infof("Invite link: %s", discordutils.GetInviteLink(self.ID))
 
 	l.sched.Start()
 }

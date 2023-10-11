@@ -11,9 +11,9 @@ import (
 )
 
 // GetInviteLink returns invite link for the app
-func GetInviteLink(session *discordgo.Session) string {
+func GetInviteLink(appID string) string {
 	return fmt.Sprintf("https://discord.com/api/oauth2/authorize?client_id=%s&scope=%s&permissions=%d",
-		session.State.User.ID, static.OAuthScopes, static.InvitePermission)
+		appID, static.OAuthScopes, static.InvitePermission)
 }
 
 // GetDiscordSnowflakeCreationTime returns time when snowflake was created

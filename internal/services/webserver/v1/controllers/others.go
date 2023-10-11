@@ -40,11 +40,12 @@ func (c *OthersController) Setup(ctn di.Container, router fiber.Router) {
 	router.Get("/me", c.authMw.Handle, c.getMe)
 	router.Get("/sysinfo", c.getSysinfo)
 	router.Get("/privacyinfo", c.getPrivacyInfo)
+	router.Get("/allpermissions", c.getAllPermissions)
 }
 
 // @Summary Me
 // @Description Returns the user object of the currently authenticated user.
-// @Tags Etc
+// @Tags Others
 // @Accept json
 // @Produce json
 // @Success 200 {object} apiModels.User
@@ -71,19 +72,26 @@ func (c *OthersController) getMe(ctx *fiber.Ctx) error {
 
 // @Summary System Information
 // @Description Returns general global system information.
-// @Tags Etc
+// @Tags Others
 // @Accept json
 // @Produce json
 // @Success 200 {object} models.SystemInfo
 // @Router /sysinfo [get]
 func (c *OthersController) getSysinfo(ctx *fiber.Ctx) error {
-
 	var memStats runtime.MemStats
 	runtime.ReadMemStats(&memStats)
 
 	uptime := int64(time.Since(util.StatsStartupTime).Seconds())
 
-	guilds := c.session.State.Guilds
+	guilds, err := c.st.Guilds()
+	if err != nil {
+		return err
+	}
+
+	self, err := c.st.SelfUser()
+	if err != nil {
+		return err
+	}
 
 	res := &models.SystemInfo{
 		Version:    embedded.AppVersion,
@@ -103,7 +111,7 @@ func (c *OthersController) getSysinfo(ctx *fiber.Ctx) error {
 		HeapUseStr:  fmt.Sprintf("%d", memStats.HeapInuse),
 
 		BotUserID: c.session.State.User.ID,
-		BotInvite: discordutils.GetInviteLink(c.session),
+		BotInvite: discordutils.GetInviteLink(self.ID),
 
 		Guilds: len(guilds),
 	}
@@ -113,7 +121,7 @@ func (c *OthersController) getSysinfo(ctx *fiber.Ctx) error {
 
 // @Summary Privacy Information
 // @Description Returns information about the privacy policy.
-// @Tags Etc
+// @Tags Others
 // @Accept json
 // @Produce json
 // @Success 200 {object} models.Privacy
@@ -124,7 +132,7 @@ func (c *OthersController) getPrivacyInfo(ctx *fiber.Ctx) error {
 
 // @Summary All Permissions
 // @Description Return a list of all available permissions.
-// @Tags Etc
+// @Tags Others
 // @Accept json
 // @Produce json
 // @Success 200 {array} string "Wrapped in models.ListResponse"
