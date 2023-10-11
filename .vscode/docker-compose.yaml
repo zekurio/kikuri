@@ -17,3 +17,11 @@ services:
       POSTGRES_USER: 'daemon'
       POSTGRES_DB: 'daemon'
     restart: 'on-failure'
+
+  redis:
+    container_name: daemon-redis-container
+    ports:
+      - "6379:6379"
+    image: 'redis'
+    command: redis-server --requirepass daemon
+    restart: 'on-failure'

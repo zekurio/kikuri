@@ -1,4 +1,4 @@
-package database
+package redis
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/charmbracelet/log"
 	"github.com/go-redis/redis/v8"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/models"
@@ -38,11 +39,13 @@ func NewRedisMiddleware(db database.Database, rd *redis.Client) *RedisMiddleware
 
 func (r *RedisMiddleware) Close() error {
 	if err := r.client.Close(); err != nil {
-		return fmt.Errorf("failed to close Redis client: %w", err)
+		log.Error("failed to close Redis client: %w", err)
+		return err
 	}
 
 	if err := r.Close(); err != nil {
-		return fmt.Errorf("failed to close Postgres database: %w", err)
+		log.Error("failed to close Postgres database: %w", err)
+		return err
 	}
 
 	return nil

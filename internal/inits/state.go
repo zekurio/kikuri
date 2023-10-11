@@ -15,7 +15,7 @@ import (
 )
 
 func getLifetimes(cfg config.Config) (dgrs.Lifetimes, bool, error) {
-	lifetimes := cfg.Redis.Lifetimes
+	lifetimes := cfg.Cache.Lifetimes
 
 	var target dgrs.Lifetimes
 

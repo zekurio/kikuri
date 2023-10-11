@@ -9,10 +9,6 @@ var DefaultConfig = Config{
 		GuildLimit:       -1,
 		DisabledCommands: []string{},
 	},
-	Postgres: Postgres{
-		Host: "localhost",
-		Port: 5432,
-	},
 	Permissions: Permission{
 		UserRules:  static.DefaultUserRules,
 		AdminRules: static.DefaultAdminRules,
@@ -48,7 +44,7 @@ type Discord struct {
 	DisabledCommands []string
 }
 
-type Postgres struct {
+type DatabaseCreds struct {
 	Host     string
 	Port     int
 	Database string
@@ -56,11 +52,22 @@ type Postgres struct {
 	Password string
 }
 
-type Redis struct {
-	Host      string
-	Port      int
-	Password  string
-	Lifetimes CacheLifetimes
+type CacheRedis struct {
+	Addr     string
+	Password string
+	Type     int
+}
+
+type DatabaseType struct {
+	Type     string
+	Postgres DatabaseCreds
+	Redis    CacheRedis
+}
+
+type Cache struct {
+	Redis         CacheRedis
+	CacheDatabase bool
+	Lifetimes     CacheLifetimes
 }
 
 type CacheLifetimes struct {
@@ -114,8 +121,8 @@ type Contact struct {
 
 type Config struct {
 	Discord     Discord
-	Postgres    Postgres
-	Redis       Redis
+	Database    DatabaseType
+	Cache       Cache
 	Permissions Permission
 	Webserver   Webserver
 	Privacy     Privacy

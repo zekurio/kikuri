@@ -6,7 +6,9 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
+	"github.com/zekrotja/ken/state"
 
 	"github.com/zekurio/daemon/internal/middlewares"
 	"github.com/zekurio/daemon/internal/services/permissions"
@@ -18,6 +20,7 @@ import (
 func InitKen(ctn di.Container) (*ken.Ken, error) {
 
 	s := ctn.Get(static.DiDiscordSession).(*discordgo.Session)
+	st := ctn.Get(static.DiState).(*dgrs.State)
 	p := ctn.Get(static.DiPermissions).(*permissions.Permissions)
 
 	k, err := ken.New(s, ken.Options{
@@ -28,6 +31,7 @@ func InitKen(ctn di.Container) (*ken.Ken, error) {
 		DependencyProvider: ctn,
 		OnSystemError:      systemErrorHandler,
 		OnCommandError:     commandErrorHandler,
+		State:              state.NewDgrs(st),
 	})
 
 	if err != nil {
@@ -57,7 +61,6 @@ func InitKen(ctn di.Container) (*ken.Ken, error) {
 	)
 
 	return k, err
-
 }
 
 func systemErrorHandler(context string, err error, args ...interface{}) {

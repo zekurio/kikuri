@@ -29,7 +29,7 @@ var (
 	guildTables                   = []string{"guilds", "permissions"}
 )
 
-func InitPostgres(c config.Postgres) (*Postgres, error) {
+func NewPostgres(c config.DatabaseCreds) (*Postgres, error) {
 	var (
 		p   Postgres
 		err error

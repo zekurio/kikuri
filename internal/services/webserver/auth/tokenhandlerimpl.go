@@ -57,6 +57,25 @@ func (rth *DBRefreshTokenHandler) ValidateAccessToken(token string) (ident strin
 	return
 }
 
+func (rth *DBRefreshTokenHandler) ValidateRefreshToken(token string) (ident string, err error) {
+	ident, expires, err := rth.db.GetUserByRefreshToken(token)
+	if err != nil {
+		return
+	}
+
+	if time.Now().After(expires) {
+		err = errors.New("expired")
+	}
+
+	u, _ := rth.session.User(ident)
+	if u == nil {
+		err = errors.New("invalid user")
+		return
+	}
+
+	return
+}
+
 func (h *DBRefreshTokenHandler) RevokeToken(ident string) error {
 	err := h.db.RevokeUserRefreshToken(ident)
 	if err == dberr.ErrNotFound {
@@ -215,4 +234,8 @@ func (apith *DBAPITokenHandler) ValidateAPIToken(token string) (ident string, er
 	apith.db.SetAPIToken(tokenEntry)
 
 	return claims.Subject, nil
+}
+
+func (apith *DBAPITokenHandler) RevokeToken(ident string) error {
+	return apith.db.DeleteAPIToken(ident)
 }

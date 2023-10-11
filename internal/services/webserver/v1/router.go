@@ -26,4 +26,6 @@ func (r *Router) Route(router fiber.Router) {
 	// Requires authentication token
 	router.Use(authMw.Handle)
 
+	new(controllers.GuildsController).Setup(r.container, router.Group("/guilds"))
+
 }

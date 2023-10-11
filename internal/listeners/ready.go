@@ -36,6 +36,7 @@ func (l *ListenerReady) Handler(s *discordgo.Session, e *discordgo.Ready) {
 	// first, add all votes to the running votes list back from the database
 	if err != nil {
 		log.Error("Failed getting votes from database")
+		return
 	} else {
 		vote.RunningVotes = votes
 		_, err = l.sched.Schedule("*/10 * * * * *", func() {
@@ -51,6 +52,7 @@ func (l *ListenerReady) Handler(s *discordgo.Session, e *discordgo.Ready) {
 		})
 		if err != nil {
 			log.Error("Failed scheduling vote expiration")
+			return
 		}
 	}
 
@@ -61,6 +63,7 @@ func (l *ListenerReady) Handler(s *discordgo.Session, e *discordgo.Ready) {
 		_, err = v.AddButtons(b)
 		if err != nil {
 			log.Error("Failed adding buttons to vote")
+			return
 		}
 	}
 

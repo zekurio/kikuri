@@ -129,7 +129,7 @@ func (c *GuildsController) postGuildPermissions(ctx *fiber.Ctx) error {
 
 	newPerms := update.Perm[1:]
 	if !strings.HasPrefix(newPerms, "dm.guild") && !strings.HasPrefix(newPerms, "dm.etc") && !strings.HasPrefix(newPerms, "dm.chat") {
-		return fiber.NewError(fiber.StatusBadRequest, "you can only give permissions over the domains 'dm.guild', 'dm.etc' and 'dm.chat'")
+		return fiber.NewError(fiber.StatusBadRequest, "you can only give permissions over the 'dm.guild', 'dm.etc' and 'dm.chat' permission groups")
 	}
 
 	currPerms, err := c.db.GetPermissions(guildID)

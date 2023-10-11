@@ -8,6 +8,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
+	"github.com/go-redis/redis/v8"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/ken"
 
@@ -15,6 +16,7 @@ import (
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/permissions"
+	"github.com/zekurio/daemon/internal/services/webserver/auth"
 	"github.com/zekurio/daemon/internal/util/static"
 	"github.com/zekurio/daemon/pkg/debug"
 )
@@ -42,18 +44,28 @@ func main() {
 	}
 
 	// Config
-	err = diBuilder.Add(di.Def{
+	diBuilder.Add(di.Def{
 		Name: static.DiConfig,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return config.Parse(*flagConfigPath, "DAEMON_", config.DefaultConfig)
 		},
 	})
-	if err != nil {
-		log.With("err", err).Fatal("Config parsing failed")
-	}
+
+	// Redis
+	diBuilder.Add(di.Def{
+		Name: static.DiRedis,
+		Build: func(ctn di.Container) (interface{}, error) {
+			cfg := ctn.Get(static.DiConfig).(config.Config)
+			return redis.NewClient(&redis.Options{
+				Addr:     cfg.Cache.Redis.Addr,
+				Password: cfg.Cache.Redis.Password,
+				DB:       cfg.Cache.Redis.Type,
+			}), nil
+		},
+	})
 
 	// Database
-	err = diBuilder.Add(di.Def{
+	diBuilder.Add(di.Def{
 		Name: static.DiDatabase,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return inits.InitDatabase(ctn)
@@ -68,12 +80,9 @@ func main() {
 			return nil
 		},
 	})
-	if err != nil {
-		log.With("err", err).Fatal("Database creation failed")
-	}
 
 	// Initialize discord bot session and shutdown routine
-	err = diBuilder.Add(di.Def{
+	diBuilder.Add(di.Def{
 		Name: static.DiDiscordSession,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return discordgo.New("")
@@ -88,23 +97,73 @@ func main() {
 			return nil
 		},
 	})
-	if err != nil {
-		log.With("err", err).Fatal("Discord session creation failed")
-	}
+
+	// Initialize Discord OAuth Module
+	diBuilder.Add(di.Def{
+		Name: static.DiDiscordOAuth,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return inits.InitDiscordOAuth(ctn), nil
+		},
+	})
+
+	// Initialize auth refresh token handler
+	diBuilder.Add(di.Def{
+		Name: static.DiAuthRefreshTokenHandler,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewDBRefreshTokenHandler(ctn), nil
+		},
+	})
+
+	// Initialize auth access token handler
+	diBuilder.Add(di.Def{
+		Name: static.DiAuthAccessTokenHandler,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewJWTAccessTokenHandler(ctn), nil
+		},
+	})
+
+	// Initialize auth API token handler
+	diBuilder.Add(di.Def{
+		Name: static.DiAuthAPITokenHandler,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewDBAPITokenHandler(ctn), nil
+		},
+	})
+
+	// Initialize OAuth API handler implementation
+	diBuilder.Add(di.Def{
+		Name: static.DiOAuthHandler,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewRefreshTokenRequestHandler(ctn), nil
+		},
+	})
+
+	// Initialize access token authorization middleware
+	diBuilder.Add(di.Def{
+		Name: static.DiAuthMiddleware,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewAccessTokenMiddleware(ctn), nil
+		},
+	})
+
+	// Initialize State
+	diBuilder.Add(di.Def{
+		Name: static.DiState,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return inits.InitState(ctn)
+		},
+	})
 
 	// Permissions
-	err = diBuilder.Add(di.Def{
+	diBuilder.Add(di.Def{
 		Name: static.DiPermissions,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return permissions.InitPermissions(ctn), nil
 		},
 	})
-	if err != nil {
-		log.With("err", err).Fatal("Permissions creation failed")
-	}
 
 	// Ken
-	err = diBuilder.Add(di.Def{
+	diBuilder.Add(di.Def{
 		Name: static.DiCommandHandler,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return inits.InitKen(ctn)
@@ -113,31 +172,22 @@ func main() {
 			return obj.(*ken.Ken).Unregister()
 		},
 	})
-	if err != nil {
-		log.With("err", err).Fatal("Command handler creation failed")
-	}
 
 	// Scheduler
-	err = diBuilder.Add(di.Def{
+	diBuilder.Add(di.Def{
 		Name: static.DiScheduler,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return inits.InitScheduler(ctn), nil
 		},
 	})
-	if err != nil {
-		log.With("err", err).Fatal("Scheduler creation failed")
-	}
 
 	// Webserver
-	err = diBuilder.Add(di.Def{
+	diBuilder.Add(di.Def{
 		Name: static.DiWebserver,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return inits.InitWebserver(ctn), nil
 		},
 	})
-	if err != nil {
-		log.With("err", err).Fatal("Webserver creation failed")
-	}
 
 	// Build dependency injection container
 	ctn := diBuilder.Build()

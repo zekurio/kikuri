@@ -87,5 +87,4 @@ func (p PermsArray) Has(neededPerm string) bool {
 	}
 
 	return allow
-
 }

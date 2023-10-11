@@ -18,7 +18,7 @@ func InitDiscord(ctn di.Container) (err error) {
 
 	session.Token = "Bot " + cfg.Discord.Token
 	session.Identify.Intents = discordgo.MakeIntent(static.Intents)
-	session.StateEnabled = true
+	session.StateEnabled = false
 
 	session.AddHandler(listeners.NewListenerReady(ctn).Handler)
 	session.AddHandler(listeners.NewListenerMemberAdd(ctn).Handler)
