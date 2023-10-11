@@ -207,11 +207,13 @@ func (p *Postgres) GetUserRefreshToken(userID string) (token string, err error) 
 }
 
 func (p *Postgres) SetUserRefreshToken(userID, token string, expires time.Time) error {
-	return SetValue(p, "refreshtokens", "refresh_token", token, "user_id", userID)
+	_, err := p.db.Exec(`INSERT INTO refreshtokens (user_id, refresh_token, expires_at) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET refresh_token = $2, expires_at = $3`,
+		userID, token, expires)
+	return p.wrapErr(err)
 }
 
 func (p *Postgres) GetUserByRefreshToken(token string) (userID string, expires time.Time, err error) {
-	err = p.db.QueryRow(`SELECT user_id, expires FROM refreshtokens WHERE refresh_token = $1`, token).Scan(&userID, &expires)
+	err = p.db.QueryRow(`SELECT user_id, expires_at FROM refreshtokens WHERE refresh_token = $1`, token).Scan(&userID, &expires)
 	if err != nil {
 		return "", time.Time{}, p.wrapErr(err)
 	}
