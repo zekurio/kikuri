@@ -1,6 +1,7 @@
 package listeners
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -54,7 +55,7 @@ func (l *ListenerGuilds) Handler(s *discordgo.Session, e *discordgo.GuildCreate)
 
 	discordutils.SendEmbedMessageDM(s, e.OwnerID, &discordgo.MessageEmbed{
 		Title:       "Guild Limit Reached",
-		Description: "The guild limit of " + string(limit) + " has been reached. Daemon will leave this guild now.",
+		Description: fmt.Sprintf("The guild limit of %d has been reached. Daemon will leave this guild now.", limit),
 	})
 
 	if err = s.GuildLeave(e.Guild.ID); err != nil {
