@@ -5,6 +5,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/sarulabs/di/v2"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
 	"github.com/zekurio/daemon/internal/services/config"
@@ -20,6 +21,7 @@ type Permissions struct {
 	db  database.Database
 	cfg config.Config
 	s   *discordgo.Session
+	st  *dgrs.State
 }
 
 var _ PermsProvider = (*Permissions)(nil)
@@ -29,6 +31,7 @@ func InitPermissions(ctn di.Container) *Permissions {
 		db:  ctn.Get(static.DiDatabase).(database.Database),
 		cfg: ctn.Get(static.DiConfig).(config.Config),
 		s:   ctn.Get(static.DiDiscordSession).(*discordgo.Session),
+		st:  ctn.Get(static.DiState).(*dgrs.State),
 	}
 }
 
@@ -75,12 +78,12 @@ func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID strin
 	}
 
 	if guildID != "" {
-		guild, err := discordutils.GetGuild(session, guildID)
+		guild, err := p.st.Guild(guildID)
 		if err != nil {
 			return perms.PermsArray{}, false, err
 		}
 
-		member, err := discordutils.GetMember(session, guildID, userID)
+		member, err := p.st.Member(guildID, userID)
 		if err != nil {
 			return perms.PermsArray{}, false, err
 		}

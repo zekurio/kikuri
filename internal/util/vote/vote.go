@@ -60,10 +60,11 @@ func (v *Vote) AsEmbed(s *discordgo.Session, state ...VoteState) (*discordgo.Mes
 		currState = state[0]
 	}
 
-	creator, err := discordutils.GetMember(s, v.GuildID, v.CreatorID)
+	creator, err := s.GuildMember(v.GuildID, v.CreatorID)
 	if err != nil {
 		return nil, err
 	}
+
 	title := "Open Vote"
 	color := static.ColorDefault
 	expires := fmt.Sprintf("Expires <t:%d:R>", v.Expires.Unix())

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
 	"github.com/zekurio/daemon/internal/services/permissions"
@@ -63,6 +64,7 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 	}
 
 	s := ctx.Get(static.DiDiscordSession).(*discordgo.Session)
+	st := ctx.Get(static.DiState).(*dgrs.State)
 	p := ctx.Get(static.DiPermissions).(*permissions.Permissions)
 
 	var user *discordgo.User
@@ -79,12 +81,12 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		}
 	}
 
-	member, err := discordutils.GetMember(s, ctx.GetEvent().GuildID, user.ID)
+	member, err := st.Member(ctx.GetEvent().GuildID, user.ID)
 	if err != nil {
 		return
 	}
 
-	guild, err := discordutils.GetGuild(s, ctx.GetEvent().GuildID)
+	guild, err := st.Guild(ctx.GetEvent().GuildID)
 	if err != nil {
 		return
 	}

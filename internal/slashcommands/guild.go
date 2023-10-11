@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
 	"github.com/zekurio/daemon/internal/services/permissions"
@@ -58,10 +59,11 @@ func (c *Guild) Run(ctx ken.Context) (err error) {
 	}
 
 	s := ctx.GetSession()
+	st := ctx.Get(static.DiState).(*dgrs.State)
 
 	const maxGuildRoles = 16
 
-	guild, err := discordutils.GetGuild(s, ctx.GetEvent().GuildID)
+	guild, err := st.Guild(ctx.GetEvent().GuildID)
 	if err != nil {
 		return
 	}
