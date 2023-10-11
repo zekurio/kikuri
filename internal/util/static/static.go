@@ -48,4 +48,8 @@ var (
 		"+dm.etc.*",
 		"+dm.chat.*",
 	}
+
+	AdditionalRules = []string{
+		"+dm.etc.autochannel",
+	}
 )

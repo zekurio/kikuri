@@ -12,6 +12,15 @@ const DebugContainer = styled.div`
   padding: 16px;
 `;
 
+const LoginButton = styled.button`
+  background-color: #7289da;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
 export const DebugRoute: React.FC<Props> = ({}) => {
   const [sysinfo, setSysinfo] = useState<SystemInfo | null>(null);
 
@@ -25,6 +34,12 @@ export const DebugRoute: React.FC<Props> = ({}) => {
 
     fetchSysinfo();
   }, []);
+
+  const handleLogin = async () => {
+    const client = new APIClient();
+    const response = await client.loginToDiscord();
+    window.location.href = response.redirectUrl;
+  };
 
   return (
     <DebugContainer>
@@ -42,6 +57,7 @@ export const DebugRoute: React.FC<Props> = ({}) => {
           )}
         </li>
       </ul>
+      <LoginButton onClick={handleLogin}>Login to Discord</LoginButton>
     </DebugContainer>
   );
 };

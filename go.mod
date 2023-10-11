@@ -48,7 +48,9 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	github.com/zekrotja/dgrs v0.5.7 // indirect
 	github.com/zekrotja/safepool v1.1.0 // indirect
+	github.com/zekrotja/sop v0.3.1 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
+	golang.org/x/exp v0.0.0-20220217172124-1812c5b45e43 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

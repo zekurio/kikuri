@@ -117,6 +117,17 @@ export interface PermissionsUpdate {
   override?: boolean;
 }
 
+export interface ReasonRequest {
+  reason: string;
+  attachment?: string;
+  timeout?: string;
+  attachment_data?: string;
+}
+
+export interface ReportRequest extends ReasonRequest {
+  type: number;
+}
+
 export type Status = 'online' | 'dnd' | 'idle' | 'invisible';
 
 export interface Presence {
@@ -179,6 +190,11 @@ export interface APIToken {
   token?: string;
 }
 
+export interface GuildScoreboardEntry {
+  member: Member;
+  value: number;
+}
+
 export interface SubPermission {
   term: string;
   explicit: boolean;
@@ -215,21 +231,11 @@ export interface CommandInfo {
   name: string;
   description: string;
   version: string;
-  perms: string;
+  domain: string;
   dm_capable: boolean;
-  subperms: SubPermission[];
+  subdomains: SubPermission[];
   options: CommandOption[];
   group: string;
-}
-
-export interface LandingPageInfo {
-  localinvite: string;
-  publicmaininvite: string;
-  publiccaranyinvite: string;
-}
-
-export interface UserSettingsOTA {
-  enabled: boolean;
 }
 
 export interface AccessTokenModel {
@@ -239,6 +245,11 @@ export interface AccessTokenModel {
 
 export interface State {
   state: boolean;
+}
+
+export interface SearchResult {
+  guilds: Guild[];
+  members: Member[];
 }
 
 export interface GuildSettingsApi {
@@ -299,4 +310,16 @@ export interface GuildSettingsVerification {
   enabled: boolean;
 }
 
+export interface UserSettingsPrivacy {
+  starboard_optout: boolean;
+}
+
 export type PermissionsMap = { [key: string]: string[] };
+
+export interface CodeResponse {
+  code: number;
+}
+
+export interface ErrorReponse extends CodeResponse {
+  error: string;
+}
