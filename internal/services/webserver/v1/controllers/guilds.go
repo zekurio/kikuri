@@ -7,7 +7,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	"github.com/zekrotja/ken"
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
@@ -19,12 +18,11 @@ import (
 )
 
 type GuildsController struct {
-	session    *discordgo.Session
-	cfg        config.Config
-	db         database.Database
-	pmw        *permissions.Permissions
-	cmdHandler *ken.Ken
-	st         *dgrs.State
+	db      database.Database
+	session *discordgo.Session
+	cfg     config.Config
+	pmw     *permissions.Permissions
+	st      *dgrs.State
 }
 
 func (c *GuildsController) Setup(ctn di.Container, router fiber.Router) {
@@ -32,7 +30,6 @@ func (c *GuildsController) Setup(ctn di.Container, router fiber.Router) {
 	c.cfg = ctn.Get(static.DiConfig).(config.Config)
 	c.db = ctn.Get(static.DiDatabase).(database.Database)
 	c.pmw = ctn.Get(static.DiPermissions).(*permissions.Permissions)
-	c.cmdHandler = ctn.Get(static.DiCommandHandler).(*ken.Ken)
 	c.st = ctn.Get(static.DiState).(*dgrs.State)
 
 	router.Get("", c.getGuilds)

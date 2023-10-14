@@ -135,16 +135,9 @@ type PermissionsResponse struct {
 // GuildSettings is the response model for
 // guild settings and preferences.
 type GuildSettings struct {
-	Prefix              string                      `json:"prefix"`
-	Perms               map[string]perms.PermsArray `json:"perms"`
-	AutoRoles           []string                    `json:"autoroles"`
-	ModLogChannel       string                      `json:"modlogchannel"`
-	ModNotChannel       string                      `json:"modnotchannel"`
-	VoiceLogChannel     string                      `json:"voicelogchannel"`
-	JoinMessageChannel  string                      `json:"joinmessagechannel"`
-	JoinMessageText     string                      `json:"joinmessagetext"`
-	LeaveMessageChannel string                      `json:"leavemessagechannel"`
-	LeaveMessageText    string                      `json:"leavemessagetext"`
+	Perms     map[string]perms.PermsArray `json:"perms"`
+	AutoRoles []string                    `json:"autoroles"`
+	AutoVoice []string                    `json:"autovoice"`
 }
 
 // PermissionsUpdate is the request model to
@@ -260,10 +253,6 @@ type SlashCommandInfo struct {
 	Group           string                                `json:"group"`
 }
 
-type UsersettingsOTA struct {
-	Enabled bool `json:"enabled"`
-}
-
 type UsersettingsPrivacy struct {
 	StarboardOptout bool `json:"starboard_optout"`
 }
@@ -288,38 +277,6 @@ type GuildAPISettingsRequest struct {
 	db_models.GuildAPISettings
 	NewToken   string `json:"token"`
 	ResetToken bool   `json:"reset_token"`
-}
-
-type AntiraidActionType int
-
-const (
-	AntiraidActionTypeKick = iota
-	AntiraidActionTypeBan
-)
-
-type AntiraidAction struct {
-	Type AntiraidActionType `json:"type"`
-	IDs  []string           `json:"ids"`
-}
-
-type ChannelWithPermissions struct {
-	*discordgo.Channel
-
-	CanRead  bool `json:"can_read"`
-	CanWrite bool `json:"can_write"`
-}
-
-type CodeExecSettings struct {
-	EnableStatus
-
-	Type                string   `json:"type"`
-	TypesOptions        []string `json:"types_options,omitempty"`
-	JdoodleClientId     string   `json:"jdoodle_clientid,omitempty"`
-	JdoodleClientSecret string   `json:"jdoodle_clientsecret,omitempty"`
-}
-
-type PushCodeRequest struct {
-	Code string `json:"code"`
 }
 
 // GuildFromGuild returns a Guild model from the passed

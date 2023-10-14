@@ -22,7 +22,7 @@ type AuthController struct {
 	oauthHandler auth.RequestHandler
 	st           *dgrs.State
 	session      *discordgo.Session
-	cmdHandler   *ken.Ken
+	ken          *ken.Ken
 }
 
 func (c *AuthController) Setup(container di.Container, router fiber.Router) {
@@ -33,7 +33,7 @@ func (c *AuthController) Setup(container di.Container, router fiber.Router) {
 	c.st = container.Get(static.DiState).(*dgrs.State)
 	c.session = container.Get(static.DiDiscordSession).(*discordgo.Session)
 	c.oauthHandler = container.Get(static.DiOAuthHandler).(auth.RequestHandler)
-	c.cmdHandler = container.Get(static.DiCommandHandler).(*ken.Ken)
+	c.ken = container.Get(static.DiCommandHandler).(*ken.Ken)
 
 	router.Get("/login", c.getLogin)
 	router.Get("/oauthcallback", c.discordOAuth.HandlerCallback)

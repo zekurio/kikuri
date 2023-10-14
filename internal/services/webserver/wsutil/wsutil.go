@@ -54,3 +54,13 @@ func GetQueryBool(ctx *fiber.Ctx, key string, defaultValue bool) (bool, error) {
 			fmt.Sprintf("value of '%s' must be a boolean", key))
 	}
 }
+
+func ErrInternalOrNotFound(err error) error {
+	if err == nil {
+		return nil
+	}
+	if strings.Contains(err.Error(), "not found") {
+		return fiber.ErrNotFound
+	}
+	return fiber.ErrInternalServerError
+}

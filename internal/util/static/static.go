@@ -32,6 +32,8 @@ const (
 
 	EndpointAuthCB = "/api/auth/oauthcallback"
 
+	PublicCanaryInvite = "https://daemon.zekurio.xyz/invite"
+
 	AuthSessionExpiration  = 7 * 24 * time.Hour
 	ApiTokenExpiration     = 365 * 24 * time.Hour
 	RefreshTokenCookieName = "refreshToken"

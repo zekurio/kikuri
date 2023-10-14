@@ -17,7 +17,7 @@ var DefaultConfig = Config{
 		Enabled:    true,
 		Addr:       ":8080",
 		PublicAddr: "http://localhost:8080",
-		TLS: WebserverTLS{
+		TLS: TLS{
 			Enabled: false,
 			Cert:    "",
 			Key:     "",
@@ -94,7 +94,8 @@ type Webserver struct {
 	PublicAddr  string
 	APITokenKey string
 	AccessToken AccessToken
-	TLS         WebserverTLS
+	TLS         TLS
+	LandingPage LandingPage
 }
 
 type AccessToken struct {
@@ -102,10 +103,15 @@ type AccessToken struct {
 	LifetimeSeconds int
 }
 
-type WebserverTLS struct {
+type TLS struct {
 	Enabled bool
 	Cert    string
 	Key     string
+}
+
+type LandingPage struct {
+	ShowPublicInvites bool
+	ShowLocalInvite   bool
 }
 
 type Privacy struct {
