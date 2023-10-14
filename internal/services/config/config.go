@@ -80,11 +80,17 @@ type Permission struct {
 }
 
 type Webserver struct {
-	Enabled    bool
-	Addr       string
-	PublicAddr string
-	DebugAddr  string
-	TLS        TLS
+	Enabled     bool
+	Addr        string
+	PublicAddr  string
+	DebugAddr   string
+	AccessToken AccessToken
+	TLS         TLS
+}
+
+type AccessToken struct {
+	Secret          string `json:"secret"`
+	LifetimeSeconds int    `json:"lifetimeseconds"`
 }
 
 type TLS struct {

@@ -41,7 +41,7 @@ type oAuthTokenResponse struct {
 
 type userMeResponse struct {
 	ID    string `json:"id"`
-	error string `json:"error"`
+	Error string `json:"error"`
 }
 
 // New creates our Discord OAuth handler.
@@ -148,7 +148,7 @@ func (d *DiscordOAuth) HandlerCallback(ctx *fiber.Ctx) error {
 		return nil
 	}
 
-	if resGetMe.error != "" || resGetMe.ID == "" {
+	if resGetMe.Error != "" || resGetMe.ID == "" {
 		d.onError(ctx, http.StatusUnauthorized, "")
 		return nil
 	}
