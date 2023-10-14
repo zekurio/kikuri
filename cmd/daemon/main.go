@@ -16,7 +16,6 @@ import (
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/services/webserver/auth"
 	"github.com/zekurio/daemon/internal/util/static"
 	"github.com/zekurio/daemon/pkg/debug"
 )
@@ -103,46 +102,6 @@ func main() {
 		Name: static.DiDiscordOAuth,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return inits.InitDiscordOAuth(ctn), nil
-		},
-	})
-
-	// Initialize auth refresh token handler
-	diBuilder.Add(di.Def{
-		Name: static.DiAuthRefreshTokenHandler,
-		Build: func(ctn di.Container) (interface{}, error) {
-			return auth.NewDBRefreshTokenHandler(ctn), nil
-		},
-	})
-
-	// Initialize auth access token handler
-	diBuilder.Add(di.Def{
-		Name: static.DiAuthAccessTokenHandler,
-		Build: func(ctn di.Container) (interface{}, error) {
-			return auth.NewJWTAccessTokenHandler(ctn), nil
-		},
-	})
-
-	// Initialize auth API token handler
-	diBuilder.Add(di.Def{
-		Name: static.DiAuthAPITokenHandler,
-		Build: func(ctn di.Container) (interface{}, error) {
-			return auth.NewDBAPITokenHandler(ctn), nil
-		},
-	})
-
-	// Initialize OAuth API handler implementation
-	diBuilder.Add(di.Def{
-		Name: static.DiOAuthHandler,
-		Build: func(ctn di.Container) (interface{}, error) {
-			return auth.NewRefreshTokenRequestHandler(ctn), nil
-		},
-	})
-
-	// Initialize access token authorization middleware
-	diBuilder.Add(di.Def{
-		Name: static.DiAuthMiddleware,
-		Build: func(ctn di.Container) (interface{}, error) {
-			return auth.NewAccessTokenMiddleware(ctn), nil
 		},
 	})
 

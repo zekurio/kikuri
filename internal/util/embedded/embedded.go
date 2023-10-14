@@ -2,7 +2,6 @@ package embedded
 
 import (
 	"embed"
-	"strings"
 )
 
 var (
@@ -11,12 +10,8 @@ var (
 	AppVersion string
 	//go:embed Commit.txt
 	AppCommit string
-	//go:embed Release.txt
-	Release string
 	//go:embed migrations
 	Migrations embed.FS
+	//go:embed webdist
+	FrontendFiles embed.FS
 )
-
-func IsRelease() bool {
-	return strings.ToLower(Release) == "true"
-}

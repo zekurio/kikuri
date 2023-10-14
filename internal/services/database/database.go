@@ -1,9 +1,6 @@
 package database
 
 import (
-	"time"
-
-	"github.com/zekurio/daemon/internal/services/database/models"
 	"github.com/zekurio/daemon/internal/util/vote"
 	"github.com/zekurio/daemon/pkg/perms"
 )
@@ -31,25 +28,6 @@ type Database interface {
 	GetVotes() (map[string]vote.Vote, error)
 	AddUpdateVote(vote vote.Vote) error
 	DeleteVote(voteID string) error
-
-	// Guildapi
-
-	GetGuildAPI(guildID string) (settings models.GuildAPISettings, err error)
-	SetGuildAPI(guildID string, settings models.GuildAPISettings) error
-
-	// User refresh tokens
-
-	GetUserRefreshToken(userID string) (token string, err error)
-	SetUserRefreshToken(userID, token string, expires time.Time) error
-	RevokeUserRefreshToken(userID string) error
-
-	GetUserByRefreshToken(token string) (userID string, expires time.Time, err error)
-
-	// API tokens
-
-	SetAPIToken(token models.APITokenEntry) error
-	GetAPIToken(userID string) (models.APITokenEntry, error)
-	DeleteAPIToken(userID string) error
 
 	// Data management
 

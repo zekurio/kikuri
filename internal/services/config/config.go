@@ -15,22 +15,13 @@ var DefaultConfig = Config{
 	},
 	Webserver: Webserver{
 		Enabled:    true,
-		Addr:       ":8080",
-		PublicAddr: "http://localhost:8080",
+		Addr:       ":80",
+		PublicAddr: "http://localhost:80",
+		DebugAddr:  "http://localhost:8081",
 		TLS: TLS{
 			Enabled: false,
 			Cert:    "",
 			Key:     "",
-		},
-	},
-	Privacy: Privacy{
-		NoticeURL: "",
-		Contact: []Contact{
-			{
-				Title: "Example",
-				Value: "Example Value",
-				URL:   "https://example.com",
-			},
 		},
 	},
 }
@@ -89,18 +80,11 @@ type Permission struct {
 }
 
 type Webserver struct {
-	Enabled     bool
-	Addr        string
-	PublicAddr  string
-	APITokenKey string
-	AccessToken AccessToken
-	TLS         TLS
-	LandingPage LandingPage
-}
-
-type AccessToken struct {
-	Secret          string
-	LifetimeSeconds int
+	Enabled    bool
+	Addr       string
+	PublicAddr string
+	DebugAddr  string
+	TLS        TLS
 }
 
 type TLS struct {
@@ -109,27 +93,10 @@ type TLS struct {
 	Key     string
 }
 
-type LandingPage struct {
-	ShowPublicInvites bool
-	ShowLocalInvite   bool
-}
-
-type Privacy struct {
-	NoticeURL string
-	Contact   []Contact
-}
-
-type Contact struct {
-	Title string
-	Value string
-	URL   string
-}
-
 type Config struct {
 	Discord     Discord
 	Database    DatabaseType
 	Cache       Cache
 	Permissions Permission
 	Webserver   Webserver
-	Privacy     Privacy
 }

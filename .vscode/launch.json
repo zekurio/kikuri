@@ -2,20 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "msedge",
-            "request": "launch",
-            "name": "Attach to Edge to Webinterface",
-            "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}/src",
-            "sourceMapPathOverrides": {
-                "webpack:///./src/*": "${webRoot}/*"
-            },
-            "runtimeArgs": [
-                "--remote-debugging-port=9222"
-            ],
-            "sourceMaps": true,
-        },
-        {
             "name": "Debug Go Backend",
             "type": "go",
             "request": "launch",
@@ -30,13 +16,4 @@
             ]
         }
     ],
-    "compounds": [
-        {
-            "name": "Launch Full Stack",
-            "configurations": [
-                "Debug Go Backend",
-                "Attach to Edge to Webinterface"
-            ]
-        }
-    ]
 }

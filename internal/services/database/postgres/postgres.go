@@ -3,17 +3,14 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"strings"
-	"time"
-
 	"github.com/charmbracelet/log"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
+	"strings"
 
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/services/database/models"
 	"github.com/zekurio/daemon/internal/util"
 	"github.com/zekurio/daemon/internal/util/embedded"
 	"github.com/zekurio/daemon/internal/util/vote"
@@ -181,98 +178,20 @@ func (p *Postgres) DeleteVote(voteID string) error {
 	return p.wrapErr(err)
 }
 
-// GUILDAPI
-
-func (p *Postgres) GetGuildAPI(guildID string) (settings models.GuildAPISettings, err error) {
-	// get everything from the guilds table
-	err = p.db.QueryRow(`SELECT * FROM guilds WHERE guild_id = $1`, guildID).Scan(
-		&settings.Enabled, &settings.AllowedOrigins, &settings.Protected, &settings.TokenHash)
-	if err != nil {
-		return settings, p.wrapErr(err)
-	}
-
-	return
-}
-
-func (p *Postgres) SetGuildAPI(guildID string, settings models.GuildAPISettings) error {
-	_, err := p.db.Exec(`INSERT INTO guilds (guild_id, enabled, allowed_origins, protected, token_hash) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (guild_id) DO UPDATE SET enabled = $2, allowed_origins = $3, protected = $4, token_hash = $5`,
-		guildID, settings.Enabled, settings.AllowedOrigins, settings.Protected, settings.TokenHash)
-	return p.wrapErr(err)
-}
-
-// REFRESH TOKENS
-
-func (p *Postgres) GetUserRefreshToken(userID string) (token string, err error) {
-	return GetValue[string](p, "refreshtokens", "refresh_token", "user_id", userID)
-}
-
-func (p *Postgres) SetUserRefreshToken(userID, token string, expires time.Time) error {
-	_, err := p.db.Exec(`INSERT INTO refreshtokens (user_id, refresh_token, expires_at) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET refresh_token = $2, expires_at = $3`,
-		userID, token, expires)
-	return p.wrapErr(err)
-}
-
-func (p *Postgres) GetUserByRefreshToken(token string) (userID string, expires time.Time, err error) {
-	err = p.db.QueryRow(`SELECT user_id, expires_at FROM refreshtokens WHERE refresh_token = $1`, token).Scan(&userID, &expires)
-	if err != nil {
-		return "", time.Time{}, p.wrapErr(err)
-	}
-
-	return
-}
-
-func (p *Postgres) RevokeUserRefreshToken(userID string) error {
-	_, err := p.db.Exec(`DELETE FROM refreshtokens WHERE user_id = $1`, userID)
-	return err
-}
-
-// API TOKENS
-
-func (p *Postgres) GetAPIToken(userID string) (models.APITokenEntry, error) {
-	var token models.APITokenEntry
-
-	row := p.db.QueryRow("SELECT salt, created_at, expires_at, last_accessed_at, hits FROM apitokens WHERE user_id = $1", userID)
-	err := row.Scan(&token.Salt, &token.Created, &token.Expires, &token.LastAccess, &token.Hits)
-	if err != nil {
-		return token, p.wrapErr(err)
-	}
-
-	token.UserID = userID
-
-	return token, nil
-}
-
-func (p *Postgres) SetAPIToken(token models.APITokenEntry) error {
-	_, err := p.db.Exec("INSERT INTO apitokens (user_id, salt, created_at, expires_at, last_accessed_at, hits) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (user_id) DO UPDATE SET salt = $2, created_at = $3, expires_at = $4, last_accessed_at = $5, hits = $6",
-		token.UserID, token.Salt, token.Created, token.Expires, token.LastAccess, token.Hits)
-
-	return p.wrapErr(err)
-}
-
-func (p *Postgres) DeleteAPIToken(userID string) error {
-	_, err := p.db.Exec("DELETE FROM apitokens WHERE user_id = $1", userID)
-
-	return p.wrapErr(err)
-}
-
 // DATA MANAGEMENT
 
 func (p *Postgres) FlushGuildData(guildID string) error {
-
 	return p.tx(func(tx *sql.Tx) error {
-
 		var (
 			err          error
 			failedGuilds []string
 		)
 
 		for _, table := range guildTables {
-
 			_, err := tx.Exec(fmt.Sprintf(`DELETE FROM %s WHERE guild_id = $1`, table), guildID)
 			if err != nil {
 				failedGuilds = append(failedGuilds, guildID)
 			}
-
 		}
 
 		if len(failedGuilds) > 0 || err != nil {
@@ -280,9 +199,7 @@ func (p *Postgres) FlushGuildData(guildID string) error {
 		}
 
 		return nil
-
 	})
-
 }
 
 //

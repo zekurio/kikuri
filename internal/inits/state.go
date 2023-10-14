@@ -61,9 +61,6 @@ func InitState(container di.Container) (s *dgrs.State, err error) {
 		log.Warn("No cache lifetimes set in config. Using default of 7 days.")
 	}
 
-	// When a value for `General` is set, all 0 value durations
-	// will be set to the vaue of `General`. So it is effectively
-	// the default caching duration, if not further specified.
 	lf.OverrrideZero = true
 
 	return dgrs.New(dgrs.Options{
