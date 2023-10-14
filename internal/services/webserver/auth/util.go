@@ -1,6 +1,6 @@
 package auth
 
-import "github.com/zekrotja/yuri69/pkg/util"
+import "github.com/zekurio/daemon/pkg/arrayutils"
 
 type AuthOrigin string
 
@@ -9,5 +9,5 @@ const (
 )
 
 func (t Claims) IsAuthOrigin(origin AuthOrigin) bool {
-	return util.Contains(t.Scopes, string(origin))
+	return arrayutils.Contains(t.Scopes, string(origin))
 }
