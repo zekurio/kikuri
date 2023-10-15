@@ -1,6 +1,8 @@
 package database
 
 import (
+	"time"
+
 	"github.com/zekurio/daemon/internal/util/vote"
 	"github.com/zekurio/daemon/pkg/perms"
 )
@@ -28,6 +30,12 @@ type Database interface {
 	GetVotes() (map[string]vote.Vote, error)
 	AddUpdateVote(vote vote.Vote) error
 	DeleteVote(voteID string) error
+
+	// Oauth2
+
+	SetUserRefreshToken(ident, token string, expires time.Time) error
+	GetUserByRefreshToken(token string) (ident string, expires time.Time, err error)
+	RevokeUserRefreshToken(ident string) error
 
 	// Data management
 

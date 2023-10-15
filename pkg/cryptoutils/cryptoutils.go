@@ -2,6 +2,7 @@ package cryptoutils
 
 import (
 	"crypto/rand"
+	"encoding/base64"
 	"errors"
 )
 
@@ -16,4 +17,17 @@ func GetRandByteArray(len int) (data []byte, err error) {
 	_, err = rand.Read(data)
 
 	return
+}
+
+func GetRandBase64Str(len int) (string, error) {
+	if len <= 0 {
+		return "", ErrInvalidLen
+	}
+
+	data, err := GetRandByteArray(len)
+	if err != nil {
+		return "", err
+	}
+
+	return base64.URLEncoding.EncodeToString(data)[:len], nil
 }

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/charmbracelet/log"
 	_ "github.com/lib/pq"
@@ -177,6 +178,20 @@ func (p *Postgres) AddUpdateVote(v vote.Vote) error {
 func (p *Postgres) DeleteVote(voteID string) error {
 	_, err := p.db.Exec(`DELETE FROM votes WHERE id = $1`, voteID)
 	return p.wrapErr(err)
+}
+
+// OAUTH2
+
+func (p *Postgres) SetUserRefreshToken(ident, token string, expires time.Time) error {
+	return nil // TODO implement
+}
+
+func (p *Postgres) GetUserByRefreshToken(token string) (ident string, expires time.Time, err error) {
+	return "", time.Time{}, nil // TODO implement
+}
+
+func (p *Postgres) RevokeUserRefreshToken(ident string) error {
+	return nil // TODO implement
 }
 
 // DATA MANAGEMENT
