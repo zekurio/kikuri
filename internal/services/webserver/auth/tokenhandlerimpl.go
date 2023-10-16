@@ -2,16 +2,24 @@ package auth
 
 import (
 	"errors"
+	"fmt"
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
 	"github.com/zekurio/daemon/pkg/cryptoutils"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
+	"github.com/zekurio/daemon/internal/util/embedded"
 	"github.com/zekurio/daemon/internal/util/static"
+)
+
+var (
+	jwtGenerationMethod = jwt.SigningMethodHS256
 )
 
 type RefreshTokenHandlerImpl struct {
@@ -82,9 +90,36 @@ func NewAccessTokenHandlerImpl(container di.Container) *AccessTokenHandlerImpl {
 }
 
 func (ath *AccessTokenHandlerImpl) GetAccessToken(ident string) (token string, expires time.Time, err error) {
-	return "", time.Time{}, nil // TODO implement
+	now := time.Now()
+	expires = now.Add(ath.sessionExpiration)
+
+	claims := jwt.RegisteredClaims{}
+	claims.Issuer = fmt.Sprintf("daemon v.%s", embedded.AppVersion)
+	claims.Subject = ident
+	claims.ExpiresAt = jwt.NewNumericDate(expires)
+	claims.NotBefore = jwt.NewNumericDate(now)
+	claims.IssuedAt = jwt.NewNumericDate(now)
+
+	token, err = jwt.NewWithClaims(jwtGenerationMethod, claims).
+		SignedString(ath.sessionSecret)
+	return
 }
 
 func (ath *AccessTokenHandlerImpl) ValidateAccessToken(token string) (ident string, err error) {
-	return "", nil // TODO implement
+	jwtToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		return ath.sessionSecret, nil
+	})
+	if jwtToken == nil || err != nil || !jwtToken.Valid || jwtToken.Claims.Valid() != nil {
+		return
+	}
+
+	claimsMap, ok := jwtToken.Claims.(jwt.MapClaims)
+	if !ok {
+		err = errors.New("invalid claims")
+		return
+	}
+
+	ident, _ = claimsMap["sub"].(string)
+
+	return
 }

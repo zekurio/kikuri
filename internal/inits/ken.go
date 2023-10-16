@@ -17,13 +17,13 @@ import (
 	"github.com/zekurio/daemon/internal/util/static"
 )
 
-func InitKen(ctn di.Container) (*ken.Ken, error) {
+func InitKen(ctn di.Container) (k *ken.Ken, err error) {
 
 	s := ctn.Get(static.DiDiscordSession).(*discordgo.Session)
 	st := ctn.Get(static.DiState).(*dgrs.State)
 	p := ctn.Get(static.DiPermissions).(*permissions.Permissions)
 
-	k, err := ken.New(s, ken.Options{
+	k, err = ken.New(s, ken.Options{
 		EmbedColors: ken.EmbedColors{
 			Default: static.ColorDefault,
 			Error:   static.ColorRed,

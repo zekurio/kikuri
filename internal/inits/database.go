@@ -13,10 +13,7 @@ import (
 	"github.com/zekurio/daemon/internal/util/static"
 )
 
-func InitDatabase(ctn di.Container) (database.Database, error) {
-	var db database.Database
-	var err error
-
+func InitDatabase(ctn di.Container) (db database.Database, err error) {
 	cfg := ctn.Get(static.DiConfig).(config.Config)
 
 	driver := strings.ToLower(cfg.Database.Type)

@@ -93,8 +93,8 @@ func (p *Postgres) SetGuildAutoVoice(guildID string, channelIDs []string) error 
 
 // PERMISSIONS
 
-func (p *Postgres) GetPermissions(guildID string) (map[string]perms.PermsArray, error) {
-	results := make(map[string]perms.PermsArray)
+func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.PermsArray, err error) {
+	permissions = make(map[string]perms.PermsArray)
 	rows, err := p.db.Query(`SELECT role_id, perms FROM permissions WHERE guild_id = $1`, guildID)
 	if err != nil {
 		return nil, p.wrapErr(err)
@@ -109,20 +109,20 @@ func (p *Postgres) GetPermissions(guildID string) (map[string]perms.PermsArray, 
 			return nil, p.wrapErr(err)
 		}
 
-		results[roleID] = strings.Split(permStr, ";")
+		permissions[roleID] = strings.Split(permStr, ";")
 	}
 
-	return results, nil
+	return
 }
 
-func (p *Postgres) SetPermissions(guildID, roleID string, perms perms.PermsArray) error {
+func (p *Postgres) SetPermissions(guildID, roleID string, permissions perms.PermsArray) error {
 
-	if len(perms) == 0 {
+	if len(permissions) == 0 {
 		_, err := p.db.Exec(`DELETE FROM permissions WHERE guild_id = $1 AND role_id = $2`, guildID, roleID)
 		return err
 	}
 
-	pStr := strings.Join(perms, ";")
+	pStr := strings.Join(permissions, ";")
 	res, err := p.db.Exec(`UPDATE permissions SET perms = $1 WHERE guild_id = $2 AND role_id = $3`, pStr, guildID, roleID)
 	if err != nil {
 		return err
@@ -141,13 +141,13 @@ func (p *Postgres) SetPermissions(guildID, roleID string, perms perms.PermsArray
 
 // VOTES
 
-func (p *Postgres) GetVotes() (map[string]vote.Vote, error) {
+func (p *Postgres) GetVotes() (votes map[string]vote.Vote, err error) {
+	votes = make(map[string]vote.Vote)
 	rows, err := p.db.Query(`SELECT id, json_data FROM votes`)
 	if err != nil {
 		return nil, p.wrapErr(err)
 	}
 
-	var results = make(map[string]vote.Vote)
 	for rows.Next() {
 		var voteID, rawData string
 		err := rows.Scan(&voteID, &rawData)
@@ -158,12 +158,12 @@ func (p *Postgres) GetVotes() (map[string]vote.Vote, error) {
 		if err != nil {
 			p.DeleteVote(rawData)
 		} else {
-			results[vote.ID] = vote
+			votes[vote.ID] = vote
 		}
 
 	}
 
-	return results, nil
+	return
 }
 
 func (p *Postgres) AddUpdateVote(v vote.Vote) error {
@@ -183,15 +183,31 @@ func (p *Postgres) DeleteVote(voteID string) error {
 // OAUTH2
 
 func (p *Postgres) SetUserRefreshToken(ident, token string, expires time.Time) error {
-	return nil // TODO implement
+	_, err := p.db.Exec(`INSERT INTO refresh_tokens (ident, token, expires) VALUES ($1, $2, $3) ON CONFLICT (ident) DO UPDATE SET token = $2, expires = $3`, ident, token, expires)
+	return p.wrapErr(err)
 }
 
 func (p *Postgres) GetUserByRefreshToken(token string) (ident string, expires time.Time, err error) {
-	return "", time.Time{}, nil // TODO implement
+	rows, err := p.db.Query(`SELECT ident, expires FROM refresh_tokens WHERE token = $1`, token)
+	if err != nil {
+		return "", time.Time{}, p.wrapErr(err)
+	}
+
+	if !rows.Next() {
+		return "", time.Time{}, p.wrapErr(sql.ErrNoRows)
+	}
+
+	err = rows.Scan(&ident, &expires)
+	if err != nil {
+		return "", time.Time{}, p.wrapErr(err)
+	}
+
+	return ident, expires, nil
 }
 
 func (p *Postgres) RevokeUserRefreshToken(ident string) error {
-	return nil // TODO implement
+	_, err := p.db.Exec(`DELETE FROM refresh_tokens WHERE ident = $1`, ident)
+	return p.wrapErr(err)
 }
 
 // DATA MANAGEMENT

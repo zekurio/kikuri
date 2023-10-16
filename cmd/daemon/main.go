@@ -16,6 +16,7 @@ import (
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/permissions"
+	"github.com/zekurio/daemon/internal/services/webserver/auth"
 	"github.com/zekurio/daemon/internal/util/static"
 	"github.com/zekurio/daemon/pkg/debug"
 )
@@ -80,6 +81,14 @@ func main() {
 		},
 	})
 
+	// Permissions
+	diBuilder.Add(di.Def{
+		Name: static.DiPermissions,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return permissions.InitPermissions(ctn), nil
+		},
+	})
+
 	// Initialize discord bot session and shutdown routine
 	diBuilder.Add(di.Def{
 		Name: static.DiDiscordSession,
@@ -105,19 +114,27 @@ func main() {
 		},
 	})
 
-	// Initialize State
+	// Initialize auth refresh token handler
 	diBuilder.Add(di.Def{
-		Name: static.DiState,
+		Name: static.DiAuthRefreshTokenHandler,
 		Build: func(ctn di.Container) (interface{}, error) {
-			return inits.InitState(ctn)
+			return auth.NewRefreshTokenHandlerImpl(ctn), nil
 		},
 	})
 
-	// Permissions
+	// Initialize auth access token handler
 	diBuilder.Add(di.Def{
-		Name: static.DiPermissions,
+		Name: static.DiAuthAccessTokenHandler,
 		Build: func(ctn di.Container) (interface{}, error) {
-			return permissions.InitPermissions(ctn), nil
+			return auth.NewAccessTokenHandlerImpl(ctn), nil
+		},
+	})
+
+	// Initialize Discord OAuth Module
+	diBuilder.Add(di.Def{
+		Name: static.DiDiscordOAuth,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return inits.InitDiscordOAuth(ctn), nil
 		},
 	})
 
@@ -145,6 +162,14 @@ func main() {
 		Name: static.DiWebserver,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return inits.InitWebserver(ctn), nil
+		},
+	})
+
+	// Initialize State
+	diBuilder.Add(di.Def{
+		Name: static.DiState,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return inits.InitState(ctn)
 		},
 	})
 
