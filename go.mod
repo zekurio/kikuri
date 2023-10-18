@@ -6,7 +6,7 @@ require (
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/charmbracelet/log v0.2.2
-	github.com/gofiber/fiber/v2 v2.49.2
+	github.com/gofiber/fiber/v2 v2.50.0
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
 	github.com/pressly/goose/v3 v3.13.4
@@ -15,7 +15,7 @@ require (
 	github.com/sarulabs/di/v2 v2.4.2
 	github.com/stretchr/testify v1.8.4
 	github.com/traefik/paerser v0.2.0
-	github.com/valyala/fasthttp v1.49.0
+	github.com/valyala/fasthttp v1.50.0
 	github.com/zekrotja/ken v0.18.0
 )
 
@@ -44,6 +44,6 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	github.com/zekrotja/dgrs v0.5.7 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
