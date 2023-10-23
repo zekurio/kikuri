@@ -1,6 +1,10 @@
 package models
 
-import "github.com/zekurio/daemon/pkg/perms"
+import (
+	"time"
+
+	"github.com/zekurio/daemon/pkg/perms"
+)
 
 var Ok = &Status{Code: 200}
 
@@ -10,7 +14,17 @@ type Status struct {
 }
 
 type GuildSettings struct {
-	AutoRoles []string                    `json:"auto_roles"`
-	AutoVoice []string                    `json:"auto_voice"`
-	Perms     map[string]perms.PermsArray `json:"perms"`
+	AutoRoles  []string                    `json:"auto_roles"`
+	AutoVoice  []string                    `json:"auto_voice"`
+	Perms      map[string]perms.PermsArray `json:"perms"`
+	APIEnabled bool                        `json:"api_enabled"`
+}
+
+type GuildSettingsEmpty struct {
+	APIEnabled bool `json:"api_enabled"`
+}
+
+type AccessTokenResponse struct {
+	Token   string    `json:"token"`
+	Expires time.Time `json:"expires"`
 }

@@ -91,6 +91,14 @@ func (p *Postgres) SetGuildAutoVoice(guildID string, channelIDs []string) error 
 	return SetValue(p, "guilds", "autovoice_ids", strings.Join(channelIDs, ","), "guild_id", guildID)
 }
 
+func (p *Postgres) GetGuildAPIEnabled(guildID string) (enabled bool, err error) {
+	return GetValue[bool](p, "guilds", "api_enabled", "guild_id", guildID)
+}
+
+func (p *Postgres) SetGuildAPIEnabled(guildID string, enabled bool) error {
+	return SetValue(p, "guilds", "api_enabled", enabled, "guild_id", guildID)
+}
+
 // PERMISSIONS
 
 func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.PermsArray, err error) {

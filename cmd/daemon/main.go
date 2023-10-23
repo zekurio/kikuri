@@ -27,17 +27,20 @@ var (
 )
 
 func main() {
-
+	// Parse command line flags
 	flag.Parse()
 
+	// Enable debug mode if flag is set
 	debug.SetEnabled(*flagDebug)
 
+	// Set log level based on debug mode
 	if debug.Enabled() {
 		log.SetLevel(log.DebugLevel)
 	} else {
 		log.SetLevel(log.InfoLevel)
 	}
 
+	// Create DI builder
 	diBuilder, err := di.NewBuilder()
 	if err != nil {
 		log.With("err", err).Fatal("Failed to create DI builder")
@@ -89,7 +92,7 @@ func main() {
 		},
 	})
 
-	// Initialize discord bot session and shutdown routine
+	// Discord session
 	diBuilder.Add(di.Def{
 		Name: static.DiDiscordSession,
 		Build: func(ctn di.Container) (interface{}, error) {
@@ -106,7 +109,7 @@ func main() {
 		},
 	})
 
-	// Initialize Discord OAuth Module
+	// Discord OAuth
 	diBuilder.Add(di.Def{
 		Name: static.DiDiscordOAuth,
 		Build: func(ctn di.Container) (interface{}, error) {
@@ -114,7 +117,7 @@ func main() {
 		},
 	})
 
-	// Initialize auth refresh token handler
+	// Auth refresh token handler
 	diBuilder.Add(di.Def{
 		Name: static.DiAuthRefreshTokenHandler,
 		Build: func(ctn di.Container) (interface{}, error) {
@@ -122,7 +125,7 @@ func main() {
 		},
 	})
 
-	// Initialize auth access token handler
+	// Auth access token handler
 	diBuilder.Add(di.Def{
 		Name: static.DiAuthAccessTokenHandler,
 		Build: func(ctn di.Container) (interface{}, error) {
@@ -130,11 +133,27 @@ func main() {
 		},
 	})
 
-	// Initialize Discord OAuth Module
+	// Auth middleware
 	diBuilder.Add(di.Def{
-		Name: static.DiDiscordOAuth,
+		Name: static.DiAuthMiddleware,
 		Build: func(ctn di.Container) (interface{}, error) {
-			return inits.InitDiscordOAuth(ctn), nil
+			return auth.NewAccessTokenMiddleware(ctn), nil
+		},
+	})
+
+	// OAuth API handler implementation
+	diBuilder.Add(di.Def{
+		Name: static.DiOAuthHandler,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewRefreshTokenRequestHandler(ctn), nil
+		},
+	})
+
+	// Access token authorization middleware
+	diBuilder.Add(di.Def{
+		Name: static.DiAuthMiddleware,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewAccessTokenMiddleware(ctn), nil
 		},
 	})
 
@@ -165,7 +184,7 @@ func main() {
 		},
 	})
 
-	// Initialize State
+	// State
 	diBuilder.Add(di.Def{
 		Name: static.DiState,
 		Build: func(ctn di.Container) (interface{}, error) {
@@ -175,6 +194,7 @@ func main() {
 
 	// Build dependency injection container
 	ctn := diBuilder.Build()
+
 	// Tear down dependency instances
 	defer func(ctn di.Container) {
 		err := ctn.DeleteWithSubContainers()
@@ -183,15 +203,19 @@ func main() {
 		}
 	}(ctn)
 
+	// Initialize command handler
 	ctn.Get(static.DiCommandHandler)
 
+	// Initialize Discord session
 	err = inits.InitDiscord(ctn)
 	if err != nil {
 		log.With("err", err).Fatal("Failed to initialize discord session")
 	}
 
+	// Initialize webserver
 	ctn.Get(static.DiWebserver)
 
+	// Initialize database
 	ctn.Get(static.DiDatabase)
 
 	// Block main go routine until one of the following

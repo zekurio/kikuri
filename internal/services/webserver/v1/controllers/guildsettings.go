@@ -7,6 +7,7 @@ import (
 	"github.com/zekrotja/dgrs"
 	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
+	"github.com/zekurio/daemon/internal/services/database/dberr"
 	"github.com/zekurio/daemon/internal/services/permissions"
 	"github.com/zekurio/daemon/internal/services/webserver/v1/models"
 	"github.com/zekurio/daemon/internal/util/static"
@@ -37,15 +38,21 @@ func (c *GuildSettingsController) getGuildSettings(ctx *fiber.Ctx) error {
 	gs := new(models.GuildSettings)
 	var err error
 
-	gs.AutoRoles, err = c.db.GetGuildAutoRoles(guildID)
-	if err != nil {
+	if gs.AutoRoles, err = c.db.GetGuildAutoRoles(guildID); err != nil && !dberr.IsErrNotFound(err) {
 		return err
 	}
 
-	gs.AutoVoice, err = c.db.GetGuildAutoVoice(guildID)
-	if err != nil {
+	if gs.AutoVoice, err = c.db.GetGuildAutoVoice(guildID); err != nil && !dberr.IsErrNotFound(err) {
 		return err
 	}
 
-	return err
+	if gs.Perms, err = c.db.GetPermissions(guildID); err != nil && !dberr.IsErrNotFound(err) {
+		return err
+	}
+
+	if gs.APIEnabled, err = c.db.GetGuildAPIEnabled(guildID); err != nil && !dberr.IsErrNotFound(err) {
+		return err
+	}
+
+	return ctx.JSON(gs)
 }

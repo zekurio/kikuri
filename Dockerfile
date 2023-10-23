@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=build-dm /build/bin/daemon /app/daemon
 
 # Prepare config directory
-RUN mkdir -p /etc/config
+RUN mkdir -p /etc/daemon
 
 ENTRYPOINT ["/app/daemon"]
 CMD ["-c", "/etc/daemon/config.toml"]

@@ -47,6 +47,8 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 
 	new(controllers.InviteController).Setup(ws.container, ws.app.Group("/invite"))
 
+	ws.registerRouter(new(v1.Router), []string{"/api/v1", "/api"})
+
 	fs, err := wsutil.GetFS()
 	if err != nil {
 		return
@@ -63,8 +65,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 	return
 }
 
-// TODO change v1.Router to Router
-func (ws *WebServer) registerRouter(router v1.Router, routes []string, middlewares ...fiber.Handler) {
+func (ws *WebServer) registerRouter(router Router, routes []string, middlewares ...fiber.Handler) {
 	router.SetContainer(ws.container)
 	for _, r := range routes {
 		router.Route(ws.app.Group(r, middlewares...))

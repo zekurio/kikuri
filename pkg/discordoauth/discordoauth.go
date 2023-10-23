@@ -19,7 +19,7 @@ const (
 
 type SuccessResponse struct {
 	UserID string
-	State  map[string]string
+	State  map[string]interface{}
 }
 
 type tokenResponse struct {
@@ -84,7 +84,7 @@ func (d *DiscordOAuth) HandlerInit(ctx *fiber.Ctx) error {
 
 // HandlerInitWithState returns a redirect response to discord oauth2 authorization endpoint
 // with a state token that contains the state map encoded and signed.
-func (d *DiscordOAuth) HandlerInitWithState(ctx *fiber.Ctx, state map[string]string) error {
+func (d *DiscordOAuth) HandlerInitWithState(ctx *fiber.Ctx, state map[string]interface{}) error {
 	stateToken, err := d.encodeAndSignWithPayload(state)
 	if err != nil {
 		return err
@@ -184,11 +184,11 @@ func (d *DiscordOAuth) HandlerCallback(ctx *fiber.Ctx) error {
 
 	return d.onSuccess(ctx, SuccessResponse{
 		UserID: userMeRes.ID,
-		State:  claims["payload"].(map[string]string),
+		State:  claims["payload"].(map[string]interface{}),
 	})
 }
 
-func (d *DiscordOAuth) encodeAndSignWithPayload(payload map[string]string) (string, error) {
+func (d *DiscordOAuth) encodeAndSignWithPayload(payload map[string]interface{}) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"payload": payload,
 		"exp":     time.Now().Add(time.Minute * 5).Unix(),
