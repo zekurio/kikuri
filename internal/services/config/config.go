@@ -1,6 +1,9 @@
 package config
 
-import "github.com/zekurio/daemon/internal/util/static"
+import (
+	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/daemon/pkg/cryptoutils"
+)
 
 var DefaultConfig = Config{
 	Discord: Discord{
@@ -18,6 +21,10 @@ var DefaultConfig = Config{
 		Addr:       ":80",
 		PublicAddr: "http://localhost:80",
 		DebugAddr:  "http://localhost:8081",
+		AccessToken: AccessToken{
+			Secret:          cryptoutils.ForceRandBase64Str(64),
+			LifetimeSeconds: 10 * 60,
+		},
 		TLS: TLS{
 			Enabled: false,
 			Cert:    "",
@@ -89,8 +96,8 @@ type Webserver struct {
 }
 
 type AccessToken struct {
-	Secret          string `json:"secret"`
-	LifetimeSeconds int    `json:"lifetimeseconds"`
+	Secret          string
+	LifetimeSeconds int
 }
 
 type TLS struct {
