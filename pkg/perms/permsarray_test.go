@@ -2,7 +2,7 @@ package perms
 
 import "testing"
 
-func equalButUnsorted(p1, p2 PermsArray) bool {
+func equalButUnsorted(p1, p2 Array) bool {
 	for _, v1 := range p1 {
 		contains := false
 		for _, v2 := range p2 {
@@ -32,7 +32,7 @@ func equalButUnsorted(p1, p2 PermsArray) bool {
 
 func TestUpdate(t *testing.T) {
 
-	p1 := PermsArray{
+	p1 := Array{
 		"+foo.bar",
 		"-foo.baz",
 	}
@@ -43,7 +43,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"+foo.bar",
 			"-foo.baz",
 			"+foo.foobar",
@@ -58,7 +58,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"+foo.bar",
 			"-foo.baz",
 			"-foo.foobar",
@@ -84,7 +84,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"+foo.bar",
 		},
 	) {
@@ -97,7 +97,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"-foo.baz",
 		},
 	) {
@@ -110,7 +110,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"-foo.baz",
 		},
 	) {
@@ -123,7 +123,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"-foo.baz",
 		},
 	) {
@@ -136,7 +136,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"-foo.bar",
 			"-foo.baz",
 		},
@@ -150,7 +150,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"+foo.bar",
 			"+foo.baz",
 		},
@@ -164,7 +164,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"+foo.bar",
 			"-foo.baz",
 			"-foo.foobar",
@@ -179,7 +179,7 @@ func TestUpdate(t *testing.T) {
 	}
 	if !equalButUnsorted(
 		p2,
-		PermsArray{
+		Array{
 			"+foo.bar",
 			"-foo.baz",
 		},
@@ -190,7 +190,7 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestEquals(t *testing.T) {
-	p1 := PermsArray{
+	p1 := Array{
 		"+foo.bar",
 		"-foo.baz",
 	}
@@ -198,16 +198,16 @@ func TestEquals(t *testing.T) {
 		t.Error("equal arrays have unequal res")
 	}
 
-	p1 = PermsArray{}
+	p1 = Array{}
 	if !p1.Equals(p1) {
 		t.Error("equal arrays have unequal res")
 	}
 
-	p1 = PermsArray{
+	p1 = Array{
 		"+foo.bar",
 		"-foo.baz",
 	}
-	p2 := PermsArray{
+	p2 := Array{
 		"-foo.baz",
 		"+foo.bar",
 	}
@@ -215,11 +215,11 @@ func TestEquals(t *testing.T) {
 		t.Error("unequal arrays have equal res")
 	}
 
-	p1 = PermsArray{
+	p1 = Array{
 		"+foo.bar",
 		"-foo.baz",
 	}
-	p2 = PermsArray{
+	p2 = Array{
 		"-foo.baz",
 	}
 	if p1.Equals(p2) {
@@ -228,7 +228,7 @@ func TestEquals(t *testing.T) {
 }
 
 func TestHas(t *testing.T) {
-	p := PermsArray{
+	p := Array{
 		"+foo.bar",
 		"+foo.baz.*",
 		"-foo.foobar",

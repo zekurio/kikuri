@@ -1,6 +1,8 @@
 package wsutil
 
 import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/zekurio/daemon/internal/services/database/dberr"
 	"io/fs"
 	"net/http"
 	"os"
@@ -27,4 +29,12 @@ func GetFS() (f http.FileSystem, err error) {
 	log.Info("Using embedded web files")
 	f = http.FS(fsys)
 	return
+}
+
+func IsErrInternalOrNotFound(err error) error {
+	if dberr.IsErrNotFound(err) {
+		return fiber.ErrNotFound
+	}
+
+	return err
 }

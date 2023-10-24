@@ -2,8 +2,8 @@ package time
 
 import "time"
 
-// TimeProvider is an interface for providing the current time,
-type TimeProvider interface {
+// Provider is an interface for providing the current time,
+type Provider interface {
 
 	// Now returns the current time.
 	Now() time.Time

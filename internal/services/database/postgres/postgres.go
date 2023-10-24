@@ -101,8 +101,8 @@ func (p *Postgres) SetGuildAPIEnabled(guildID string, enabled bool) error {
 
 // PERMISSIONS
 
-func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.PermsArray, err error) {
-	permissions = make(map[string]perms.PermsArray)
+func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.Array, err error) {
+	permissions = make(map[string]perms.Array)
 	rows, err := p.db.Query(`SELECT role_id, perms FROM permissions WHERE guild_id = $1`, guildID)
 	if err != nil {
 		return nil, p.wrapErr(err)
@@ -123,7 +123,7 @@ func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.
 	return
 }
 
-func (p *Postgres) SetPermissions(guildID, roleID string, permissions perms.PermsArray) error {
+func (p *Postgres) SetPermissions(guildID, roleID string, permissions perms.Array) error {
 
 	if len(permissions) == 0 {
 		_, err := p.db.Exec(`DELETE FROM permissions WHERE guild_id = $1 AND role_id = $2`, guildID, roleID)

@@ -60,19 +60,19 @@ func (p *Permissions) Before(ctx *ken.Ctx) (next bool, err error) {
 	return true, err
 }
 
-func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID string) (perm perms.PermsArray, override bool, err error) {
+func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID string) (perm perms.Array, override bool, err error) {
 
 	if guildID != "" {
 		perm, err = p.GetMemberPerms(session, guildID, userID)
-		if err != nil && err != dberr.ErrNotFound {
+		if err != nil && !dberr.IsErrNotFound(err) {
 			return
 		}
 	} else {
-		perm = make(perms.PermsArray, 0)
+		perm = make(perms.Array, 0)
 	}
 
 	if p.cfg.Discord.OwnerID == userID {
-		perm = perms.PermsArray{"+dm.*"}
+		perm = perms.Array{"+dm.*"}
 		override = true
 		return
 	}
@@ -80,12 +80,12 @@ func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID strin
 	if guildID != "" {
 		guild, err := p.st.Guild(guildID)
 		if err != nil {
-			return perms.PermsArray{}, false, err
+			return perms.Array{}, false, err
 		}
 
 		member, err := p.st.Member(guildID, userID)
 		if err != nil {
-			return perms.PermsArray{}, false, err
+			return perms.Array{}, false, err
 		}
 
 		if userID == guild.OwnerID || (member != nil && discordutils.IsAdmin(guild, member)) {
@@ -114,7 +114,7 @@ func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID strin
 
 }
 
-func (p *Permissions) GetMemberPerms(session *discordgo.Session, guildID string, memberID string) (perms.PermsArray, error) {
+func (p *Permissions) GetMemberPerms(session *discordgo.Session, guildID string, memberID string) (perms.Array, error) {
 	guildPerms, err := p.db.GetPermissions(guildID)
 	if err != nil {
 		return nil, err
@@ -124,7 +124,7 @@ func (p *Permissions) GetMemberPerms(session *discordgo.Session, guildID string,
 		return nil, err
 	}
 
-	var res perms.PermsArray
+	var res perms.Array
 	for _, r := range membRoles {
 		if p, ok := guildPerms[r.ID]; ok {
 			if res == nil {
@@ -138,13 +138,13 @@ func (p *Permissions) GetMemberPerms(session *discordgo.Session, guildID string,
 	return res, nil
 }
 
-func (p *Permissions) HasPerms(session *discordgo.Session, guildID, userID, dn string) (ok, override bool, err error) {
-	perms, override, err := p.GetPerms(session, guildID, userID)
+func (p *Permissions) HasPerms(session *discordgo.Session, guildID, userID, pm string) (ok, override bool, err error) {
+	perm, override, err := p.GetPerms(session, guildID, userID)
 	if err != nil {
 		return false, false, err
 	}
 
-	return perms.Has(dn), override, nil
+	return perm.Has(pm), override, nil
 }
 
 func (p *Permissions) HasSubCmdPerms(ctx ken.Context, subPM string, explicit bool, message ...string) (ok bool, err error) {

@@ -14,10 +14,10 @@ type Status struct {
 }
 
 type GuildSettings struct {
-	AutoRoles  []string                    `json:"auto_roles"`
-	AutoVoice  []string                    `json:"auto_voice"`
-	Perms      map[string]perms.PermsArray `json:"perms"`
-	APIEnabled bool                        `json:"api_enabled"`
+	AutoRoles  []string               `json:"auto_roles"`
+	AutoVoice  []string               `json:"auto_voice"`
+	Perms      map[string]perms.Array `json:"perms"`
+	APIEnabled bool                   `json:"api_enabled"`
 }
 
 type GuildSettingsEmpty struct {
