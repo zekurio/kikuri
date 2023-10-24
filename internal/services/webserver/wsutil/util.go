@@ -1,11 +1,12 @@
 package wsutil
 
 import (
-	"github.com/charmbracelet/log"
-	"github.com/zekurio/daemon/internal/util/embedded"
 	"io/fs"
 	"net/http"
 	"os"
+
+	"github.com/charmbracelet/log"
+	"github.com/zekurio/daemon/internal/util/embedded"
 )
 
 func GetFS() (f http.FileSystem, err error) {
@@ -15,8 +16,8 @@ func GetFS() (f http.FileSystem, err error) {
 	}
 	_, err = fsys.Open("index.html")
 	if os.IsNotExist(err) {
-		log.Info("Using web files from web/dist/web")
-		f = http.Dir("web/dist/web")
+		log.Info("Using web files from web/dist")
+		f = http.Dir("web/dist")
 		err = nil
 		return
 	}

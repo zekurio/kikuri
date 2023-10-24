@@ -32,7 +32,7 @@ WORKDIR /app
 
 # Copy daemon
 COPY --from=build-dm /build/bin/daemon /app/daemon
-COPY --from=build-fe /build/dist /app/internal/util/embedded/webdist
+COPY --from=build-fe /build/dist web/dist
 
 # Prepare config directory
 RUN mkdir -p /etc/daemon
