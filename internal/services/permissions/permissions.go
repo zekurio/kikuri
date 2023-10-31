@@ -1,6 +1,7 @@
 package permissions
 
 import (
+	"github.com/zekurio/daemon/internal/models"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -8,7 +9,6 @@ import (
 	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
 	"github.com/zekurio/daemon/internal/util/static"
@@ -19,7 +19,7 @@ import (
 
 type Permissions struct {
 	db  database.Database
-	cfg config.Config
+	cfg models.Config
 	s   *discordgo.Session
 	st  *dgrs.State
 }
@@ -29,7 +29,7 @@ var _ PermsProvider = (*Permissions)(nil)
 func InitPermissions(ctn di.Container) *Permissions {
 	return &Permissions{
 		db:  ctn.Get(static.DiDatabase).(database.Database),
-		cfg: ctn.Get(static.DiConfig).(config.Config),
+		cfg: ctn.Get(static.DiConfig).(models.Config),
 		s:   ctn.Get(static.DiDiscordSession).(*discordgo.Session),
 		st:  ctn.Get(static.DiState).(*dgrs.State),
 	}
@@ -61,7 +61,6 @@ func (p *Permissions) Before(ctx *ken.Ctx) (next bool, err error) {
 }
 
 func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID string) (perm perms.Array, override bool, err error) {
-
 	if guildID != "" {
 		perm, err = p.GetMemberPerms(session, guildID, userID)
 		if err != nil && !dberr.IsErrNotFound(err) {
@@ -111,7 +110,6 @@ func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID strin
 	perm = perm.Merge(defaultUserPerms, false)
 
 	return perm, override, nil
-
 }
 
 func (p *Permissions) GetMemberPerms(session *discordgo.Session, guildID string, memberID string) (perms.Array, error) {
@@ -148,7 +146,6 @@ func (p *Permissions) HasPerms(session *discordgo.Session, guildID, userID, pm s
 }
 
 func (p *Permissions) HasSubCmdPerms(ctx ken.Context, subPM string, explicit bool, message ...string) (ok bool, err error) {
-
 	cmd, cok := ctx.GetCommand().(CommandPerms)
 	if !cok {
 		return
@@ -182,5 +179,4 @@ func (p *Permissions) HasSubCmdPerms(ctx ken.Context, subPM string, explicit boo
 	}
 
 	return true, nil
-
 }

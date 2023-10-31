@@ -2,6 +2,7 @@ package listeners
 
 import (
 	"fmt"
+	"github.com/zekurio/daemon/internal/models"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -9,20 +10,19 @@ import (
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
 
-	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/util/static"
 	"github.com/zekurio/daemon/pkg/discordutils"
 )
 
 type ListenerGuilds struct {
-	cfg       config.Config
+	cfg       models.Config
 	st        *dgrs.State
 	lockUntil *time.Time
 }
 
 func NewListenerGuildCreate(ctn di.Container) *ListenerGuilds {
 	return &ListenerGuilds{
-		cfg: ctn.Get(static.DiConfig).(config.Config),
+		cfg: ctn.Get(static.DiConfig).(models.Config),
 		st:  ctn.Get(static.DiState).(*dgrs.State),
 	}
 }

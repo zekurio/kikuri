@@ -5,7 +5,7 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekurio/daemon/internal/listeners"
-	"github.com/zekurio/daemon/internal/services/config"
+	"github.com/zekurio/daemon/internal/models"
 	"github.com/zekurio/daemon/internal/util/static"
 )
 
@@ -14,7 +14,7 @@ func InitDiscord(ctn di.Container) (err error) {
 	log.Info("Initializing bot session ...")
 
 	session := ctn.Get(static.DiDiscordSession).(*discordgo.Session)
-	cfg := ctn.Get(static.DiConfig).(config.Config)
+	cfg := ctn.Get(static.DiConfig).(models.Config)
 
 	session.Token = "Bot " + cfg.Discord.Token
 	session.Identify.Intents = discordgo.MakeIntent(static.Intents)

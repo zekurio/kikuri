@@ -1,6 +1,7 @@
 package inits
 
 import (
+	"github.com/zekurio/daemon/internal/models"
 	"reflect"
 	"time"
 
@@ -9,12 +10,11 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/util/static"
 	"github.com/zekurio/daemon/pkg/timeutils"
 )
 
-func getLifetimes(cfg config.Config) (dgrs.Lifetimes, bool, error) {
+func getLifetimes(cfg models.Config) (dgrs.Lifetimes, bool, error) {
 	lifetimes := cfg.Cache.Lifetimes
 
 	var target dgrs.Lifetimes
@@ -49,7 +49,7 @@ func getLifetimes(cfg config.Config) (dgrs.Lifetimes, bool, error) {
 func InitState(container di.Container) (s *dgrs.State, err error) {
 	session := container.Get(static.DiDiscordSession).(*discordgo.Session)
 	rd := container.Get(static.DiRedis).(*redis.Client)
-	cfg := container.Get(static.DiConfig).(config.Config)
+	cfg := container.Get(static.DiConfig).(models.Config)
 
 	lf, set, err := getLifetimes(cfg)
 	if err != nil {

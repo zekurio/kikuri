@@ -3,12 +3,12 @@ package auth
 import (
 	"errors"
 	"fmt"
+	"github.com/zekurio/daemon/internal/models"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/util/embedded"
 	"github.com/zekurio/daemon/internal/util/static"
 )
@@ -23,7 +23,7 @@ type AccessTokenHandlerImpl struct {
 }
 
 func NewAccessTokenHandlerImpl(container di.Container) *AccessTokenHandlerImpl {
-	cfg := container.Get(static.DiConfig).(config.Config)
+	cfg := container.Get(static.DiConfig).(models.Config)
 
 	return &AccessTokenHandlerImpl{
 		sessionExpiration: time.Duration(cfg.Webserver.AccessToken.LifetimeSeconds) * time.Second,

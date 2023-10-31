@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/zekurio/daemon/internal/models"
 	"os"
 	"os/signal"
 	"syscall"
@@ -50,7 +51,7 @@ func main() {
 	diBuilder.Add(di.Def{
 		Name: static.DiConfig,
 		Build: func(ctn di.Container) (interface{}, error) {
-			return config.Parse(*flagConfigPath, "DAEMON_", config.DefaultConfig)
+			return config.Parse(*flagConfigPath, "DAEMON_", models.DefaultConfig)
 		},
 	})
 
@@ -58,7 +59,7 @@ func main() {
 	diBuilder.Add(di.Def{
 		Name: static.DiRedis,
 		Build: func(ctn di.Container) (interface{}, error) {
-			cfg := ctn.Get(static.DiConfig).(config.Config)
+			cfg := ctn.Get(static.DiConfig).(models.Config)
 			return redis.NewClient(&redis.Options{
 				Addr:     cfg.Cache.Redis.Addr,
 				Password: cfg.Cache.Redis.Password,

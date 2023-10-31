@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"github.com/zekurio/daemon/internal/models"
 	"strings"
 	"time"
 
@@ -10,7 +11,6 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
 
-	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/dberr"
 	"github.com/zekurio/daemon/internal/util"
@@ -28,7 +28,7 @@ var (
 	guildTables                   = []string{"guilds", "permissions"}
 )
 
-func NewPostgres(c config.DatabaseCreds) (*Postgres, error) {
+func NewPostgres(c models.DatabaseCreds) (*Postgres, error) {
 	var (
 		p   Postgres
 		err error

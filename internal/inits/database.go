@@ -1,12 +1,12 @@
 package inits
 
 import (
+	"github.com/zekurio/daemon/internal/models"
 	"strings"
 
 	"github.com/charmbracelet/log"
 	redis_pkg "github.com/go-redis/redis/v8"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/config"
 	"github.com/zekurio/daemon/internal/services/database"
 	"github.com/zekurio/daemon/internal/services/database/postgres"
 	"github.com/zekurio/daemon/internal/services/database/redis"
@@ -14,7 +14,7 @@ import (
 )
 
 func InitDatabase(ctn di.Container) (db database.Database, err error) {
-	cfg := ctn.Get(static.DiConfig).(config.Config)
+	cfg := ctn.Get(static.DiConfig).(models.Config)
 
 	driver := strings.ToLower(cfg.Database.Type)
 
