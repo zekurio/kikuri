@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 
 import { RouteSuspense } from "./components/RouteSuspense";
