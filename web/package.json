@@ -1,5 +1,5 @@
 {
-  "name": "daemon-webinterface",
+  "name": "kikuri-webinterface",
   "private": true,
   "version": "0.1.0",
   "type": "module",

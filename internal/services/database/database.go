@@ -3,8 +3,8 @@ package database
 import (
 	"time"
 
-	"github.com/zekurio/daemon/internal/util/vote"
-	"github.com/zekurio/daemon/pkg/perms"
+	"github.com/zekurio/kikuri/internal/util/vote"
+	"github.com/zekurio/kikuri/pkg/perms"
 )
 
 // Database is the interface for our database service

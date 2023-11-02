@@ -5,10 +5,10 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
 
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/arrayutils"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/arrayutils"
 )
 
 type ListenerMemberAdd struct {

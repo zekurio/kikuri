@@ -5,14 +5,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	models2 "github.com/zekurio/daemon/internal/models"
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/services/webserver/v1/models"
-	"github.com/zekurio/daemon/internal/services/webserver/wsutil"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/arrayutils"
+	models2 "github.com/zekurio/kikuri/internal/models"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
+	"github.com/zekurio/kikuri/internal/services/webserver/wsutil"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/arrayutils"
 )
 
 type GuildSettingsController struct {

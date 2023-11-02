@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/zekurio/daemon/pkg/perms"
+	"github.com/zekurio/kikuri/pkg/perms"
 )
 
 var Ok = &Status{Code: 200}

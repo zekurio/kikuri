@@ -7,12 +7,12 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/perms"
-	"github.com/zekurio/daemon/pkg/roleutils"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/perms"
+	"github.com/zekurio/kikuri/pkg/roleutils"
 )
 
 type Perms struct {

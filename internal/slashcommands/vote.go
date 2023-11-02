@@ -8,12 +8,12 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/middlewares"
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/internal/util/vote"
-	"github.com/zekurio/daemon/pkg/timeutils"
+	"github.com/zekurio/kikuri/internal/middlewares"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/internal/util/vote"
+	"github.com/zekurio/kikuri/pkg/timeutils"
 )
 
 type Vote struct{}

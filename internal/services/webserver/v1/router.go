@@ -3,9 +3,9 @@ package v1
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/webserver/auth"
-	"github.com/zekurio/daemon/internal/services/webserver/v1/controllers"
-	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/kikuri/internal/services/webserver/auth"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/controllers"
+	"github.com/zekurio/kikuri/internal/util/static"
 )
 
 type Router struct {

@@ -2,16 +2,17 @@ package listeners
 
 import (
 	"fmt"
-	"github.com/zekurio/daemon/internal/models"
 	"time"
+
+	"github.com/zekurio/kikuri/internal/models"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
 
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/discordutils"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/discordutils"
 )
 
 type ListenerGuilds struct {
@@ -55,7 +56,7 @@ func (l *ListenerGuilds) Handler(s *discordgo.Session, e *discordgo.GuildCreate)
 
 	discordutils.SendEmbedMessageDM(s, e.OwnerID, &discordgo.MessageEmbed{
 		Title:       "Guild Limit Reached",
-		Description: fmt.Sprintf("The guild limit of %d has been reached. Daemon will leave this guild now.", limit),
+		Description: fmt.Sprintf("The guild limit of %d has been reached. Kikuri will leave this guild now.", limit),
 	})
 
 	if err = s.GuildLeave(e.Guild.ID); err != nil {

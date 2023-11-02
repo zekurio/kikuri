@@ -7,10 +7,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/webserver/v1/models"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/debug"
-	"github.com/zekurio/daemon/pkg/discordoauth"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/debug"
+	"github.com/zekurio/kikuri/pkg/discordoauth"
 )
 
 type RefreshTokenRequestHandler struct {

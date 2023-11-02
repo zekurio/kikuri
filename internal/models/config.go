@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/cryptoutils"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/cryptoutils"
 )
 
 var DefaultConfig = Config{

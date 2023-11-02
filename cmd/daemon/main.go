@@ -2,10 +2,11 @@ package main
 
 import (
 	"flag"
-	"github.com/zekurio/daemon/internal/models"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/zekurio/kikuri/internal/models"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
@@ -13,13 +14,13 @@ import (
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/inits"
-	"github.com/zekurio/daemon/internal/services/config"
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/services/webserver/auth"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/debug"
+	"github.com/zekurio/kikuri/internal/inits"
+	"github.com/zekurio/kikuri/internal/services/config"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/services/webserver/auth"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/debug"
 )
 
 var (
@@ -51,7 +52,7 @@ func main() {
 	diBuilder.Add(di.Def{
 		Name: static.DiConfig,
 		Build: func(ctn di.Container) (interface{}, error) {
-			return config.Parse(*flagConfigPath, "DAEMON_", models.DefaultConfig)
+			return config.Parse(*flagConfigPath, "KIKURI_", models.DefaultConfig)
 		},
 	})
 

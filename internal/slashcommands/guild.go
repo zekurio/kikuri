@@ -9,11 +9,11 @@ import (
 	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/colorutils"
-	"github.com/zekurio/daemon/pkg/discordutils"
-	"github.com/zekurio/daemon/pkg/quickembed"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/colorutils"
+	"github.com/zekurio/kikuri/pkg/discordutils"
+	"github.com/zekurio/kikuri/pkg/quickembed"
 )
 
 type Guild struct {

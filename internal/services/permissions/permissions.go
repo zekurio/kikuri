@@ -1,7 +1,7 @@
 package permissions
 
 import (
-	"github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -9,12 +9,12 @@ import (
 	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/discordutils"
-	"github.com/zekurio/daemon/pkg/perms"
-	"github.com/zekurio/daemon/pkg/roleutils"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/discordutils"
+	"github.com/zekurio/kikuri/pkg/perms"
+	"github.com/zekurio/kikuri/pkg/roleutils"
 )
 
 type Permissions struct {

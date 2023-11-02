@@ -3,10 +3,10 @@ package inits
 import (
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/models"
-	"github.com/zekurio/daemon/internal/services/webserver/auth"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/discordoauth"
+	"github.com/zekurio/kikuri/internal/models"
+	"github.com/zekurio/kikuri/internal/services/webserver/auth"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/discordoauth"
 )
 
 func InitDiscordOAuth(ctn di.Container) *discordoauth.DiscordOAuth {

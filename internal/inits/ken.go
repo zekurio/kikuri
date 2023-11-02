@@ -10,11 +10,11 @@ import (
 	"github.com/zekrotja/ken"
 	"github.com/zekrotja/ken/state"
 
-	"github.com/zekurio/daemon/internal/middlewares"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/slashcommands"
-	"github.com/zekurio/daemon/internal/usercommands"
-	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/kikuri/internal/middlewares"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/slashcommands"
+	"github.com/zekurio/kikuri/internal/usercommands"
+	"github.com/zekurio/kikuri/internal/util/static"
 )
 
 func InitKen(ctn di.Container) (k *ken.Ken, err error) {

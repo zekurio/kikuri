@@ -1,16 +1,16 @@
 package inits
 
 import (
-	"github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 
 	"github.com/charmbracelet/log"
 	redis_pkg "github.com/go-redis/redis/v8"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/postgres"
-	"github.com/zekurio/daemon/internal/services/database/redis"
-	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/postgres"
+	"github.com/zekurio/kikuri/internal/services/database/redis"
+	"github.com/zekurio/kikuri/internal/util/static"
 )
 
 func InitDatabase(ctn di.Container) (db database.Database, err error) {

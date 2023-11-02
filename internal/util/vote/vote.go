@@ -7,10 +7,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/rs/xid"
 	"github.com/zekrotja/ken"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/arrayutils"
-	"github.com/zekurio/daemon/pkg/discordutils"
-	"github.com/zekurio/daemon/pkg/hashutils"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/arrayutils"
+	"github.com/zekurio/kikuri/pkg/discordutils"
+	"github.com/zekurio/kikuri/pkg/hashutils"
 )
 
 // Vote is a struct for a vote

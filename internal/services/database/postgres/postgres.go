@@ -3,7 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 	"time"
 
@@ -11,12 +11,12 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
 
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/util"
-	"github.com/zekurio/daemon/internal/util/embedded"
-	"github.com/zekurio/daemon/internal/util/vote"
-	"github.com/zekurio/daemon/pkg/perms"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/util"
+	"github.com/zekurio/kikuri/internal/util/embedded"
+	"github.com/zekurio/kikuri/internal/util/vote"
+	"github.com/zekurio/kikuri/pkg/perms"
 )
 
 type Postgres struct {

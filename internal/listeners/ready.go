@@ -10,11 +10,11 @@ import (
 	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/scheduler"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/internal/util/vote"
-	"github.com/zekurio/daemon/pkg/discordutils"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/scheduler"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/internal/util/vote"
+	"github.com/zekurio/kikuri/pkg/discordutils"
 )
 
 type ListenerReady struct {

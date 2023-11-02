@@ -1,7 +1,7 @@
 package inits
 
 import (
-	"github.com/zekurio/daemon/internal/models"
+	"github.com/zekurio/kikuri/internal/models"
 	"reflect"
 	"time"
 
@@ -10,8 +10,8 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/timeutils"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/timeutils"
 )
 
 func getLifetimes(cfg models.Config) (dgrs.Lifetimes, bool, error) {

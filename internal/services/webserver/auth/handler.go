@@ -2,7 +2,7 @@ package auth
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/zekurio/daemon/pkg/discordoauth"
+	"github.com/zekurio/kikuri/pkg/discordoauth"
 )
 
 // RequestHandler provides fiber endpoints and handlers

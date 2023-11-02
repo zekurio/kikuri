@@ -4,7 +4,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/pkg/perms"
+	"github.com/zekurio/kikuri/pkg/perms"
 )
 
 type PermsProvider interface {

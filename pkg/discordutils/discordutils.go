@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/kikuri/internal/util/static"
 
 	"github.com/bwmarrin/discordgo"
 )

@@ -6,8 +6,8 @@ import (
 
 	"github.com/zekrotja/ken"
 	"github.com/zekrotja/sop"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
 )
 
 var allPerms sop.Enumerable[string]

@@ -1,9 +1,9 @@
-# daemon - デーモン [WIP]
+# Kikuri - きくり [WIP]
 
 | Branch | Tests CI | Docker CD | Releases CD |
 |--------|---------|-----------|-------------|
-| `main` (stable)  | [![Unit Tests](https://github.com/zekurio/daemon/actions/workflows/tests-ci.yml/badge.svg?branch=main)](https://github.com/zekurio/daemon/actions/workflows/tests-ci.yml) | [![Docker CD](https://github.com/zekurio/daemon/actions/workflows/docker-cd.yml/badge.svg?branch=main)](https://github.com/zekurio/daemon/actions/workflows/docker-cd.yml) | [![Releases CD](https://github.com/zekurio/daemon/actions/workflows/releases-cd.yml/badge.svg)](https://github.com/zekurio/daemon/actions/workflows/releases-cd.yml) |
-| `dev` (canary)   | [![Unit Tests](https://github.com/zekurio/daemon/actions/workflows/tests-ci.yml/badge.svg?branch=dev)](https://github.com/zekurio/daemon/actions/workflows/tests-ci.yml) | [![Docker CD](https://github.com/zekurio/daemon/actions/workflows/docker-cd.yml/badge.svg?branch=dev)](https://github.com/zekurio/daemon/actions/workflows/docker-cd.yml) |
+| `main` (stable)  | [![Unit Tests](https://github.com/zekurio/kikuri/actions/workflows/tests-ci.yml/badge.svg?branch=main)](https://github.com/zekurio/kikuri/actions/workflows/tests-ci.yml) | [![Docker CD](https://github.com/zekurio/kikuri/actions/workflows/docker-cd.yml/badge.svg?branch=main)](https://github.com/zekurio/kikuri/actions/workflows/docker-cd.yml) | [![Releases CD](https://github.com/zekurio/kikuri/actions/workflows/releases-cd.yml/badge.svg)](https://github.com/zekurio/kikuri/actions/workflows/releases-cd.yml) |
+| `dev` (canary)   | [![Unit Tests](https://github.com/zekurio/kikuri/actions/workflows/tests-ci.yml/badge.svg?branch=dev)](https://github.com/zekurio/kikuri/actions/workflows/tests-ci.yml) | [![Docker CD](https://github.com/zekurio/kikuri/actions/workflows/docker-cd.yml/badge.svg?branch=dev)](https://github.com/zekurio/kikuri/actions/workflows/docker-cd.yml) |
 
 ## Inviting
 

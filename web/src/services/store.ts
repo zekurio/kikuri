@@ -17,16 +17,16 @@ export interface Store {
 }
 
 export const useStore = create<Store>((set) => ({
-  theme: LocalStorageUtil.get("daemon.theme", getSystemTheme())!,
+  theme: LocalStorageUtil.get("kikuri.theme", getSystemTheme())!,
   setTheme: (theme) => {
     set({ theme });
-    LocalStorageUtil.set("daemon.theme", theme);
+    LocalStorageUtil.set("kikuri.theme", theme);
   },
 
-  accentColor: LocalStorageUtil.get("daemon.accentcolor"),
+  accentColor: LocalStorageUtil.get("kikuri.accentcolor"),
   setAccentColor: (accentColor) => {
     set({ accentColor });
-    if (accentColor === undefined) LocalStorageUtil.del("daemon.accentcolor");
-    else LocalStorageUtil.set("daemon.accentcolor", accentColor);
+    if (accentColor === undefined) LocalStorageUtil.del("kikuri.accentcolor");
+    else LocalStorageUtil.set("kikuri.accentcolor", accentColor);
   },
 }));

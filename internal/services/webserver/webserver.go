@@ -6,12 +6,12 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/models"
-	v1 "github.com/zekurio/daemon/internal/services/webserver/v1"
-	"github.com/zekurio/daemon/internal/services/webserver/v1/controllers"
-	"github.com/zekurio/daemon/internal/services/webserver/wsutil"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/debug"
+	"github.com/zekurio/kikuri/internal/models"
+	v1 "github.com/zekurio/kikuri/internal/services/webserver/v1"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/controllers"
+	"github.com/zekurio/kikuri/internal/services/webserver/wsutil"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/debug"
 )
 
 type WebServer struct {
@@ -29,7 +29,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 	ws.cfg = ctn.Get(static.DiConfig).(models.Config)
 
 	ws.app = fiber.New(fiber.Config{
-		AppName:               "daemon",
+		AppName:               "kikuri",
 		DisableStartupMessage: true,
 		ProxyHeader:           "X-Forwarded-For",
 	})

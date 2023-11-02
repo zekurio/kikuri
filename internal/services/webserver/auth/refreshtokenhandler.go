@@ -7,10 +7,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/cryptoutils"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/cryptoutils"
 )
 
 type RefreshTokenHandlerImpl struct {

@@ -3,14 +3,15 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"github.com/zekurio/daemon/internal/models"
 	"time"
+
+	"github.com/zekurio/kikuri/internal/models"
 
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/util/embedded"
-	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/kikuri/internal/util/embedded"
+	"github.com/zekurio/kikuri/internal/util/static"
 )
 
 var (
@@ -36,7 +37,7 @@ func (ath *AccessTokenHandlerImpl) GetAccessToken(ident string) (token string, e
 	expires = now.Add(ath.sessionExpiration)
 
 	claims := jwt.RegisteredClaims{}
-	claims.Issuer = fmt.Sprintf("daemon v.%s", embedded.AppVersion)
+	claims.Issuer = fmt.Sprintf("kikuri v.%s", embedded.AppVersion)
 	claims.Subject = ident
 	claims.ExpiresAt = jwt.NewNumericDate(expires)
 	claims.NotBefore = jwt.NewNumericDate(now)

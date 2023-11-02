@@ -1,4 +1,4 @@
-module github.com/zekurio/daemon
+module github.com/zekurio/kikuri
 
 go 1.21
 

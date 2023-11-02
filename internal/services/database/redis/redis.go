@@ -7,7 +7,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/go-redis/redis/v8"
-	"github.com/zekurio/daemon/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database"
 )
 
 const (

@@ -5,8 +5,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/discordutils"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/discordutils"
 )
 
 type InviteController struct {

@@ -1,6 +1,6 @@
 package votes
 
-import "github.com/zekurio/daemon/internal/models"
+import "github.com/zekurio/kikuri/internal/models"
 
 // Provider is an interface for the vote service
 // it handles the storage of votes, syncing with

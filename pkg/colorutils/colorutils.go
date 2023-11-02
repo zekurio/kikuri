@@ -5,7 +5,7 @@ import (
 	"image"
 	"math"
 
-	"github.com/zekurio/daemon/pkg/httputils"
+	"github.com/zekurio/kikuri/pkg/httputils"
 )
 
 // GenerateColorFromImage generates a HEX color from an images prominent color.

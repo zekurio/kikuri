@@ -1,27 +1,27 @@
-name: daemon-dev
+name: kikuri-dev
 
 volumes:
-  daemon-pg:
-    name: 'daemon-pg-dev'
+  kikuri-pg:
+    name: 'kikuri-pg-dev'
 
 services:
   postgres:
-    container_name: daemon-pg-container
+    container_name: kikuri-pg-container
     ports:
       - "5432:5432"
     image: 'postgres'
     volumes:
-      - 'daemon-pg:/var/lib/postgresql/data'
+      - 'kikuri-pg:/var/lib/postgresql/data'
     environment:
-      POSTGRES_PASSWORD: 'daemon'
-      POSTGRES_USER: 'daemon'
-      POSTGRES_DB: 'daemon'
+      POSTGRES_PASSWORD: 'kikuri'
+      POSTGRES_USER: 'kikuri'
+      POSTGRES_DB: 'kikuri'
     restart: 'on-failure'
 
   redis:
-    container_name: daemon-redis-container
+    container_name: kikuri-redis-container
     ports:
       - "6379:6379"
     image: 'redis'
-    command: redis-server --requirepass daemon
+    command: redis-server --requirepass kikuri
     restart: 'on-failure'
