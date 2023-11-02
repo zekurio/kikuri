@@ -9,7 +9,7 @@ services:
     container_name: 'postgres-kikuri'
     image: 'postgres:alpine'
     volumes:
-      - 'kikuri-pg-latest:/var/lib/postgresql/data'
+      - 'kikuri-pg:/var/lib/postgresql/data'
     restart: 'unless-stopped'
     environment:
       POSTGRES_PASSWORD: youshallnotpass
