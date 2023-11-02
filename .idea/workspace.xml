@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="775bd22e-6104-455b-817c-5d2a4c07cafe" name="Changes" comment="🐛 bugfix: fixed building issue for frontend files">
+    <list default="true" id="775bd22e-6104-455b-817c-5d2a4c07cafe" name="Changes" comment="🚑️ hotfix: fixed some things that were missed by the refactor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/daemon/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/kikuri/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +131,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="working on vote service, webinterface and much more" />
     <MESSAGE value=" bugfix: fixed building issue for frontend files" />
-    <option name="LAST_COMMIT_MESSAGE" value=" bugfix: fixed building issue for frontend files" />
+    <MESSAGE value="️ hotfix: fixed some things that were missed by the refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="️ hotfix: fixed some things that were missed by the refactor" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

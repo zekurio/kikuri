@@ -1,0 +1,36 @@
+version: '3.8'
+
+volumes:
+  kikuri-pg:
+    name: 'kikuri-pg'
+
+services:
+  postgres:
+    container_name: 'postgres-kikuri'
+    image: 'postgres:alpine'
+    volumes:
+      - 'kikuri-pg-latest:/var/lib/postgresql/data'
+    restart: 'unless-stopped'
+    environment:
+      POSTGRES_PASSWORD: youshallnotpass
+      POSTGRES_USER: kikuri
+      POSTGRES_DB: kikuri
+
+  redis:
+    container_name: 'redis-kikuri'
+    image: 'redis'
+    command: redis-server --requirepass youshallnotpass
+    restart: 'on-failure'
+
+  kikuri:
+    container_name: 'kikuri'
+    image: 'ghcr.io/zekurio/kikuri'
+    tty: true
+    ports:
+      - '443:443'
+    volumes:
+      - '/home/worker/docker/kikuri/canary-config:/etc/kikuri/'
+    restart: 'unless-stopped'
+    depends_on:
+      - 'postgres-canary'
+      - 'redis-canary'

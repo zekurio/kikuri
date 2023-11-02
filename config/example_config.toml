@@ -1,0 +1,39 @@
+[Discord]
+Token = 'BOT_TOKEN'
+ClientID = 'BOT_CLIENT_ID'
+ClientSecret = 'BOT_CLIENT_SECRET'
+OwnerID = 'OWNER_ID'
+GuildLimit = 99
+DisabledCommands = []
+
+[Database]
+Type = 'Postgres'
+
+[Database.Postgres]
+Host = 'localhost'
+Port = 5432
+Database = 'yourdatabase'
+Username = 'yourusername'
+Password = 'yourpassword'
+
+[Cache]
+CacheDatabase = true
+
+[Cache.Redis]
+Addr = 'localhost:6379'
+Password = 'yourpassword'
+Type = 0
+
+[Permissions]
+UserRules = ['+ku.chat.*', '+ku.etc.*']
+AdminRules = ['+ku.guild.*', '+ku.chat.*', '+ku.etc.*']
+
+[Webserver]
+Enabled = true
+Addr = '0.0.0.0:8080'
+PublicAddr = 'http://localhost:8080'
+
+[Webserver.TLS]
+Enabled = false
+Cert = 'cert.pem'
+Key = 'key.pem'

@@ -21,7 +21,8 @@ If you want to self-host the bot, which is not recommended, you can do so by fol
 
 ### Using Docker
 
-Instructions coming soon.
+1. Install [Docker](https://docs.docker.com/get-docker/), on modern Linux distributions you can install it from your package manager, which should include `docker-compose` as well.
+2. Create a 
 
 ### Building from source
 
