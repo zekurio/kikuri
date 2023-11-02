@@ -41,17 +41,17 @@ const (
 
 var (
 	DefaultAdminRules = []string{
-		"+dm.guild.*",
-		"+dm.etc.*",
-		"+dm.chat.*",
+		"+ku.guild.*",
+		"+ku.etc.*",
+		"+ku.chat.*",
 	}
 
 	DefaultUserRules = []string{
-		"+dm.etc.*",
-		"+dm.chat.*",
+		"+ku.etc.*",
+		"+ku.chat.*",
 	}
 
 	AdditionalRules = []string{
-		"+dm.etc.autochannel",
+		"+ku.etc.autochannel",
 	}
 )

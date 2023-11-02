@@ -1,8 +1,9 @@
 package permissions
 
 import (
-	"github.com/zekurio/kikuri/internal/models"
 	"strings"
+
+	"github.com/zekurio/kikuri/internal/models"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/sarulabs/di/v2"
@@ -71,7 +72,7 @@ func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID strin
 	}
 
 	if p.cfg.Discord.OwnerID == userID {
-		perm = perms.Array{"+dm.*"}
+		perm = perms.Array{"+ku.*"}
 		override = true
 		return
 	}

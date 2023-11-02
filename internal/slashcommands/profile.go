@@ -51,7 +51,7 @@ func (c *Profile) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Profile) Perm() string {
-	return "dm.chat.profile"
+	return "ku.chat.profile"
 }
 
 func (c *Profile) SubPerms() []permissions.SubCommandPerms {

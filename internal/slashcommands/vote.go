@@ -112,7 +112,7 @@ func (c *Vote) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Vote) Perm() string {
-	return "dm.chat.vote"
+	return "ku.chat.vote"
 }
 
 func (c *Vote) SubPerms() []permissions.SubCommandPerms {

@@ -91,7 +91,7 @@ func (c *Perms) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Perms) Perm() string {
-	return "dm.guild.config.perms"
+	return "ku.guild.config.perms"
 }
 
 func (c *Perms) SubPerms() []permissions.SubCommandPerms {
