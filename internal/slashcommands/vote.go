@@ -215,6 +215,11 @@ func (c *Vote) list(ctx ken.SubCommandContext) (err error) {
 		emb.Fields = append(emb.Fields, currVote.AsField())
 	}
 
+	// if no votes are open, send an embed a different embed
+	if len(emb.Fields) == 0 {
+		emb.Description = "You have no open votes on this guild."
+	}
+
 	err = ctx.FollowUpEmbed(emb).Send().Error
 	return err
 }
@@ -289,7 +294,7 @@ func (c *Vote) close(ctx ken.SubCommandContext) (err error) {
 	id := ctx.Options().GetByName("id").StringValue()
 
 	if strings.ToLower(id) == "all" {
-		votesClosed, err := vh.CloseAll(ctx.GetEvent().GuildID)
+		votesClosed, err := vh.CloseAll(ctx.GetKen(), ctx.GetEvent().GuildID)
 		if err != nil {
 			return ctx.FollowUpError("Failed closing all votes.", "").Send().Error
 		}
@@ -299,7 +304,7 @@ func (c *Vote) close(ctx ken.SubCommandContext) (err error) {
 		}).Send().Error
 	}
 
-	if err := vh.Close(id, models.StateClosed); err != nil {
+	if err := vh.Close(ctx.GetKen(), id, models.StateClosed); err != nil {
 		return err
 	}
 

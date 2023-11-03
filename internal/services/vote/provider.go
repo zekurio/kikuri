@@ -12,7 +12,7 @@ import (
 // it also handles the vote expiration
 type VotesProvider interface {
 	// Populate populates the votes map with the data from the database
-	Populate() error
+	Populate(ken ken.IKen) error
 
 	// Create creates a new vote and adds it to the votes map
 	Create(ctx ken.SubCommandContext, vote models.Vote) error
@@ -28,8 +28,8 @@ type VotesProvider interface {
 
 	// Close closes a vote, this can also be called by the expiration
 	// handler but needs to pass the state of the vote
-	Close(id string, state models.VoteState) error
+	Close(ken ken.IKen, id string, state models.VoteState) error
 
 	// CloseAll closes all votes from a guild, returns amount of closed votes
-	CloseAll(guildID string) (int, error)
+	CloseAll(ken ken.IKen, guildID string) (int, error)
 }

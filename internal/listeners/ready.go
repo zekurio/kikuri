@@ -46,7 +46,7 @@ func (l *ListenerReady) Handler(s *discordgo.Session, e *discordgo.Ready) {
 	}
 
 	// populate votes
-	err = l.vh.Populate()
+	err = l.vh.Populate(l.ken)
 	if err != nil {
 		log.Error("Failed populating votes", err)
 	}
