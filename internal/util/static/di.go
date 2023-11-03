@@ -12,8 +12,8 @@ const (
 	DiDiscordOAuth            = "di-discordoauth"
 	DiOAuthHandler            = "di-oauthhandler"
 	DiAuthAccessTokenHandler  = "di-auth-accesstokenhandler"
-	DiAuthAPITokenHandler     = "di-auth-apitokenhandler"
 	DiAuthRefreshTokenHandler = "di-auth-refreshtokenhandler"
 	DiAuthMiddleware          = "di-auth-middleware"
 	DiRedis                   = "di-redis"
+	DiVotes                   = "di-votes"
 )

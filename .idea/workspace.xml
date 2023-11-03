@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="775bd22e-6104-455b-817c-5d2a4c07cafe" name="Changes" comment="🚑️ hotfix: fixed some things that were missed by the refactor">
+      <change afterPath="$PROJECT_DIR$/internal/services/vote/votes.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/kikuri/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/kikuri/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/listeners/ready.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/listeners/ready.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/database/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/database/database.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/database/postgres/postgres.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/database/postgres/postgres.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/scheduler/cron.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/scheduler/cron.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/votes/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/vote/provider.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/slashcommands/vote.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/slashcommands/vote.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/util/static/di.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/util/static/di.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/util/vote/vote.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +33,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -52,6 +65,7 @@
     "git-widget-placeholder": "dev",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
+    "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/Michael/Repos/kikuri",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -60,6 +74,11 @@
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "ts.external.directory.path": "C:\\Users\\Michael\\Repos\\kikuri\\web\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
 }]]></component>
   <component name="ReactDesignerToolWindowState">
@@ -76,10 +95,11 @@
       <recent name="C:\Users\Michael\Repos\kikuri\internal\models" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Run frontend">
+  <component name="RunManager" selected="Go Build.Run backend">
     <configuration name="Run backend" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
       <module name="kikuri" />
       <working_directory value="$PROJECT_DIR$" />
+      <parameters value="-c ./config/config.toml -debug" />
       <kind value="PACKAGE" />
       <package value="github.com/zekurio/kikuri/cmd/kikuri" />
       <directory value="$PROJECT_DIR$" />
@@ -87,6 +107,21 @@
       <method v="2" />
     </configuration>
     <configuration name="Run frontend JavaScript" type="JavascriptDebugType" engineId="f00130c5-8f66-4b52-a0c9-df4b364a2f7c" uri="http://localhost:5173">
+      <method v="2" />
+    </configuration>
+    <configuration name="Docker Container" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="sourceFilePath" value="docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
       <method v="2" />
     </configuration>
     <configuration name="Run frontend" type="js.build_tools.npm">
@@ -102,6 +137,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Docker.Docker Container" />
       <item itemvalue="Go Build.Run backend" />
       <item itemvalue="JavaScript Debug.Run frontend JavaScript" />
       <item itemvalue="npm.Run frontend" />
@@ -109,6 +145,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.Run backend" />
+        <item itemvalue="Docker.Docker Container" />
       </list>
     </recent_temporary>
   </component>

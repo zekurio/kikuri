@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/zekurio/kikuri/internal/services/vote"
 	"os"
 	"os/signal"
 	"syscall"
@@ -191,6 +192,14 @@ func main() {
 		Name: static.DiState,
 		Build: func(ctn di.Container) (interface{}, error) {
 			return inits.InitState(ctn)
+		},
+	})
+
+	// Votes
+	diBuilder.Add(di.Def{
+		Name: static.DiVotes,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return vote.NewVotesHandler(ctn), nil
 		},
 	})
 

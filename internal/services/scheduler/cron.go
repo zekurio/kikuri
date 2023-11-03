@@ -2,6 +2,8 @@ package scheduler
 
 import (
 	"errors"
+	"fmt"
+	"time"
 
 	"github.com/robfig/cron/v3"
 )
@@ -37,4 +39,19 @@ func (c *CronScheduler) Start() {
 
 func (c *CronScheduler) Stop() {
 	c.C.Stop()
+}
+
+func FormatCronJobSpec(timestamp time.Time, offset time.Duration) string {
+	// Calculate the target time by adding the offset to the timestamp
+	targetTime := timestamp.Add(offset)
+
+	// Create a cron spec using the target time
+	cronSpec := fmt.Sprintf("%d %d %d %d %d",
+		targetTime.Second(),
+		targetTime.Minute(),
+		targetTime.Hour(),
+		targetTime.Day(),
+		int(targetTime.Month()))
+
+	return cronSpec
 }

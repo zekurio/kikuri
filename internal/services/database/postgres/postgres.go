@@ -15,7 +15,6 @@ import (
 	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"github.com/zekurio/kikuri/internal/util"
 	"github.com/zekurio/kikuri/internal/util/embedded"
-	"github.com/zekurio/kikuri/internal/util/vote"
 	"github.com/zekurio/kikuri/pkg/perms"
 )
 
@@ -149,8 +148,8 @@ func (p *Postgres) SetPermissions(guildID, roleID string, permissions perms.Arra
 
 // VOTES
 
-func (p *Postgres) GetVotes() (votes map[string]vote.Vote, err error) {
-	votes = make(map[string]vote.Vote)
+func (p *Postgres) GetVotes() (votes map[string]models.Vote, err error) {
+	votes = make(map[string]models.Vote)
 	rows, err := p.db.Query(`SELECT id, json_data FROM votes`)
 	if err != nil {
 		return nil, p.wrapErr(err)
@@ -162,7 +161,7 @@ func (p *Postgres) GetVotes() (votes map[string]vote.Vote, err error) {
 		if err != nil {
 			continue
 		}
-		vote, err := util.Unmarshal[vote.Vote](rawData)
+		vote, err := util.Unmarshal[models.Vote](rawData)
 		if err != nil {
 			p.DeleteVote(rawData)
 		} else {
@@ -174,7 +173,7 @@ func (p *Postgres) GetVotes() (votes map[string]vote.Vote, err error) {
 	return
 }
 
-func (p *Postgres) AddUpdateVote(v vote.Vote) error {
+func (p *Postgres) AddUpdateVote(v models.Vote) error {
 	rawData, err := util.Marshal(v)
 	if err != nil {
 		return err

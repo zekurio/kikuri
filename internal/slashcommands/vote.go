@@ -2,6 +2,7 @@ package slashcommands
 
 import (
 	"fmt"
+	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 	"time"
 
@@ -9,10 +10,9 @@ import (
 	"github.com/zekrotja/ken"
 
 	"github.com/zekurio/kikuri/internal/middlewares"
-	"github.com/zekurio/kikuri/internal/services/database"
 	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/services/vote"
 	"github.com/zekurio/kikuri/internal/util/static"
-	"github.com/zekurio/kikuri/internal/util/vote"
 	"github.com/zekurio/kikuri/pkg/timeutils"
 )
 
@@ -145,8 +145,7 @@ func (c *Vote) Run(ctx ken.Context) (err error) {
 }
 
 func (c *Vote) create(ctx ken.SubCommandContext) (err error) {
-	db := ctx.Get(static.DiDatabase).(database.Database)
-
+	vh := ctx.Get(static.DiVotes).(vote.VotesProvider)
 	body := ctx.Options().GetByName("body").StringValue()
 	choices := ctx.Options().GetByName("choices").StringValue()
 	split := strings.Split(choices, ",")
@@ -181,7 +180,7 @@ func (c *Vote) create(ctx ken.SubCommandContext) (err error) {
 		expires = time.Now().Add(expiresDuration)
 	}
 
-	newVote := vote.Vote{
+	newVote := models.Vote{
 		ID:          ctx.GetEvent().ID,
 		CreatorID:   ctx.User().ID,
 		GuildID:     ctx.GetEvent().GuildID,
@@ -190,40 +189,21 @@ func (c *Vote) create(ctx ken.SubCommandContext) (err error) {
 		Choices:     split,
 		ImageURL:    imgLink,
 		Expires:     expires,
-		Buttons:     map[string]vote.OptionButton{},
-		CurrentVote: map[string]vote.CurrentVote{},
+		Buttons:     map[string]models.OptionButton{},
+		CurrentVote: map[string]models.CurrentVote{},
 	}
 
-	emb, err := newVote.AsEmbed(ctx.GetSession())
-	if err != nil {
-		return err
+	if err = vh.Create(ctx, newVote); err != nil {
+		return ctx.FollowUpError(
+			"Failed creating vote.", "").
+			Send().Error
 	}
-
-	fum := ctx.FollowUpEmbed(emb).Send()
-	err = fum.Error
-	if err != nil {
-		return err
-	}
-
-	b := fum.AddComponents()
-
-	newVote.MessageID = fum.Message.ID
-	err = db.AddUpdateVote(newVote)
-	if err != nil {
-		return err
-	}
-
-	_, err = newVote.AddButtons(b)
-	if err != nil {
-		return err
-	}
-
-	vote.RunningVotes[newVote.ID] = newVote
 
 	return
 }
 
 func (c *Vote) list(ctx ken.SubCommandContext) (err error) {
+	vh := ctx.Get(static.DiVotes).(vote.VotesProvider)
 
 	emb := &discordgo.MessageEmbed{
 		Description: "Your open votes on this guild:",
@@ -231,22 +211,15 @@ func (c *Vote) list(ctx ken.SubCommandContext) (err error) {
 		Fields:      make([]*discordgo.MessageEmbedField, 0),
 	}
 
-	for _, v := range vote.RunningVotes {
-		if v.GuildID == ctx.GetEvent().GuildID {
-			emb.Fields = append(emb.Fields, v.AsField())
-		}
+	for _, currVote := range vh.GetAllFromGuild(ctx.GetEvent().GuildID) {
+		emb.Fields = append(emb.Fields, currVote.AsField())
 	}
 
-	if len(emb.Fields) == 0 {
-		emb.Description = "You don't have any open votes on this guild."
-	}
 	err = ctx.FollowUpEmbed(emb).Send().Error
 	return err
 }
 
 func (c *Vote) expire(ctx ken.SubCommandContext) (err error) {
-	db := ctx.Get(static.DiDatabase).(database.Database)
-
 	expireDuration, err := timeutils.ParseDuration(ctx.Options().GetByName("timeout").StringValue())
 	if err != nil {
 		return ctx.FollowUpError(
@@ -258,91 +231,79 @@ func (c *Vote) expire(ctx ken.SubCommandContext) (err error) {
 	id := ctx.Options().Get(0).StringValue()
 
 	if id == "all" {
-		return c.expireAllVotes(ctx, db, expireDuration)
+		return c.expireAllVotes(ctx, expireDuration)
 	}
 
-	return c.expireSingleVote(ctx, db, id, expireDuration)
+	return c.expireSingleVote(ctx, id, expireDuration)
 }
 
-func (c *Vote) expireAllVotes(ctx ken.SubCommandContext, db database.Database, expireDuration time.Duration) (err error) {
-	for _, v := range vote.RunningVotes {
-		if v.GuildID == ctx.GetEvent().GuildID {
-			err := c.expireVote(ctx, db, &v, expireDuration)
-			if err != nil {
-				return err
-			}
-		}
-	}
-	return ctx.FollowUpError("No vote found.", "").Send().Error
-}
+func (c *Vote) expireAllVotes(ctx ken.SubCommandContext, expireDuration time.Duration) (err error) {
+	// get all votes from database for the current guild
+	vh := ctx.Get(static.DiVotes).(vote.VotesProvider)
+	votes := vh.GetAllFromGuild(ctx.GetEvent().GuildID)
 
-func (c *Vote) expireSingleVote(ctx ken.SubCommandContext, db database.Database, id string, expireDuration time.Duration) (err error) {
-	var currentVote *vote.Vote
-	for _, v := range vote.RunningVotes {
-		if v.GuildID == ctx.GetEvent().GuildID && v.ID == id {
-			currentVote = &v
-			break
+	// iterate over all votes
+	for _, currVote := range votes {
+		if err := c.expireVote(ctx, currVote, expireDuration); err != nil {
+			return err
 		}
 	}
 
-	return c.expireVote(ctx, db, currentVote, expireDuration)
-}
-
-func (c *Vote) expireVote(ctx ken.SubCommandContext, db database.Database, ivote *vote.Vote, expireDuration time.Duration) (err error) {
-	if err := ivote.SetExpire(ctx.GetSession(), expireDuration); err != nil {
-		return err
-	}
-	if err := db.AddUpdateVote(*ivote); err != nil {
-		return err
-	}
 	return ctx.FollowUpEmbed(&discordgo.MessageEmbed{
-		Description: fmt.Sprintf("Vote will expire <t:%d:R>", ivote.Expires.Unix()),
+		Description: fmt.Sprintf("All votes will expire <t:%d:R>", time.Now().Add(expireDuration).Unix()),
 	}).Send().Error
 }
 
-func (c *Vote) close(ctx ken.SubCommandContext) (err error) {
+func (c *Vote) expireSingleVote(ctx ken.SubCommandContext, id string, expireDuration time.Duration) (err error) {
+	vh := ctx.Get(static.DiVotes).(vote.VotesProvider)
 
-	ken := ctx.GetKen()
+	// get currVote from map
+	currVote, err := vh.Get(id)
+	if err != nil {
+		return ctx.FollowUpError("Vote not found.", "").Send().Error
+	}
+
+	err = c.expireVote(ctx, currVote, expireDuration)
+
+	return ctx.FollowUpEmbed(&discordgo.MessageEmbed{
+		Description: fmt.Sprintf("Vote %s will expire <t:%d:R>", id, time.Now().Add(expireDuration).Unix()),
+	}).Send().Error
+}
+
+func (c *Vote) expireVote(ctx ken.SubCommandContext, ivote models.Vote, expireDuration time.Duration) (err error) {
+	vh := ctx.Get(static.DiVotes).(vote.VotesProvider)
+
+	if err := ivote.SetExpire(ctx.GetSession(), expireDuration); err != nil {
+		return err
+	}
+
+	if err = vh.Update(ivote); err != nil {
+		return err
+	}
+
+	return err
+}
+
+func (c *Vote) close(ctx ken.SubCommandContext) (err error) {
+	vh := ctx.Get(static.DiVotes).(vote.VotesProvider)
 	id := ctx.Options().GetByName("id").StringValue()
 
 	if strings.ToLower(id) == "all" {
-		var i int
+		votesClosed, err := vh.CloseAll(ctx.GetEvent().GuildID)
 		if err != nil {
-			return err
-		}
-
-		for _, v := range vote.RunningVotes {
-			if v.GuildID == ctx.GetEvent().GuildID {
-				if err := v.Close(ken); err != nil {
-					return err
-				}
-
-				i++
-			}
-
-			return ctx.FollowUpEmbed(&discordgo.MessageEmbed{
-				Description: fmt.Sprintf("Closed %d votes.", i),
-			}).Send().Error
+			return ctx.FollowUpError("Failed closing all votes.", "").Send().Error
 		}
 
 		return ctx.FollowUpEmbed(&discordgo.MessageEmbed{
-			Description: fmt.Sprintf("Closed %d votes.", i),
+			Description: fmt.Sprintf("Closed %d votes.", votesClosed),
 		}).Send().Error
 	}
 
-	var currentVote *vote.Vote
-	for _, v := range vote.RunningVotes {
-		if v.GuildID == ctx.GetEvent().GuildID && v.ID == id {
-			currentVote = &v
-			break
-		}
-	}
-
-	if err := currentVote.Close(ken); err != nil {
+	if err := vh.Close(id, models.StateClosed); err != nil {
 		return err
 	}
 
 	return ctx.FollowUpEmbed(&discordgo.MessageEmbed{
-		Description: fmt.Sprintf("Closed vote %s.", currentVote.ID),
+		Description: fmt.Sprintf("Closed vote %s.", id),
 	}).Send().Error
 }

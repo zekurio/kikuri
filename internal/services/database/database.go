@@ -1,9 +1,9 @@
 package database
 
 import (
+	"github.com/zekurio/kikuri/internal/models"
 	"time"
 
-	"github.com/zekurio/kikuri/internal/util/vote"
 	"github.com/zekurio/kikuri/pkg/perms"
 )
 
@@ -30,8 +30,8 @@ type Database interface {
 
 	// Votes
 
-	GetVotes() (votes map[string]vote.Vote, err error)
-	AddUpdateVote(vote vote.Vote) error
+	GetVotes() (votes map[string]models.Vote, err error)
+	AddUpdateVote(vote models.Vote) error
 	DeleteVote(voteID string) error
 
 	// Oauth2
