@@ -11,7 +11,7 @@ import (
 	"github.com/zekurio/kikuri/internal/services/permissions"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/discordutils"
-	"github.com/zekurio/kikuri/pkg/quickembed"
+	"github.com/zekurio/kikuri/pkg/embedbuilder"
 	"github.com/zekurio/kikuri/pkg/stringutils"
 )
 
@@ -123,7 +123,7 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		roles[i] = "<@&" + rID + ">"
 	}
 
-	emb := quickembed.New().
+	emb := embedbuilder.New().
 		SetTitle("Profile of "+member.User.Username).
 		SetThumbnail(member.User.AvatarURL("256"), "", 100, 100).
 		SetColor(roleColor).

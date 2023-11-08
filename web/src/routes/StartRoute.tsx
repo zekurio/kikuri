@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import Color from "color";
 
+import { IconLogin } from "@tabler/icons-react";
+
 import { Button } from "../components/Button";
 
 type Props = NonNullable<unknown>;
@@ -46,10 +48,10 @@ const Header = styled.header`
   flex-direction: column;
   gap: 3em;
   align-items: center;
-  padding-top: 20vh;
+  padding-top: 10vh;
 
   > span {
-    font-family: "Cantarell";
+    font-family: "Cantarell", serif;
     font-size: 1.1rem;
     font-weight: lighter;
     text-align: center;
@@ -73,6 +75,9 @@ const HeaderButtons = styled.div`
 `;
 
 const Footer = styled.footer`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   display: flex;
   gap: 5em;
   padding: 2em;
@@ -97,11 +102,13 @@ const Footer = styled.footer`
 
 export const StartRoute: React.FC<Props> = () => {
   const nav = useNavigate();
-  //const theme = useTheme();
 
   return (
     <StartContainer>
-      <LoginButton onClick={() => nav("/login")}>Login</LoginButton>
+      <LoginButton onClick={() => nav("/login")}>
+        <IconLogin />
+        Login
+      </LoginButton>
       <Header>
         <HeaderButtons>
           <a href="/invite">
@@ -109,11 +116,38 @@ export const StartRoute: React.FC<Props> = () => {
           </a>
         </HeaderButtons>
       </Header>
-      <main>
-      </main>
+      <main></main>
       <Footer>
-      <div>
-      </div>
+        <div>
+          <span>kikuri</span>
+          <span>© {new Date().getFullYear()} Michael Schwieger</span>
+          <a
+            href="https://github.com/zekurio/kikuri/blob/main/LICENSE"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Covered by the MIT Licence.
+          </a>
+          <a
+            href="https://github.com/zekurio/kikuri"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub Repository
+          </a>
+        </div>
+        <div>
+          <a href="https://kikuri.xyz/invite" target="_blank" rel="noreferrer">
+            Invite Kikuri Stable
+          </a>
+          <a
+            href="https://canary.kikuri.xyz/invite"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Invite Kikuri Canary
+          </a>
+        </div>
       </Footer>
     </StartContainer>
   );

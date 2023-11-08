@@ -1,13 +1,13 @@
 package auth
 
 import (
+	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/debug"
 	"github.com/zekurio/kikuri/pkg/discordoauth"
@@ -50,7 +50,7 @@ func (h *RefreshTokenRequestHandler) BindRefreshToken(ctx *fiber.Ctx, uid string
 		Path:     "/",
 		Expires:  expires,
 		HTTPOnly: true,
-		Secure:   debug.Enabled(),
+		Secure:   !debug.Enabled(),
 	})
 
 	return nil

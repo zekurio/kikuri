@@ -1,4 +1,4 @@
-package quickembed
+package embedbuilder
 
 import (
 	"time"
@@ -6,39 +6,39 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// QuickEmbed is a helper struct for quickly creating embeds.
-type QuickEmbed struct {
+// EmbedBuilder is a helper struct for quickly creating embeds.
+type EmbedBuilder struct {
 	emb *discordgo.MessageEmbed
 }
 
-// New creates a new QuickEmbed instance.
-func New() *QuickEmbed {
-	return &QuickEmbed{
+// New creates a new EmbedBuilder instance.
+func New() *EmbedBuilder {
+	return &EmbedBuilder{
 		emb: &discordgo.MessageEmbed{},
 	}
 }
 
-func (q *QuickEmbed) SetTitle(title string) *QuickEmbed {
+func (q *EmbedBuilder) SetTitle(title string) *EmbedBuilder {
 	q.emb.Title = title
 	return q
 }
 
-func (q *QuickEmbed) SetDescription(description string) *QuickEmbed {
+func (q *EmbedBuilder) SetDescription(description string) *EmbedBuilder {
 	q.emb.Description = description
 	return q
 }
 
-func (q *QuickEmbed) SetURL(url string) *QuickEmbed {
+func (q *EmbedBuilder) SetURL(url string) *EmbedBuilder {
 	q.emb.URL = url
 	return q
 }
 
-func (q *QuickEmbed) SetColor(color int) *QuickEmbed {
+func (q *EmbedBuilder) SetColor(color int) *EmbedBuilder {
 	q.emb.Color = color
 	return q
 }
 
-func (q *QuickEmbed) SetAuthor(name, iconURL, pURL, url string) *QuickEmbed {
+func (q *EmbedBuilder) SetAuthor(name, iconURL, pURL, url string) *EmbedBuilder {
 	q.emb.Author = &discordgo.MessageEmbedAuthor{
 		Name:         name,
 		IconURL:      iconURL,
@@ -48,7 +48,7 @@ func (q *QuickEmbed) SetAuthor(name, iconURL, pURL, url string) *QuickEmbed {
 	return q
 }
 
-func (q *QuickEmbed) SetThumbnail(url, pURL string, width, height int) *QuickEmbed {
+func (q *EmbedBuilder) SetThumbnail(url, pURL string, width, height int) *EmbedBuilder {
 	q.emb.Thumbnail = &discordgo.MessageEmbedThumbnail{
 		URL:      url,
 		ProxyURL: pURL,
@@ -58,7 +58,7 @@ func (q *QuickEmbed) SetThumbnail(url, pURL string, width, height int) *QuickEmb
 	return q
 }
 
-func (q *QuickEmbed) SetImage(url, pURL string, width, height int) *QuickEmbed {
+func (q *EmbedBuilder) SetImage(url, pURL string, width, height int) *EmbedBuilder {
 	q.emb.Image = &discordgo.MessageEmbedImage{
 		URL:      url,
 		ProxyURL: pURL,
@@ -68,15 +68,16 @@ func (q *QuickEmbed) SetImage(url, pURL string, width, height int) *QuickEmbed {
 	return q
 }
 
-func (q *QuickEmbed) SetFooter(text, iconURL, pURL string) *QuickEmbed {
+func (q *EmbedBuilder) SetFooter(text, iconURL, pURL string) *EmbedBuilder {
 	q.emb.Footer = &discordgo.MessageEmbedFooter{
-		Text:    text,
-		IconURL: iconURL,
+		Text:         text,
+		IconURL:      iconURL,
+		ProxyIconURL: pURL,
 	}
 	return q
 }
 
-func (q *QuickEmbed) SetTimestamp(timestamp ...time.Time) *QuickEmbed {
+func (q *EmbedBuilder) SetTimestamp(timestamp ...time.Time) *EmbedBuilder {
 
 	if len(timestamp) > 0 {
 		q.emb.Timestamp = timestamp[0].Format("02/01/2006 15:04:05")
@@ -87,11 +88,11 @@ func (q *QuickEmbed) SetTimestamp(timestamp ...time.Time) *QuickEmbed {
 	return q
 }
 
-func (q *QuickEmbed) Build() *discordgo.MessageEmbed {
+func (q *EmbedBuilder) Build() *discordgo.MessageEmbed {
 	return q.emb
 }
 
-func (q *QuickEmbed) AddField(name, value string, inline ...bool) *QuickEmbed {
+func (q *EmbedBuilder) AddField(name, value string, inline ...bool) *EmbedBuilder {
 
 	if value == "" {
 		value = "`nil`"

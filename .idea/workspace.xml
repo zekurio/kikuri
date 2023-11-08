@@ -4,13 +4,49 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="775bd22e-6104-455b-817c-5d2a4c07cafe" name="Changes" comment="✨ votes improved: vote feature got improved, testing now">
+    <list default="true" id="775bd22e-6104-455b-817c-5d2a4c07cafe" name="Changes" comment="✨ api client for webinterface started">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/embedbuilder/embedbuilder.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/public/icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/bindings.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/client.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/errors.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/httpclient.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/models.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/subclient.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/src/util.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/lib/kikuri-ts/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/routes/LoginRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/listeners/ready.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/listeners/ready.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/services/scheduler/cron.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/scheduler/cron.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/services/vote/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/vote/provider.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/services/vote/votes.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/vote/votes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/slashcommands/vote.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/slashcommands/vote.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/database/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/database/database.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/database/postgres/postgres.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/database/postgres/postgres.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/database/redis/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/database/redis/redis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/webserver/auth/refreshtokenrequesthandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/webserver/auth/refreshtokenrequesthandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/webserver/auth/util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/webserver/v1/controllers/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/webserver/v1/controllers/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/webserver/v1/controllers/guildsettings.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/webserver/v1/controllers/guildsettings.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/services/webserver/v1/models/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/models/webserver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/slashcommands/guild.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/slashcommands/guild.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/slashcommands/profile.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/slashcommands/profile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/util/permissions.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/util/random.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/quickembed/quickembed.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/roleutils/roleutils.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/roleutils/roleutils.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/stringutils/stringutils.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/stringutils/stringutils.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/timeutils/timeutils.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/timeutils/timeutils.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/buildinfo.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/buildinfo.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/public/vite.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/components/RouteSuspense/RouteSuspense.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/RouteSuspense/RouteSuspense.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/routes/StartRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/StartRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/theme/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/theme/theme.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,12 +57,28 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Go File" />
+        <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
   <component name="GOROOT" url="file://$USER_HOME$/scoop/apps/go/current" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "zekurio"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="2602f346-2b68-4954-9a8c-2436fa80f2c9" />
+        <option name="url" value="git@github.com:zekurio/kikuri.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -46,36 +98,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Michael/Repos/kikuri&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\Michael\\Repos\\kikuri\\web\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Michael\\Repos\\kikuri\\web\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "dev",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Michael/Repos/kikuri",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\Michael\\Repos\\kikuri\\web\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Users\\Michael\\Repos\\kikuri\\web\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -88,9 +141,10 @@
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Michael\Repos\kikuri\internal\models" />
+      <recent name="C:\Users\Michael\Repos\kikuri\internal\webserver" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.Run backend">
+  <component name="RunManager" selected="npm.Run frontend">
     <configuration name="Run backend" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
       <module name="kikuri" />
       <working_directory value="$PROJECT_DIR$" />
@@ -99,9 +153,6 @@
       <package value="github.com/zekurio/kikuri/cmd/kikuri" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/cmd/kikuri/main.go" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Run frontend JavaScript" type="JavascriptDebugType" engineId="f00130c5-8f66-4b52-a0c9-df4b364a2f7c" uri="http://localhost:5173">
       <method v="2" />
     </configuration>
     <configuration name="Docker Container" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
@@ -128,13 +179,12 @@
       <node-interpreter value="project" />
       <envs />
       <method v="2">
-        <option name="LaunchBrowser.Before.Run" browser="37cae5b9-e8b2-4949-9172-aafa37fbc09c" url="http://localhost:5173" withDebugger="true" />
+        <option name="LaunchBrowser.Before.Run" url="http://localhost:5173" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Docker.Docker Container" />
       <item itemvalue="Go Build.Run backend" />
-      <item itemvalue="JavaScript Debug.Run frontend JavaScript" />
       <item itemvalue="npm.Run frontend" />
     </list>
     <recent_temporary>
@@ -165,30 +215,10 @@
     <MESSAGE value=" bugfix: fixed building issue for frontend files" />
     <MESSAGE value="️ hotfix: fixed some things that were missed by the refactor" />
     <MESSAGE value="✨ votes improved: vote feature got improved, testing now" />
-    <option name="LAST_COMMIT_MESSAGE" value="✨ votes improved: vote feature got improved, testing now" />
+    <MESSAGE value="✨ api client for webinterface started" />
+    <option name="LAST_COMMIT_MESSAGE" value="✨ api client for webinterface started" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/internal/services/vote/votes.go</url>
-          <line>98</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/internal/services/vote/votes.go</url>
-          <line>80</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/internal/services/vote/votes.go</url>
-          <line>74</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

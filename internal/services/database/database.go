@@ -20,9 +20,6 @@ type Database interface {
 	GetGuildAutoVoice(guildID string) (autovoices []string, err error)
 	SetGuildAutoVoice(guildID string, channelIDs []string) error
 
-	GetGuildAPIEnabled(guildID string) (enabled bool, err error)
-	SetGuildAPIEnabled(guildID string, enabled bool) error
-
 	// Permissions
 
 	GetPermissions(guildID string) (permissions map[string]perms.Array, err error)

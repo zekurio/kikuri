@@ -22,4 +22,3 @@ COMMIT=$(git rev-parse HEAD)
 
 populate "$FILE_LOCATION/Version.txt" $VERSION
 populate "$FILE_LOCATION/Commit.txt" $COMMIT
-populate "$FILE_LOCATION/Release.txt" "true"

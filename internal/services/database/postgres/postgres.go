@@ -90,14 +90,6 @@ func (p *Postgres) SetGuildAutoVoice(guildID string, channelIDs []string) error 
 	return SetValue(p, "guilds", "autovoice_ids", strings.Join(channelIDs, ","), "guild_id", guildID)
 }
 
-func (p *Postgres) GetGuildAPIEnabled(guildID string) (enabled bool, err error) {
-	return GetValue[bool](p, "guilds", "api_enabled", "guild_id", guildID)
-}
-
-func (p *Postgres) SetGuildAPIEnabled(guildID string, enabled bool) error {
-	return SetValue(p, "guilds", "api_enabled", enabled, "guild_id", guildID)
-}
-
 // PERMISSIONS
 
 func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.Array, err error) {
@@ -223,18 +215,18 @@ func (p *Postgres) FlushGuildData(guildID string) error {
 	return p.tx(func(tx *sql.Tx) error {
 		var (
 			err          error
-			failedGuilds []string
+			failedTables []string
 		)
 
 		for _, table := range guildTables {
-			_, err := tx.Exec(fmt.Sprintf(`DELETE FROM %s WHERE guild_id = $1`, table), guildID)
+			_, err = tx.Exec(fmt.Sprintf(`DELETE FROM %s WHERE guild_id = $1`, table), guildID)
 			if err != nil {
-				failedGuilds = append(failedGuilds, guildID)
+				failedTables = append(failedTables, table)
 			}
 		}
 
-		if len(failedGuilds) > 0 || err != nil {
-			return fmt.Errorf("failed to flush guild data for guilds: %v", failedGuilds)
+		if len(failedTables) > 0 {
+			return fmt.Errorf("failed to flush tables: %s", strings.Join(failedTables, ", "))
 		}
 
 		return nil

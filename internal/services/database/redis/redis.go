@@ -13,7 +13,6 @@ import (
 const (
 	keyGuildAutoRoles = "GUILD:AUTOROLES"
 	keyGuildAutoVoice = "GUILD:AUTOVOICE"
-	keyGuildAPI       = "GUILD:API"
 )
 
 type RedisMiddleware struct {

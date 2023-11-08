@@ -13,8 +13,8 @@ export const DarkTheme = {
   text: "#cdd6f4",
   textAlt: "#bac2de",
 
-  accent: "#9447dc",
-  accentDarker: Color.xyz("#6812bb").darken(0.3).hexa(),
+  accent: "#8a47dc",
+  accentDarker: Color.xyz("#7712bb").darken(0.3).hexa(),
 
   white: "#f4f4f5",
   whiteDarker: "#dddddd",

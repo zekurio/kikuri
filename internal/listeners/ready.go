@@ -31,7 +31,6 @@ func NewListenerReady(ctn di.Container) *ListenerReady {
 }
 
 func (l *ListenerReady) Handler(s *discordgo.Session, e *discordgo.Ready) {
-
 	err := s.UpdateListeningStatus("slash commands [WIP]")
 	if err != nil {
 		return

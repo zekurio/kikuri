@@ -9,7 +9,6 @@ import (
 	"github.com/zekurio/kikuri/internal/services/database"
 	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"github.com/zekurio/kikuri/internal/services/permissions"
-	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 	"github.com/zekurio/kikuri/internal/services/webserver/wsutil"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/arrayutils"
@@ -47,16 +46,8 @@ func (c *GuildSettingsController) Setup(ctn di.Container, router fiber.Router) {
 func (c *GuildSettingsController) getGuildSettings(ctx *fiber.Ctx) error {
 	guildID := ctx.Params("guildid")
 
-	gs := new(models.GuildSettings)
+	gs := new(models2.GuildSettings)
 	var err error
-
-	if gs.APIEnabled, err = c.db.GetGuildAPIEnabled(guildID); err != nil && !dberr.IsErrNotFound(err) {
-		return err
-	}
-
-	if !gs.APIEnabled {
-		return ctx.JSON(models.GuildSettingsEmpty{APIEnabled: false})
-	}
 
 	if gs.AutoRoles, err = c.db.GetGuildAutoRoles(guildID); err != nil && !dberr.IsErrNotFound(err) {
 		return err
@@ -93,19 +84,9 @@ func (c *GuildSettingsController) postGuildSettings(ctx *fiber.Ctx) error {
 
 	var err error
 
-	gs := new(models.GuildSettings)
+	gs := new(models2.GuildSettings)
 	if err = ctx.BodyParser(gs); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	// check if api is enabled
-	gs.APIEnabled, err = c.db.GetGuildAPIEnabled(guildID)
-	if err != nil && !dberr.IsErrNotFound(err) {
-		return err
-	}
-
-	if !gs.APIEnabled {
-		return fiber.NewError(fiber.StatusForbidden, "api is not enabled for this guild")
 	}
 
 	if gs.AutoRoles != nil {
@@ -168,5 +149,5 @@ func (c *GuildSettingsController) postGuildSettings(ctx *fiber.Ctx) error {
 		}
 	}
 
-	return ctx.JSON(models.Ok)
+	return ctx.JSON(models2.Ok)
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/colorutils"
 	"github.com/zekurio/kikuri/pkg/discordutils"
-	"github.com/zekurio/kikuri/pkg/quickembed"
+	"github.com/zekurio/kikuri/pkg/embedbuilder"
 )
 
 type Guild struct {
@@ -120,7 +120,7 @@ func (c *Guild) Run(ctx ken.Context) (err error) {
 		return
 	}
 
-	emb := quickembed.New().
+	emb := embedbuilder.New().
 		SetTitle("About "+guild.Name).
 		SetThumbnail(guild.IconURL("1024"), "", 100, 100).
 		SetColor(color).

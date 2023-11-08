@@ -16,12 +16,6 @@ func IsInteger(str string) bool {
 	return rxNumber.MatchString(str)
 }
 
-// IsBool returns true if the passed string is
-// a valid bool.
-func IsBool(str string) bool {
-	return rxBool.MatchString(str)
-}
-
 // EnsureNotEmpty returns def if str is empty.
 func EnsureNotEmpty(str, def string) string {
 	if str == "" {
