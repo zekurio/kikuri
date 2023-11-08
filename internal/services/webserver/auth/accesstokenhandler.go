@@ -3,6 +3,7 @@ package auth
 import (
 	"errors"
 	"fmt"
+	"github.com/zekurio/kikuri/internal/embedded"
 	"time"
 
 	"github.com/zekurio/kikuri/internal/models"
@@ -10,7 +11,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/kikuri/internal/util/embedded"
 	"github.com/zekurio/kikuri/internal/util/static"
 )
 

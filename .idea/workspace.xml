@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="775bd22e-6104-455b-817c-5d2a4c07cafe" name="Changes" comment="✨ api client for webinterface started">
+    <list default="true" id="775bd22e-6104-455b-817c-5d2a4c07cafe" name="Changes" comment="🚑️ hotfix for wrong parameters in perm functions">
+      <change afterPath="$PROJECT_DIR$/web/src/services/api.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/listeners/voicestateupdate.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/listeners/voicestateupdate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/services/permissions/permissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/permissions/permissions.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/services/permissions/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/permissions/provider.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/services/webserver/v1/controllers/guildsettings.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/services/webserver/v1/controllers/guildsettings.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/slashcommands/perms.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/slashcommands/perms.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/slashcommands/profile.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/slashcommands/profile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/routes/LoginRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/hooks/useApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/routes/StartRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/routes/StartRoute.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +178,8 @@
     <MESSAGE value="️ hotfix: fixed some things that were missed by the refactor" />
     <MESSAGE value="✨ votes improved: vote feature got improved, testing now" />
     <MESSAGE value="✨ api client for webinterface started" />
-    <option name="LAST_COMMIT_MESSAGE" value="✨ api client for webinterface started" />
+    <MESSAGE value="️ hotfix for wrong parameters in perm functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="️ hotfix for wrong parameters in perm functions" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

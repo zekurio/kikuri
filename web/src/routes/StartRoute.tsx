@@ -2,8 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import Color from "color";
+import { useSearchParams } from "react-router-dom";
 
 import { IconLogin } from "@tabler/icons-react";
+import { loginRoute } from "../services/api";
 
 import { Button } from "../components/Button";
 
@@ -102,10 +104,14 @@ const Footer = styled.footer`
 
 export const StartRoute: React.FC<Props> = () => {
   const nav = useNavigate();
+  const [params] = useSearchParams();
+  const redirect = params.get("redirect");
+
+  const _loginRoute = loginRoute(!!redirect ? `/${redirect}/` : "/");
 
   return (
     <StartContainer>
-      <LoginButton onClick={() => nav("/login")}>
+      <LoginButton onClick={() => nav(_loginRoute)}>
         <IconLogin />
         Login
       </LoginButton>

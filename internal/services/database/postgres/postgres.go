@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"github.com/zekurio/kikuri/internal/embedded"
 	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 	"time"
@@ -14,7 +15,6 @@ import (
 	"github.com/zekurio/kikuri/internal/services/database"
 	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"github.com/zekurio/kikuri/internal/util"
-	"github.com/zekurio/kikuri/internal/util/embedded"
 	"github.com/zekurio/kikuri/pkg/perms"
 )
 

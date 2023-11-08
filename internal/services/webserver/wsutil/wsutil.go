@@ -2,13 +2,13 @@ package wsutil
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/zekurio/kikuri/internal/embedded"
 	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"io/fs"
 	"net/http"
 	"os"
 
 	"github.com/charmbracelet/log"
-	"github.com/zekurio/kikuri/internal/util/embedded"
 )
 
 func GetFS() (f http.FileSystem, err error) {

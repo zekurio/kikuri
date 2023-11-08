@@ -11,7 +11,7 @@ function populate {
     echo "CHECK: $(cat $FILE)"
 }
 
-FILE_LOCATION="./internal/util/embedded"
+FILE_LOCATION="./internal/embedded"
 
 VERSION=$(git describe --tags --abbrev=0)
 COMMIT=$(git rev-parse HEAD)
