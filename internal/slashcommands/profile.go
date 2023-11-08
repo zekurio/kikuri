@@ -63,7 +63,6 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		return
 	}
 
-	s := ctx.Get(static.DiDiscordSession).(*discordgo.Session)
 	st := ctx.Get(static.DiState).(*dgrs.State)
 	p := ctx.Get(static.DiPermissions).(*permissions.Permissions)
 
@@ -110,7 +109,7 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		return
 	}
 
-	perms, _, err := p.GetPerms(s, ctx.GetEvent().GuildID, member.User.ID)
+	perms, _, err := p.GetPerms(ctx.GetEvent().GuildID, member.User.ID)
 	if err != nil {
 		return
 	}

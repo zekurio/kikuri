@@ -2,6 +2,7 @@ package slashcommands
 
 import (
 	"fmt"
+	"github.com/zekrotja/dgrs"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -113,14 +114,14 @@ func (c *Perms) Run(ctx ken.Context) (err error) {
 
 func (c *Perms) list(ctx ken.SubCommandContext) (err error) {
 	db := ctx.Get(static.DiDatabase).(database.Database)
-	s := ctx.Get(static.DiDiscordSession).(*discordgo.Session)
+	st := ctx.Get(static.DiState).(*dgrs.State)
 
 	gPerms, err := db.GetPermissions(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return
 	}
 
-	sortedGuildRoles, err := roleutils.GetSortedGuildRoles(s, ctx.GetEvent().GuildID, true)
+	sortedGuildRoles, err := roleutils.GetSortedGuildRoles(st, ctx.GetEvent().GuildID, true)
 	if err != nil {
 		return err
 	}

@@ -90,7 +90,7 @@ func (c *GuildSettingsController) postGuildSettings(ctx *fiber.Ctx) error {
 	}
 
 	if gs.AutoRoles != nil {
-		if ok, _, err := c.pmw.HasPerms(c.session, guildID, uid, "ku.guild.config.autorole"); err != nil {
+		if ok, _, err := c.pmw.HasPerms(guildID, uid, "ku.guild.config.autorole"); err != nil {
 			return err
 		} else if !ok {
 			return fiber.NewError(fiber.StatusForbidden, "missing permissions")
@@ -121,7 +121,7 @@ func (c *GuildSettingsController) postGuildSettings(ctx *fiber.Ctx) error {
 	}
 
 	if gs.AutoVoice != nil {
-		if ok, _, err := c.pmw.HasPerms(c.session, guildID, uid, "ku.guild.config.autovoice"); err != nil {
+		if ok, _, err := c.pmw.HasPerms(guildID, uid, "ku.guild.config.autovoice"); err != nil {
 			return err
 		} else if !ok {
 			return fiber.NewError(fiber.StatusForbidden, "missing permissions")

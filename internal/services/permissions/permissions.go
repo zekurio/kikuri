@@ -47,7 +47,7 @@ func (p *Permissions) Before(ctx *ken.Ctx) (next bool, err error) {
 		return
 	}
 
-	ok, _, err = p.HasPerms(ctx.GetSession(), ctx.GetEvent().GuildID, ctx.User().ID, cmd.Perm())
+	ok, _, err = p.HasPerms(ctx.GetEvent().GuildID, ctx.User().ID, cmd.Perm())
 
 	if err != nil {
 		return false, err
@@ -61,9 +61,9 @@ func (p *Permissions) Before(ctx *ken.Ctx) (next bool, err error) {
 	return true, err
 }
 
-func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID string) (perm perms.Array, override bool, err error) {
+func (p *Permissions) GetPerms(guildID, userID string) (perm perms.Array, override bool, err error) {
 	if guildID != "" {
-		perm, err = p.GetMemberPerms(session, guildID, userID)
+		perm, err = p.GetMemberPerms(guildID, userID)
 		if err != nil && !dberr.IsErrNotFound(err) {
 			return
 		}
@@ -113,12 +113,12 @@ func (p *Permissions) GetPerms(session *discordgo.Session, guildID, userID strin
 	return perm, override, nil
 }
 
-func (p *Permissions) GetMemberPerms(session *discordgo.Session, guildID string, memberID string) (perms.Array, error) {
+func (p *Permissions) GetMemberPerms(guildID string, memberID string) (perms.Array, error) {
 	guildPerms, err := p.db.GetPermissions(guildID)
 	if err != nil {
 		return nil, err
 	}
-	membRoles, err := roleutils.GetSortedMemberRoles(session, guildID, memberID, false, true)
+	membRoles, err := roleutils.GetSortedMemberRoles(p.st, guildID, memberID, false, true)
 	if err != nil {
 		return nil, err
 	}
@@ -137,8 +137,8 @@ func (p *Permissions) GetMemberPerms(session *discordgo.Session, guildID string,
 	return res, nil
 }
 
-func (p *Permissions) HasPerms(session *discordgo.Session, guildID, userID, pm string) (ok, override bool, err error) {
-	perm, override, err := p.GetPerms(session, guildID, userID)
+func (p *Permissions) HasPerms(guildID, userID, pm string) (ok, override bool, err error) {
+	perm, override, err := p.GetPerms(guildID, userID)
 	if err != nil {
 		return false, false, err
 	}
@@ -169,7 +169,7 @@ func (p *Permissions) HasSubCmdPerms(ctx ken.Context, subPM string, explicit boo
 		msg = message[0]
 	}
 
-	permOk, override, err := p.HasPerms(ctx.GetSession(), ctx.GetEvent().GuildID, ctx.User().ID, pm)
+	permOk, override, err := p.HasPerms(ctx.GetEvent().GuildID, ctx.User().ID, pm)
 	if err != nil {
 		return false, err
 	}

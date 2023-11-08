@@ -31,7 +31,7 @@ func NewListenerVoiceStateUpdate(ctn di.Container) *ListenerVoiceStateUpdate {
 
 func (l *ListenerVoiceStateUpdate) Handler(s *discordgo.Session, e *discordgo.VoiceStateUpdate) {
 
-	allowed, _, err := l.pmw.HasPerms(s, e.GuildID, e.UserID, "ku.chat.autochannel")
+	allowed, _, err := l.pmw.HasPerms(e.GuildID, e.UserID, "ku.chat.autochannel")
 	if err != nil || !allowed {
 		return
 	}
