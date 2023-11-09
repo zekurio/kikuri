@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/zekurio/kikuri/internal/util/static"
-	"github.com/zekurio/kikuri/pkg/cryptoutils"
+	"github.com/zekurio/kikuri/pkg/randutils"
 )
 
 var DefaultConfig = Config{
@@ -22,7 +22,7 @@ var DefaultConfig = Config{
 		PublicAddr: "http://localhost:80",
 		DebugAddr:  "http://localhost:8081",
 		AccessToken: AccessToken{
-			Secret:          cryptoutils.ForceRandBase64Str(64),
+			Secret:          randutils.ForceRandBase64Str(64),
 			LifetimeSeconds: 10 * 60,
 		},
 		TLS: TLS{

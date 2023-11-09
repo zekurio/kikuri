@@ -3,12 +3,13 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"github.com/zekurio/kikuri/internal/embedded"
 	"time"
+
+	"github.com/zekurio/kikuri/internal/embedded"
 
 	"github.com/zekurio/kikuri/internal/models"
 
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v5"
 
 	"github.com/sarulabs/di/v2"
 	"github.com/zekurio/kikuri/internal/util/static"
@@ -49,20 +50,25 @@ func (ath *AccessTokenHandlerImpl) GetAccessToken(ident string) (token string, e
 }
 
 func (ath *AccessTokenHandlerImpl) ValidateAccessToken(token string) (ident string, err error) {
-	jwtToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
-		return ath.sessionSecret, nil
+	tkn, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+		}
+		return []byte(ath.sessionSecret), nil
 	})
-	if jwtToken == nil || err != nil || !jwtToken.Valid || jwtToken.Claims.Valid() != nil {
-		return
+
+	if err != nil {
+		return "", err
 	}
 
-	claimsMap, ok := jwtToken.Claims.(jwt.MapClaims)
-	if !ok {
-		err = errors.New("invalid claims")
-		return
+	if claims, ok := tkn.Claims.(jwt.MapClaims); ok && tkn.Valid {
+		ident, ok = claims["sub"].(string)
+		if !ok {
+			return "", errors.New("invalid claims")
+		}
+	} else {
+		return "", errors.New("invalid token")
 	}
 
-	ident, _ = claimsMap["sub"].(string)
-
-	return
+	return ident, nil
 }

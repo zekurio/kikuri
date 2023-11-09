@@ -10,7 +10,7 @@ import (
 	"github.com/zekurio/kikuri/internal/services/database"
 	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"github.com/zekurio/kikuri/internal/util/static"
-	"github.com/zekurio/kikuri/pkg/cryptoutils"
+	"github.com/zekurio/kikuri/pkg/randutils"
 )
 
 type RefreshTokenHandlerImpl struct {
@@ -29,7 +29,7 @@ func NewRefreshTokenHandlerImpl(container di.Container) *RefreshTokenHandlerImpl
 
 // GetRefreshToken returns a refresh token for the given ident, and saves it to the database.
 func (rth *RefreshTokenHandlerImpl) GetRefreshToken(ident string) (token string, err error) {
-	token, err = cryptoutils.GetRandBase64Str(64)
+	token, err = randutils.GetRandBase64Str(64)
 	if err != nil {
 		return
 	}
