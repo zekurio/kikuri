@@ -136,14 +136,6 @@ func main() {
 		},
 	})
 
-	// Auth middleware
-	diBuilder.Add(di.Def{
-		Name: static.DiAuthMiddleware,
-		Build: func(ctn di.Container) (interface{}, error) {
-			return auth.NewAccessTokenMiddleware(ctn), nil
-		},
-	})
-
 	// OAuth API handler implementation
 	diBuilder.Add(di.Def{
 		Name: static.DiOAuthHandler,
@@ -152,7 +144,7 @@ func main() {
 		},
 	})
 
-	// Access token authorization middleware
+	// Auth middleware
 	diBuilder.Add(di.Def{
 		Name: static.DiAuthMiddleware,
 		Build: func(ctn di.Container) (interface{}, error) {
