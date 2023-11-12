@@ -5,7 +5,7 @@ import Color from "color";
 import { useSearchParams } from "react-router-dom";
 
 import { IconLogin } from "@tabler/icons-react";
-import { loginRoute } from "../services/api";
+import { loginRoute } from "../services/api.ts";
 
 import { Button } from "../components/Button";
 
@@ -41,7 +41,7 @@ const LoginButton = styled(Button)`
     width: 8em;
     background: ${(p) => p.theme.accent};
     opacity: 1;
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.textAlt};
   }
 `;
 
@@ -67,6 +67,7 @@ const HeaderButtons = styled.div`
   gap: 2em;
 
   ${Button} {
+    color: ${(p) => p.theme.textAlt};
     transition: all 0.25s ease;
     padding: 0.8em 2em;
     box-shadow: 0 0 2em 0 ${(p) => Color(p.theme.accent).alpha(0.2).hexa()};
@@ -107,7 +108,7 @@ export const StartRoute: React.FC<Props> = () => {
   const [params] = useSearchParams();
   const redirect = params.get("redirect");
 
-  const _loginRoute = loginRoute(!!redirect ? `/${redirect}/` : "/");
+  const _loginRoute = loginRoute(redirect ? `/${redirect}/` : "/");
 
   return (
     <StartContainer>

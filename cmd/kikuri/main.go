@@ -63,9 +63,8 @@ func main() {
 		Build: func(ctn di.Container) (interface{}, error) {
 			cfg := ctn.Get(static.DiConfig).(models.Config)
 			return redis.NewClient(&redis.Options{
-				Addr:     cfg.Cache.Redis.Addr,
-				Password: cfg.Cache.Redis.Password,
-				DB:       cfg.Cache.Redis.Type,
+				Addr: cfg.Cache.Redis.Addr,
+				DB:   cfg.Cache.Redis.Type,
 			}), nil
 		},
 	})

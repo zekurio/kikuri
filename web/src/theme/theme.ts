@@ -6,28 +6,30 @@ export enum AppTheme {
 }
 
 export const DarkTheme = {
-  background: "#1e1e2e",
-  background2: "#313244",
-  background3: "#45475a",
+  background: "#11111b",
+  background2: "#181825",
+  background3: "#1e1e2e",
 
   text: "#cdd6f4",
-  textAlt: "#bac2de",
+  textAlt: "#4c4f69",
 
-  accent: "#8a47dc",
-  accentDarker: Color.xyz("#7712bb").darken(0.3).hexa(),
+  accent: "#88b3f9",
+  accentDarker: Color.xyz("#618dbd").darken(0.3).hexa(),
 
-  white: "#f4f4f5",
-  whiteDarker: "#dddddd",
-  blurple: "#5865f2",
-  blurpleDarker: "#4450d6",
-  darkGray: "#1e1e1e",
-  red: "#ed4245",
-  orange: "#f57c00",
-  yellow: "#fbc02d",
-  green: "#43a047",
-  lime: "#57f287",
-  cyan: "#03a9f4",
-  pink: "#eb459e",
+  rosewater: "#f5e0dc",
+  flamingo: "#f2cdcd",
+  pink: "#f5c2e7",
+  mauve: "#cba6f7",
+  red: "#f38ba8",
+  maroon: "#eba0ac",
+  peach: "#fab387",
+  yellow: "#f9e2af",
+  green: "#a6e3a1",
+  teal: "#94e2d5",
+  sky: "#89dceb",
+  sapphire: "#74c7ec",
+  blue: "#89b4fa",
+  lavender: "#b4befe",
 
   _isDark: true,
 };
@@ -35,12 +37,27 @@ export const DarkTheme = {
 export const LightTheme: Theme = {
   ...DarkTheme,
 
-  background3: "rgb(250, 250, 250)",
-  background2: "rgb(235, 235, 235)",
-  background: "rgb(225, 225, 225)",
+  background3: "#eff1f5",
+  background2: "#e6e9ef",
+  background: "#dddddd",
 
-  text: "#212121",
-  textAlt: "#f4f4f5",
+  text: "#4c4f69",
+  textAlt: "#cdd6f4",
+
+  rosewater: "#dc8a78",
+  flamingo: "#dd7878",
+  pink: "#ea76cb",
+  mauve: "#8839ef",
+  red: "#d20f39",
+  maroon: "#e64553",
+  peach: "#fe640b",
+  yellow: "#df8e1d",
+  green: "#40a02b",
+  teal: "#179299",
+  sky: "#04a5e5",
+  sapphire: "#209fb5",
+  blue: "#1e66f5",
+  lavender: "#7287fd",
 
   _isDark: false,
 };

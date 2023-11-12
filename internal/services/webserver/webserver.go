@@ -76,10 +76,8 @@ func (ws *WebServer) ListenAndServeBlocking() error {
 	tls := ws.cfg.Webserver.TLS
 
 	if tls.Enabled {
-		log.Infof("Starting webserver on %s (TLS enabled)", ws.cfg.Webserver.Addr)
 		return ws.app.ListenTLS(ws.cfg.Webserver.Addr, tls.Cert, tls.Key)
 	}
 
-	log.Infof("Starting webserver on %s", ws.cfg.Webserver.Addr)
 	return ws.app.Listen(ws.cfg.Webserver.Addr)
 }

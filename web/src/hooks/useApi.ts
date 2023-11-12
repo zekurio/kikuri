@@ -1,4 +1,4 @@
-import { APIClient } from "../services/api";
+import { APIClient } from "../services/api.ts";
 import { APIError } from "../lib/kikuri-ts/src/errors";
 import { Client } from "../lib/kikuri-ts/src";
 import { useNavigate } from "react-router";
