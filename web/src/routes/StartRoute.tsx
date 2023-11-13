@@ -1,11 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router";
 import styled from "styled-components";
 import Color from "color";
-import { useSearchParams } from "react-router-dom";
 
 import { IconLogin } from "@tabler/icons-react";
-import { loginRoute } from "../services/api.ts";
+import { loginRoute } from "../services/api";
 
 import { Button } from "../components/Button";
 
@@ -27,7 +25,6 @@ const LoginButton = styled(Button)`
   overflow: hidden;
   background: ${(p) => p.theme.background3};
   opacity: 0.5;
-  color: ${(p) => p.theme.white};
 
   transition: all 0.25s ease;
   transform: none !important;
@@ -41,7 +38,7 @@ const LoginButton = styled(Button)`
     width: 8em;
     background: ${(p) => p.theme.accent};
     opacity: 1;
-    color: ${(p) => p.theme.textAlt};
+    color: ${(p) => p.theme.white};
   }
 `;
 
@@ -67,7 +64,6 @@ const HeaderButtons = styled.div`
   gap: 2em;
 
   ${Button} {
-    color: ${(p) => p.theme.textAlt};
     transition: all 0.25s ease;
     padding: 0.8em 2em;
     box-shadow: 0 0 2em 0 ${(p) => Color(p.theme.accent).alpha(0.2).hexa()};
@@ -104,15 +100,11 @@ const Footer = styled.footer`
 `;
 
 export const StartRoute: React.FC<Props> = () => {
-  const nav = useNavigate();
-  const [params] = useSearchParams();
-  const redirect = params.get("redirect");
-
-  const _loginRoute = loginRoute(redirect ? `/${redirect}/` : "/");
+  const _loginRoute = loginRoute("/dashboard");
 
   return (
     <StartContainer>
-      <LoginButton onClick={() => nav(_loginRoute)}>
+      <LoginButton onClick={() => (window.location.href = _loginRoute)}>
         <IconLogin />
         Login
       </LoginButton>

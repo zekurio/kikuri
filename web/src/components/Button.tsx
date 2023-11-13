@@ -19,7 +19,7 @@ export type ButtonProps = {
 export const Button = styled.button<ButtonProps>`
   font-size: 1rem;
   font-family: "Roboto", sans-serif;
-  color: ${(p) => p.theme.text};
+  color: ${(p) => p.theme.textAlt};
   background: ${(p) => p.theme.accent};
   border: none;
   padding: ${(p) => (p.nvp ? "0" : "0.8em")} 1em;

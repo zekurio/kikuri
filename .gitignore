@@ -26,3 +26,7 @@ go.work
 # Configs
 config/config*.toml
 config/docker-compose.yml
+
+# Embedded
+internal/util/embedded/webdist/*
+!internal/util/embedded/webdist/keep
