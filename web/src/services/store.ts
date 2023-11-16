@@ -26,7 +26,7 @@ export interface Store {
   setSelectedGuild: (selectedGuild: Guild) => void;
 }
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set, get) => ({
   theme: LocalStorageUtil.get("kikuri.theme", getSystemTheme())!,
   setTheme: (theme) => {
     set({ theme });

@@ -9,7 +9,7 @@ export const useSelfUser = () => {
   useEffect(() => {
     if (selfUser.value || selfUser.isFetching) return;
     setSelfUser({ isFetching: true });
-    fetch((c) => c.etc.me()) // TODO create a me endpoint
+    fetch((c) => c.misc.me())
       .then((me) => setSelfUser({ value: me, isFetching: false }))
       .catch();
   }, []);

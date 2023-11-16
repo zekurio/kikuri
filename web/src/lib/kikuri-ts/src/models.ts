@@ -9,13 +9,6 @@ export interface AccessTokenModel {
   token: string;
   expires: string;
 }
-
-export interface GuildSettings {
-  autoroles: string[];
-  autovoices: string[];
-  perms: Map<string, string[]>;
-}
-
 export interface FlatUser {
   id: string;
   username: string;
@@ -105,6 +98,16 @@ export interface Guild {
   roles?: Role[];
   members?: Member[];
   channels?: Channel[];
+}
+
+export interface GuildSettings {
+  autoroles: string[];
+  autovoices: string[];
+  perms: Map<string, string[]>;
+}
+
+export interface PermissionResponse {
+  permissions: string[];
 }
 
 export interface CodeResponse {

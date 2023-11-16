@@ -4,11 +4,34 @@ import {
   CodeResponse,
   Guild,
   ListResponse,
+  User,
+  Member,
+  PermissionResponse,
 } from "./models";
 
 import { Client } from "./client";
 
 import { SubClient } from "./subclient";
+
+export class MiscClient extends SubClient {
+  constructor(client: Client) {
+    super(client, "");
+  }
+
+  me(): Promise<User> {
+    return this.req("GET", "me");
+  }
+}
+
+export class UsersClient extends SubClient {
+  constructor(client: Client) {
+    super(client, "users");
+  }
+
+  get(id: string): Promise<User> {
+    return this.req("GET", id);
+  }
+}
 
 export class GuildsClient extends SubClient {
   constructor(private _client: Client) {
@@ -39,6 +62,20 @@ export class GuildSettingsClient extends SubClient {
 
   setSettings(settings: GuildSettings): Promise<GuildSettings> {
     return this.req("POST", "/", settings);
+  }
+}
+
+export class GuildMemberClient extends SubClient {
+  constructor(client: Client, guildID: string, memberID: string) {
+    super(client, `guilds/${guildID}/${memberID}`);
+  }
+
+  get(): Promise<Member> {
+    return this.req("GET", "/");
+  }
+
+  permissions(): Promise<PermissionResponse> {
+    return this.req("GET", "permissions");
   }
 }
 
