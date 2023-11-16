@@ -1,4 +1,10 @@
-import { GuildSettings, AccessTokenModel, CodeResponse } from "./models";
+import {
+  GuildSettings,
+  AccessTokenModel,
+  CodeResponse,
+  Guild,
+  ListResponse,
+} from "./models";
 
 import { Client } from "./client";
 
@@ -7,6 +13,14 @@ import { SubClient } from "./subclient";
 export class GuildsClient extends SubClient {
   constructor(private _client: Client) {
     super(_client, "guilds");
+  }
+
+  list(): Promise<ListResponse<Guild>> {
+    return this.req("GET", "/");
+  }
+
+  guild(id: string): Promise<Guild> {
+    return this.req("GET", id);
   }
 
   settings(id: string): GuildSettingsClient {

@@ -7,7 +7,7 @@ import { loginRoute } from "../services/api";
 
 import { Button } from "../components/Button";
 
-type Props = NonNullable<unknown>;
+class Props {}
 
 const StartContainer = styled.div``;
 

@@ -18,11 +18,11 @@ type AuthController struct {
 	authMw auth.Middleware
 }
 
-func (c *AuthController) Setup(container di.Container, router fiber.Router) {
-	c.dOauth = container.Get(static.DiDiscordOAuth).(*discordoauth.DiscordOAuth)
-	c.rth = container.Get(static.DiAuthRefreshTokenHandler).(auth.RefreshTokenHandler)
-	c.ath = container.Get(static.DiAuthAccessTokenHandler).(auth.AccessTokenHandler)
-	c.authMw = container.Get(static.DiAuthMiddleware).(auth.Middleware)
+func (c *AuthController) Setup(ctn di.Container, router fiber.Router) {
+	c.dOauth = ctn.Get(static.DiDiscordOAuth).(*discordoauth.DiscordOAuth)
+	c.rth = ctn.Get(static.DiAuthRefreshTokenHandler).(auth.RefreshTokenHandler)
+	c.ath = ctn.Get(static.DiAuthAccessTokenHandler).(auth.AccessTokenHandler)
+	c.authMw = ctn.Get(static.DiAuthMiddleware).(auth.Middleware)
 
 	router.Get("/login", c.getLogin)
 	router.Get("/oauthcallback", c.dOauth.HandlerCallback)

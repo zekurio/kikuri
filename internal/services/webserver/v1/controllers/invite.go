@@ -14,9 +14,9 @@ type InviteController struct {
 	st      *dgrs.State
 }
 
-func (c *InviteController) Setup(container di.Container, router fiber.Router) {
-	c.session = container.Get(static.DiDiscordSession).(*discordgo.Session)
-	c.st = container.Get(static.DiState).(*dgrs.State)
+func (c *InviteController) Setup(ctn di.Container, router fiber.Router) {
+	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
+	c.st = ctn.Get(static.DiState).(*dgrs.State)
 
 	router.Get("", c.getInvite)
 }

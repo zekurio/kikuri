@@ -1,4 +1,5 @@
 import { AppTheme, getSystemTheme } from "../theme/theme";
+import { Guild, User } from "../lib/kikuri-ts/src";
 
 import LocalStorageUtil from "../util/localstorage";
 import { create } from "zustand";
@@ -14,6 +15,15 @@ export interface Store {
 
   accentColor?: string;
   setAccentColor: (v?: string) => void;
+
+  selfUser: FetchLocked<User>;
+  setSelfUser: (selfUser: Partial<FetchLocked<User>>) => void;
+
+  guilds?: Guild[];
+  setGuilds: (guilds?: Guild[]) => void;
+
+  selectedGuild?: Guild;
+  setSelectedGuild: (selectedGuild: Guild) => void;
 }
 
 export const useStore = create<Store>((set) => ({
@@ -28,5 +38,19 @@ export const useStore = create<Store>((set) => ({
     set({ accentColor });
     if (accentColor === undefined) LocalStorageUtil.del("kikuri.accentcolor");
     else LocalStorageUtil.set("kikuri.accentcolor", accentColor);
+  },
+
+  selfUser: { value: undefined, isFetching: false },
+  setSelfUser: (selfUser: Partial<FetchLocked<User>>) =>
+    set({ selfUser: { ...get().selfUser, ...selfUser } }),
+
+  guilds: undefined,
+  setGuilds: (guilds) => set({ guilds }),
+
+  selectedGuild: undefined,
+  setSelectedGuild: (selectedGuild) => {
+    set({ selectedGuild });
+    if (!!selectedGuild)
+      LocalStorageUtil.set("kikuri.selectedguild", selectedGuild.id);
   },
 }));
