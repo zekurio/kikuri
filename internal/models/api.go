@@ -14,6 +14,12 @@ type Status struct {
 	Message string
 }
 
+type Error struct {
+	Error   string `json:"error"`
+	Code    int    `json:"code"`
+	Context string `json:"context,omitempty"`
+}
+
 type AccessTokenResponse struct {
 	Token   string    `json:"token"`
 	Expires time.Time `json:"expires"`
@@ -181,6 +187,13 @@ func GuildReducedFromGuild(g *discordgo.Guild) *GuildReduced {
 		JoinedAt:    g.JoinedAt,
 		MemberCount: g.MemberCount,
 	}
+}
+
+// PermissionsResponse wraps a
+// permissions.PermissionsArra as response
+// model.
+type PermissionsResponse struct {
+	Permissions perms.Array `json:"permissions"`
 }
 
 // GuildSettings is a response for the settings and

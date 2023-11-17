@@ -1,11 +1,12 @@
 package webserver
 
 import (
-	"github.com/charmbracelet/log"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/sarulabs/di/v2"
+	"github.com/zekurio/kikuri/internal/embedded"
 	"github.com/zekurio/kikuri/internal/models"
 	v1 "github.com/zekurio/kikuri/internal/services/webserver/v1"
 	"github.com/zekurio/kikuri/internal/services/webserver/v1/controllers"
@@ -30,13 +31,13 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 
 	ws.app = fiber.New(fiber.Config{
 		AppName:               "kikuri",
+		ErrorHandler:          ws.errorHandler,
+		ServerHeader:          fmt.Sprintf("kikuri v%s", embedded.AppVersion),
 		DisableStartupMessage: true,
 		ProxyHeader:           "X-Forwarded-For",
 	})
 
 	if debug.Enabled() {
-		const corsOrigin = "http://localhost:5173"
-		log.Warnf("CORS enabled for address %s", corsOrigin)
 		ws.app.Use(cors.New(cors.Config{
 			AllowOrigins:     ws.cfg.Webserver.DebugAddr,
 			AllowHeaders:     "authorization, content-type, set-cookie, cookie, server",
@@ -80,4 +81,21 @@ func (ws *WebServer) ListenAndServeBlocking() error {
 	}
 
 	return ws.app.Listen(ws.cfg.Webserver.Addr)
+}
+
+func (ws *WebServer) errorHandler(ctx *fiber.Ctx, err error) error {
+	if fErr, ok := err.(*fiber.Error); ok {
+		if fErr == fiber.ErrUnprocessableEntity {
+			fErr = fiber.ErrBadRequest
+		}
+
+		ctx.Status(fErr.Code)
+		return ctx.JSON(&models.Error{
+			Error: fErr.Message,
+			Code:  fErr.Code,
+		})
+	}
+
+	return ws.errorHandler(ctx,
+		fiber.NewError(fiber.StatusInternalServerError, err.Error()))
 }

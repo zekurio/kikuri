@@ -6,7 +6,12 @@ import { RouteSuspense } from "./components/RouteSuspense";
 
 import { stripSuffix } from "./util/utils";
 import { useStoredTheme } from "./hooks/useStoredTheme";
-import { StartRoute } from "./routes/StartRoute";
+import { StartRoute } from "./routes/Start";
+import { DashboardRoute } from "./routes/Dashboard";
+
+const GuildMembersRoute = React.lazy(
+  () => import("./routes/Dashboard/Guilds/GuildMembers"),
+);
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -69,6 +74,16 @@ export const App: React.FC = () => {
                 </RouteSuspense>
               }
             />
+            <Route path="dashboard" element={<DashboardRoute />}>
+              <Route
+                path="guilds/:guildid/members"
+                element={
+                  <RouteSuspense>
+                    <GuildMembersRoute />
+                  </RouteSuspense>
+                }
+              />
+            </Route>
           </Routes>
         </Router>
       </AppContainer>

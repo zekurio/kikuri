@@ -7,6 +7,7 @@ import {
   User,
   Member,
   PermissionResponse,
+  SearchResult,
 } from "./models";
 
 import { Client } from "./client";
@@ -20,6 +21,34 @@ export class MiscClient extends SubClient {
 
   me(): Promise<User> {
     return this.req("GET", "me");
+  }
+}
+
+export class AuthClient extends SubClient {
+  constructor(client: Client) {
+    super(client, "auth");
+  }
+
+  accesstoken(): Promise<AccessTokenModel> {
+    return this.req("POST", "accesstoken");
+  }
+
+  check(): Promise<CodeResponse> {
+    return this.req("GET", "check");
+  }
+
+  logout(): Promise<CodeResponse> {
+    return this.req("POST", "logout");
+  }
+}
+
+export class SearchClient extends SubClient {
+  constructor(client: Client) {
+    super(client, "search");
+  }
+
+  query(query: string, limit: number = 50): Promise<SearchResult> {
+    return this.req("GET", `/?query=${query}&limit=${limit}`);
   }
 }
 
@@ -49,6 +78,22 @@ export class GuildsClient extends SubClient {
   settings(id: string): GuildSettingsClient {
     return new GuildSettingsClient(this._client, id);
   }
+
+  members(
+    id: string,
+    limit = 50,
+    after = "",
+    filter = "",
+  ): Promise<ListResponse<Member>> {
+    return this.req(
+      "GET",
+      `${id}/members?limit=${limit}&after=${after}&filter=${filter}`,
+    );
+  }
+
+  member(id: string, memberID: string): GuildMemberClient {
+    return new GuildMemberClient(this._client, id, memberID);
+  }
 }
 
 export class GuildSettingsClient extends SubClient {
@@ -77,26 +122,8 @@ export class GuildMemberClient extends SubClient {
   permissions(): Promise<PermissionResponse> {
     return this.req("GET", "permissions");
   }
-}
 
-export class AuthClient extends SubClient {
-  constructor(client: Client) {
-    super(client, "auth");
-  }
-
-  accesstoken(): Promise<AccessTokenModel> {
-    return this.req("POST", "accesstoken");
-  }
-
-  check(): Promise<CodeResponse> {
-    return this.req("GET", "check");
-  }
-
-  logout(): Promise<CodeResponse> {
-    return this.req("POST", "logout");
-  }
-
-  pushCode(code: string): Promise<CodeResponse> {
-    return this.req("POST", "pushcode", { code });
+  permissionsAllowed(): Promise<ListResponse<string>> {
+    return this.req("GET", "permissions/allowed");
   }
 }

@@ -36,7 +36,7 @@ const (
 
 	AuthSessionExpiration  = 7 * 24 * time.Hour
 	ApiTokenExpiration     = 365 * 24 * time.Hour
-	RefreshTokenCookieName = "kikuriRefreshToken"
+	RefreshTokenCookieName = "refreshToken"
 )
 
 var (
@@ -51,7 +51,7 @@ var (
 		"+ku.chat.*",
 	}
 
-	AdditionalRules = []string{
-		"+ku.etc.autochannel",
+	AdditinalPerms = []string{
+		"ku.etc.autochannel",
 	}
 )

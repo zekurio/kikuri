@@ -110,6 +110,11 @@ export interface PermissionResponse {
   permissions: string[];
 }
 
+export interface SearchResult {
+  guilds: Guild[];
+  members: Member[];
+}
+
 export interface CodeResponse {
   code: number;
 }

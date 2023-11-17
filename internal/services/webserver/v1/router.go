@@ -23,7 +23,8 @@ func (r *Router) Route(router fiber.Router) {
 	// TODO build middlewares
 	router.Use(authMw.Handle)
 
-	new(controllers.GuildSettingsController).Setup(r.ctn, router.Group("/guilds/:guildid/settings"))
-	new(controllers.GuildsController).Setup(r.ctn, router.Group("/guilds"))
 	new(controllers.UsersController).Setup(r.ctn, router.Group("/users"))
+	new(controllers.GuildsController).Setup(r.ctn, router.Group("/guilds"))
+	new(controllers.GuildSettingsController).Setup(r.ctn, router.Group("/guilds/:guildid/settings"))
+	new(controllers.GuildMembersController).Setup(r.ctn, router.Group("/guilds/:guildid"))
 }

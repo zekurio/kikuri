@@ -82,9 +82,7 @@ export class HttpClient implements IHttpClient {
     let data = {};
     try {
       data = await res.json();
-    } catch {
-      /* empty */
-    }
+    } catch {}
 
     if (
       res.status === 401 &&
