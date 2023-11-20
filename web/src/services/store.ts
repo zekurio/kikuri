@@ -1,6 +1,6 @@
 import { AppTheme, getSystemTheme } from "../theme/theme";
 import { Guild, User } from "../lib/kikuri-ts/src";
-
+import { ModalState } from '../hooks/useModal';
 import LocalStorageUtil from "../util/localstorage";
 import { create } from "zustand";
 
@@ -24,6 +24,9 @@ export interface Store {
 
   selectedGuild?: Guild;
   setSelectedGuild: (selectedGuild: Guild) => void;
+
+  modal: ModalState<any>;
+  setModal: (modal: ModalState<any>) => void;
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -53,4 +56,7 @@ export const useStore = create<Store>((set, get) => ({
     if (!!selectedGuild)
       LocalStorageUtil.set("kikuri.selectedguild", selectedGuild.id);
   },
+
+  modal: { isOpen: false },
+  setModal: (modal) => set({ modal }),
 }));

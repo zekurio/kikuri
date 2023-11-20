@@ -46,7 +46,7 @@ func (c *Guild) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Guild) Perm() string {
-	return "ku.chat.guild"
+	return "ki.chat.guild"
 }
 
 func (c *Guild) SubPerms() []permissions.SubCommandPerms {

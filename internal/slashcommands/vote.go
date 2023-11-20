@@ -2,9 +2,10 @@ package slashcommands
 
 import (
 	"fmt"
-	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 	"time"
+
+	"github.com/zekurio/kikuri/internal/models"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekrotja/ken"
@@ -112,7 +113,7 @@ func (c *Vote) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Vote) Perm() string {
-	return "ku.chat.vote"
+	return "ki.chat.vote"
 }
 
 func (c *Vote) SubPerms() []permissions.SubCommandPerms {

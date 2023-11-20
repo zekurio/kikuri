@@ -2,8 +2,9 @@ package slashcommands
 
 import (
 	"fmt"
-	"github.com/zekrotja/dgrs"
 	"strings"
+
+	"github.com/zekrotja/dgrs"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekrotja/ken"
@@ -92,7 +93,7 @@ func (c *Perms) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Perms) Perm() string {
-	return "ku.guild.config.perms"
+	return "ki.guild.config.perms"
 }
 
 func (c *Perms) SubPerms() []permissions.SubCommandPerms {

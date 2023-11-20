@@ -1,9 +1,9 @@
 [Discord]
-Token = 'BOT_TOKEN'
-ClientID = 'BOT_CLIENT_ID'
-ClientSecret = 'BOT_CLIENT_SECRET'
-OwnerID = 'OWNER_ID'
-GuildLimit = 99
+Token = 'TOKEN' # testing
+ClientID = 'CLIENTID'
+ClientSecret = 'CLIENTSECRET'
+OwnerID = 'OWNERID'
+GuildLimit = 20
 DisabledCommands = []
 
 [Database]
@@ -12,28 +12,35 @@ Type = 'Postgres'
 [Database.Postgres]
 Host = 'localhost'
 Port = 5432
-Database = 'yourdatabase'
-Username = 'yourusername'
-Password = 'yourpassword'
+Database = 'wickeddatabase'
+Username = 'wickedusername'
+Password = 'wickedpassword'
 
 [Cache]
 CacheDatabase = true
 
 [Cache.Redis]
 Addr = 'localhost:6379'
-Password = 'yourpassword'
+Password = 'youshallnotpass'
 Type = 0
 
+[Cache.Lifetimes]
+Guild = "7d"
+Channel = "7d"
+User = "7d"
+Presence = "1h"
+
 [Permissions]
-UserRules = ['+ku.chat.*', '+ku.etc.*']
-AdminRules = ['+ku.guild.*', '+ku.chat.*', '+ku.etc.*']
+UserRules = ['+ki.chat.*', '+ki.etc.*']
+AdminRules = ['+ki.guild.*', '+ki.chat.*', '+ki.etc.*']
 
 [Webserver]
 Enabled = true
 Addr = '0.0.0.0:8080'
 PublicAddr = 'http://localhost:8080'
+DebugAddr = 'http://localhost:5173'
 
 [Webserver.TLS]
 Enabled = false
-Cert = 'cert.pem'
-Key = 'key.pem'
+Cert = 'wickedcert.pem'
+Key = 'wickedkey.pem'

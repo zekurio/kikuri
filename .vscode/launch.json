@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Go App",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/kikuri/",
+            "cwd": "${workspaceFolder}",
+            "args": ["-c", "config/config.toml", "-debug"]
+        },
+        {
+            "name": "Launch Vite App",
+            "type": "chrome",
+            "request": "launch",
+            "runtimeExecutable": "/usr/bin/thorium-browser",
+            "url": "http://localhost:5173",
+        }
+    ]
+}

@@ -6,7 +6,7 @@ import { Loader } from '../../../components/Loader';
 import { Member } from '../../../lib/kikuri-ts/src';
 import { MemberTileLarge } from '../../../components/MemberTileLarge';
 import { MemberTile } from '../../../components/MemberTile';
-import { SearchBar } from '../../../components/SearchBar';
+import { SearchBar } from '../../../components/Searchbar';
 import debounce from 'debounce';
 import styled from 'styled-components';
 import { useGuild } from '../../../hooks/useGuild';

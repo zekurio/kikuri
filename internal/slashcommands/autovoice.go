@@ -82,7 +82,7 @@ func (c *Autovoice) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Autovoice) Perm() string {
-	return "ku.guild.config.autovoice"
+	return "ki.guild.config.autovoice"
 }
 
 func (c *Autovoice) SubPerms() []permissions.SubCommandPerms {

@@ -1,11 +1,10 @@
 import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 
 import LocalStorageUtil from "../util/localstorage";
-// TODO build Navbar
-//import { NavbarDashboard } from '../components/Navbar';
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useGuilds } from "../hooks/useGuilds";
+import { SidebarDashboard } from "../components/Sidebar";
 
 type Props = {};
 
@@ -32,7 +31,7 @@ export const DashboardRoute: React.FC<Props> = () => {
       /* empty */
     } else if (guilds.length === 0) {
       nav("/welcome");
-    } else if (loc.pathname.replace("/", "") === "db" && !guildid) {
+    } else if (loc.pathname.replace("/", "") === "dashboard" && !guildid) {
       const guild =
         guilds.find(
           (g) => g.id === LocalStorageUtil.get<string>("kikuri.selectedguild"),
@@ -43,6 +42,7 @@ export const DashboardRoute: React.FC<Props> = () => {
 
   return (
     <RouteContainer>
+      <SidebarDashboard />
       <RouterOutlet>
         <Outlet />
       </RouterOutlet>

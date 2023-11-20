@@ -81,7 +81,7 @@ func (c *Autorole) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Autorole) Perm() string {
-	return "ku.guild.config.autorole"
+	return "ki.guild.config.autorole"
 }
 
 func (c *Autorole) SubPerms() []permissions.SubCommandPerms {

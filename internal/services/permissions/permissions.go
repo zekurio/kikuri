@@ -72,7 +72,7 @@ func (p *Permissions) GetPerms(guildID, userID string) (perm perms.Array, overri
 	}
 
 	if p.cfg.Discord.OwnerID == userID {
-		perm = perms.Array{"+ku.*"}
+		perm = perms.Array{"+ki.*"}
 		override = true
 		return
 	}

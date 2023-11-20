@@ -32,7 +32,7 @@ const (
 
 	EndpointAuthCB = "/api/auth/oauthcallback"
 
-	PublicCanaryInvite = "https://kikuri.zekurio.xyz/invite"
+	PublicCanaryInvite = "https://kikuri.xyz/invite"
 
 	AuthSessionExpiration  = 7 * 24 * time.Hour
 	ApiTokenExpiration     = 365 * 24 * time.Hour
@@ -41,17 +41,17 @@ const (
 
 var (
 	DefaultAdminRules = []string{
-		"+ku.guild.*",
-		"+ku.etc.*",
-		"+ku.chat.*",
+		"+ki.guild.*",
+		"+ki.etc.*",
+		"+ki.chat.*",
 	}
 
 	DefaultUserRules = []string{
-		"+ku.etc.*",
-		"+ku.chat.*",
+		"+ki.etc.*",
+		"+ki.chat.*",
 	}
 
 	AdditinalPerms = []string{
-		"ku.etc.autochannel",
+		"ki.etc.autochannel",
 	}
 )
