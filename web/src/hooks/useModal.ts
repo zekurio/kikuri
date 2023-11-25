@@ -1,5 +1,5 @@
-import { ButtonVariant } from '../components/Button';
-import { useStore } from '../services/store';
+import { ButtonVariant } from "../components/Button";
+import { useStore } from "../services/store";
 
 export type DisplayElement = string | JSX.Element | JSX.Element[];
 
@@ -25,7 +25,7 @@ export const useModal = <TResult>() => {
   const [modal, setModal] = useStore((s) => [s.modal, s.setModal]);
 
   const openModal = (m: OpenModal<TResult>) => {
-    if (modal?.isOpen) return Promise.reject('another modal is already open');
+    if (modal?.isOpen) return Promise.reject("another modal is already open");
     return new Promise<TResult | null>((resolver) => {
       setModal({
         modal: m,

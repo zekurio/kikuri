@@ -1,6 +1,6 @@
-import { Input } from '../Input';
-import { IconSearch } from '@tabler/icons-react';
-import styled from 'styled-components';
+import { Input } from "../Input";
+import { IconSearch } from "@tabler/icons-react";
+import styled from "styled-components";
 
 type Props = React.HTMLAttributes<HTMLInputElement> & {
   value?: string;
@@ -25,11 +25,19 @@ const SearchContainer = styled.div`
   }
 `;
 
-export const SearchBar: React.FC<Props> = ({ value, onValueChange = () => {}, ...props }) => {
+export const SearchBar: React.FC<Props> = ({
+  value,
+  onValueChange = () => {},
+  ...props
+}) => {
   return (
     <SearchContainer>
       <IconSearch />
-      <Input value={value} onInput={(e) => onValueChange(e.currentTarget.value)} {...props} />
+      <Input
+        value={value}
+        onInput={(e) => onValueChange(e.currentTarget.value)}
+        {...props}
+      />
     </SearchContainer>
   );
 };

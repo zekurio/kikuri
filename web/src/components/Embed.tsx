@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Embed = styled.span`
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.7em;
   font-weight: bolder;
   padding: 0.2em 0.4em;
@@ -10,6 +10,6 @@ export const Embed = styled.span`
   width: fit-content;
 `;
 
-export const EmbedWrapper: React.FC<{ value: string | number | JSX.Element | undefined }> = ({
-  value,
-}) => <Embed>{value}</Embed>;
+export const EmbedWrapper: React.FC<{
+  value: string | number | JSX.Element | undefined;
+}> = ({ value }) => <Embed>{value}</Embed>;

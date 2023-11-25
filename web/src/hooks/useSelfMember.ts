@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { Member } from '../lib/kikuri-ts/src';
-import { useApi } from './useApi';
-import { useSelfUser } from './useSelfUser';
+import { Member } from "../lib/kikuri-ts/src";
+import { useApi } from "./useApi";
+import { useSelfUser } from "./useSelfUser";
 
 export const useSelfMember = (guildid?: string) => {
   const [member, setMember] = useState<Member>();

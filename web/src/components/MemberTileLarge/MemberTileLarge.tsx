@@ -1,13 +1,13 @@
-import { Guild, Member } from '../../lib/kikuri-ts/src';
+import { Guild, Member } from "../../lib/kikuri-ts/src";
 
-import { Clickable } from '../styleParts';
-import { Container } from '../Container';
-import { DiscordImage } from '../DiscordImage';
-import { Embed } from '../Embed';
-import { Flex } from '../Flex';
-import { RoleList } from '../RoleList/RoleList';
-import { memberName } from '../../util/users';
-import styled from 'styled-components';
+import { Clickable } from "../styleParts";
+import { Container } from "../Container";
+import { DiscordImage } from "../DiscordImage";
+import { Embed } from "../Embed";
+import { Flex } from "../Flex";
+import { RoleList } from "../RoleList/RoleList";
+import { memberName } from "../../util/users";
+import styled from "styled-components";
 
 type Props = {
   member?: Member;
@@ -54,7 +54,11 @@ const Header = styled(Flex)`
   align-items: center;
 `;
 
-export const MemberTileLarge: React.FC<Props> = ({ member, guild, onClick = () => {} }) => {
+export const MemberTileLarge: React.FC<Props> = ({
+  member,
+  guild,
+  onClick = () => {},
+}) => {
   return !!member && !!guild ? (
     <StyledContainer onClick={() => onClick(member)}>
       <DiscordImage src={member.avatar_url} />

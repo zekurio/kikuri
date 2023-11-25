@@ -1,6 +1,6 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
-import Color from 'color';
+import Color from "color";
 
 type Props = {
   width?: string;
@@ -29,7 +29,7 @@ export const Loader = styled.div<Props>`
   background-color: ${(p) => new Color(p.theme.text).fade(0.9).hexa()};
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     height: 100%;
     width: 100%;
@@ -44,8 +44,8 @@ export const Loader = styled.div<Props>`
 `;
 
 Loader.defaultProps = {
-  width: '100%',
-  height: '3em',
-  borderRadius: '12px',
-  margin: '0',
+  width: "100%",
+  height: "3em",
+  borderRadius: "12px",
+  margin: "0",
 };

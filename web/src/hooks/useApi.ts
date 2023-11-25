@@ -1,10 +1,12 @@
-import { APIClient } from "../services/api.ts";
+import { useNotifications } from "./useNotifications";
+import { APIClient } from "../services/api";
 import { APIError } from "../lib/kikuri-ts/src/errors";
 import { Client } from "../lib/kikuri-ts/src";
 import { useNavigate } from "react-router";
 
 export const useApi = () => {
   const nav = useNavigate();
+  const { pushNotification } = useNotifications();
 
   async function fetch<T>(
     req: (c: Client) => Promise<T>,
@@ -28,7 +30,21 @@ export const useApi = () => {
         if (e instanceof APIError) {
           if (e.code === 401) {
             nav("/start");
-          } // TODO handle other errors
+          } else {
+            pushNotification({
+              type: "ERROR",
+              timeout: 8000,
+              title: "API Error",
+              message: `${e.message} (${e.code})`,
+            });
+          }
+        } else {
+          pushNotification({
+            type: "ERROR",
+            timeout: 8000,
+            title: "Error",
+            message: `Unknown Request Error: ${e}`,
+          });
         }
       }
       throw e;

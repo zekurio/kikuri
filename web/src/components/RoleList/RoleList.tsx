@@ -1,7 +1,7 @@
-import { Flex } from '../Flex';
-import { Role } from '../../lib/kikuri-ts/src';
-import { Tag } from '../Tag';
-import styled from 'styled-components';
+import { Flex } from "../Flex";
+import { Role } from "../../lib/kikuri-ts/src";
+import { Tag } from "../Tag";
+import styled from "styled-components";
 
 type Props = {
   roleids: string[];

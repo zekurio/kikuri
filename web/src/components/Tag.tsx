@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-import Color from 'color';
+import Color from "color";
 
 type Props = {
   colors?: string | number;
@@ -23,5 +23,5 @@ export const Tag = styled.span<Props>`
 `;
 
 Tag.defaultProps = {
-  borderRadius: '3px',
+  borderRadius: "3px",
 };

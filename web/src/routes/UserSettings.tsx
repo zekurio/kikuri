@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router';
-import React from 'react';
-import styled from 'styled-components';
+import { Outlet } from "react-router";
+import React from "react";
+import styled from "styled-components";
 
 type Props = {};
 

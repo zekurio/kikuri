@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { Modal } from '../Modal';
-import styled from 'styled-components';
+import { Modal } from "../Modal";
+import styled from "styled-components";
 
 export type Props<T extends unknown> = React.HTMLAttributes<HTMLDivElement> & {
   options: Element<T>[];
@@ -33,7 +33,7 @@ const OptionContainer = styled.div`
 `;
 
 const OptionsList = styled.div<{ show: boolean }>`
-  pointer-events: ${(p) => (p.show ? 'all' : 'none')};
+  pointer-events: ${(p) => (p.show ? "all" : "none")};
   opacity: ${(p) => (p.show ? 1 : 0)};
 
   position: absolute;
@@ -106,8 +106,8 @@ export const Select = <T extends unknown>({
     stopPropagation(e.nativeEvent, () => setSelect(!select));
 
   useEffect(() => {
-    window.addEventListener('click', _onWindowClick);
-    return () => window.removeEventListener('click', _onWindowClick);
+    window.addEventListener("click", _onWindowClick);
+    return () => window.removeEventListener("click", _onWindowClick);
   }, []);
 
   const _options = options
@@ -121,7 +121,9 @@ export const Select = <T extends unknown>({
   return (
     <SelectContainer {...props}>
       <ValueContainer onClick={_onSelectionClick}>
-        {(value && value.display) || <Placeholder>{placeholder ?? <>&nbsp;</>}</Placeholder>}
+        {(value && value.display) || (
+          <Placeholder>{placeholder ?? <>&nbsp;</>}</Placeholder>
+        )}
       </ValueContainer>
       <OptionsList show={select}>{_options}</OptionsList>
       <OptionsModal show={select} onClose={() => setSelect(false)}>

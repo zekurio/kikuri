@@ -1,8 +1,8 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-import { useRef } from 'react';
+import { useRef } from "react";
 
-type Direction = 'top' | 'bottom';
+type Direction = "top" | "bottom";
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   hoverContent: JSX.Element;
@@ -26,12 +26,12 @@ const PlateContainer = styled.div<{ height?: number; direction: Direction }>`
 
   ${(p) => {
     switch (p.direction) {
-      case 'top':
+      case "top":
         return css`
           bottom: -1em;
           padding-bottom: calc(2em + ${p.height}px);
         `;
-      case 'bottom':
+      case "bottom":
         return css`
           top: -1em;
           padding-top: calc(2em + ${p.height}px);
@@ -56,14 +56,17 @@ const HoverContainer = styled.div`
 export const Hoverplate: React.FC<Props> = ({
   children,
   hoverContent,
-  direction = 'top',
+  direction = "top",
   ...props
 }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   return (
     <HoverContainer {...props}>
       <ContentContainer ref={contentRef}>{children}</ContentContainer>
-      <PlateContainer height={contentRef.current?.offsetHeight} direction={direction}>
+      <PlateContainer
+        height={contentRef.current?.offsetHeight}
+        direction={direction}
+      >
         {hoverContent}
       </PlateContainer>
     </HoverContainer>

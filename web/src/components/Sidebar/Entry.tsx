@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { useMatch } from 'react-router';
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { useMatch } from "react-router";
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   path: string;
@@ -16,7 +16,8 @@ const StyledDiv = styled.div<{ activated: boolean }>`
   gap: 0.5em;
   align-items: center;
   padding: 0.5em;
-  background-color: ${(p) => (p.activated ? p.theme.accentDarker : p.theme.background3)};
+  background-color: ${(p) =>
+    p.activated ? p.theme.accentDarker : p.theme.background3};
   border-radius: 8px;
   margin-top: 0.5em;
   cursor: pointer;

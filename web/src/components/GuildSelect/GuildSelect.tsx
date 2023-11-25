@@ -1,6 +1,6 @@
-import { Element, Select } from '../Select';
-import { Option } from './Option';
-import { Guild } from '../../lib/kikuri-ts/src';
+import { Element, Select } from "../Select";
+import { Option } from "./Option";
+import { Guild } from "../../lib/kikuri-ts/src";
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   guilds: Guild[];
@@ -20,7 +20,7 @@ export const GuildSelect: React.FC<Props> = ({
         id: g.id,
         display: <Option guild={g} />,
         value: g,
-      } as Element<Guild>),
+      }) as Element<Guild>,
   );
   return (
     <Select

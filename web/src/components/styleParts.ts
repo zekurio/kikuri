@@ -1,5 +1,5 @@
-import Color from 'color';
-import { css } from 'styled-components';
+import Color from "color";
+import { css } from "styled-components";
 
 export const Clickable = (scaling = 1.03) => css`
   cursor: pointer;

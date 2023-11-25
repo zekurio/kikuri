@@ -1,14 +1,14 @@
-import { EntryContainer } from './EntryContainer';
-import { Heading } from '../Heading';
-import { MAX_WIDTH } from '../MaxWidthContainer';
-import { PropsWithChildren } from 'react';
-import { PropsWithStyle } from '../props';
-import KikuriIcon from '../../assets/ki-icon.png';
-import styled from 'styled-components';
+import { EntryContainer } from "./EntryContainer";
+import { Heading } from "../Heading";
+import { MAX_WIDTH } from "../MaxWidthContainer";
+import { PropsWithChildren } from "react";
+import { PropsWithStyle } from "../props";
+import KikuriIcon from "../../assets/ki-icon.png";
+import styled from "styled-components";
 
 type Props = PropsWithChildren & PropsWithStyle & {};
 
-export const SIDEBAR_WIDTH = '15rem';
+export const SIDEBAR_WIDTH = "15rem";
 
 const Brand = styled.div`
   display: flex;

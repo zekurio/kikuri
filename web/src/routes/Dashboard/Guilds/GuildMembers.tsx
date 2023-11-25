@@ -1,17 +1,17 @@
-import { useCallback, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useCallback, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 
-import { Button } from '../../../components/Button';
-import { Loader } from '../../../components/Loader';
-import { Member } from '../../../lib/kikuri-ts/src';
-import { MemberTileLarge } from '../../../components/MemberTileLarge';
-import { MemberTile } from '../../../components/MemberTile';
-import { SearchBar } from '../../../components/Searchbar';
-import debounce from 'debounce';
-import styled from 'styled-components';
-import { useGuild } from '../../../hooks/useGuild';
-import { useMembers } from '../../../hooks/useMembers';
-import { useSelfMember } from '../../../hooks/useSelfMember';
+import { Button } from "../../../components/Button";
+import { Loader } from "../../../components/Loader";
+import { Member } from "../../../lib/kikuri-ts/src";
+import { MemberTileLarge } from "../../../components/MemberTileLarge";
+import { MemberTile } from "../../../components/MemberTile";
+import { SearchBar } from "../../../components/Searchbar";
+import debounce from "debounce";
+import styled from "styled-components";
+import { useGuild } from "../../../hooks/useGuild";
+import { useMembers } from "../../../hooks/useMembers";
+import { useSelfMember } from "../../../hooks/useSelfMember";
 
 type Props = {};
 
@@ -35,7 +35,7 @@ const GuildMembersRoute: React.FC<Props> = () => {
   const nav = useNavigate();
   const selfMember = useSelfMember(guildid);
   const guild = useGuild(guildid);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [members, loadMoreMembers] = useMembers(guildid, 100, search);
 
   const _onSearchInput = useCallback(debounce(setSearch, 500), []);
@@ -46,9 +46,13 @@ const GuildMembersRoute: React.FC<Props> = () => {
 
   return (
     <>
-      {(selfMember && <MemberTileLarge member={selfMember} guild={guild} onClick={_navToMember} />) || (
-        <Loader width="100%" height="6em" />
-      )}
+      {(selfMember && (
+        <MemberTileLarge
+          member={selfMember}
+          guild={guild}
+          onClick={_navToMember}
+        />
+      )) || <Loader width="100%" height="6em" />}
       {(members && selfMember && (
         <MembersSection>
           <SearchBar onValueChange={_onSearchInput} placeholder="Search..." />
@@ -56,12 +60,20 @@ const GuildMembersRoute: React.FC<Props> = () => {
             {members
               .filter((m) => m.user.id !== selfMember.user.id)
               .map((m) => (
-                <MemberTile key={`memb-${m.user.id}`} member={m} onClick={_navToMember} />
+                <MemberTile
+                  key={`memb-${m.user.id}`}
+                  member={m}
+                  onClick={_navToMember}
+                />
               ))}
           </MemberTiles>
-          {members.length > 0 && !search && guild?.member_count! > members.length && (
-            <LoadMoreButton onClick={() => loadMoreMembers()}>Laod more ...</LoadMoreButton>
-          )}
+          {members.length > 0 &&
+            !search &&
+            guild?.member_count! > members.length && (
+              <LoadMoreButton onClick={() => loadMoreMembers()}>
+                Laod more ...
+              </LoadMoreButton>
+            )}
         </MembersSection>
       )) || (
         <>

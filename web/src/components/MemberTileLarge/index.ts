@@ -1,1 +1,1 @@
-export * from "./MemberTileLarge"
+export * from "./MemberTileLarge";

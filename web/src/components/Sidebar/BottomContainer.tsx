@@ -1,20 +1,20 @@
-import { Button } from '../Button';
-import { DiscordImage } from '../DiscordImage';
-import { Hoverplate } from '../Hoverplate';
-import { Loader } from '../Loader';
-import { MAX_WIDTH } from '../MaxWidthContainer';
-import { SIDEBAR_WIDTH } from './Sidebar';
-import { PropsWithStyle } from '../props';
-import { IconTriangleFilled } from '@tabler/icons-react';
-import { IconSettings } from '@tabler/icons-react';
-import { IconLogout } from '@tabler/icons-react';
-import { IconQuestionMark } from '@tabler/icons-react';
-import { IconUserCog } from '@tabler/icons-react';
-import styled from 'styled-components';
-import { useApi } from '../../hooks/useApi';
-import { useNavigate } from 'react-router';
-import { useSelfUser } from '../../hooks/useSelfUser';
-import { useTranslation } from 'react-i18next';
+import { Button } from "../Button";
+import { DiscordImage } from "../DiscordImage";
+import { Hoverplate } from "../Hoverplate";
+import { Loader } from "../Loader";
+import { MAX_WIDTH } from "../MaxWidthContainer";
+import { SIDEBAR_WIDTH } from "./Sidebar";
+import { PropsWithStyle } from "../props";
+import { IconTriangleFilled } from "@tabler/icons-react";
+import { IconSettings } from "@tabler/icons-react";
+import { IconLogout } from "@tabler/icons-react";
+import { IconQuestionMark } from "@tabler/icons-react";
+import { IconUserCog } from "@tabler/icons-react";
+import styled from "styled-components";
+import { useApi } from "../../hooks/useApi";
+import { useNavigate } from "react-router";
+import { useSelfUser } from "../../hooks/useSelfUser";
+import { useTranslation } from "react-i18next";
 
 type Props = PropsWithStyle & {};
 
@@ -92,14 +92,14 @@ const SettingsButton = styled(Button)`
 `;
 
 export const BottomContainer: React.FC<Props> = ({ ...props }) => {
-  const { t } = useTranslation('components', { keyPrefix: 'SIDEBAR' });
+  const { t } = useTranslation("components", { keyPrefix: "SIDEBAR" });
   const nav = useNavigate();
   const self = useSelfUser();
   const fetch = useApi();
 
   const _logout = () => {
     fetch((c) => c.auth.logout())
-      .then(() => nav('/start'))
+      .then(() => nav("/start"))
       .catch();
   };
 
@@ -108,20 +108,21 @@ export const BottomContainer: React.FC<Props> = ({ ...props }) => {
       <StyledHoverplate
         hoverContent={
           <HoverplateContent>
-            <HoverplateButton onClick={() => nav('/usersettings')}>
+            <HoverplateButton onClick={() => nav("/usersettings")}>
               <IconUserCog />
-              <span>{t('user-settings')}</span>
+              <span>{t("user-settings")}</span>
             </HoverplateButton>
-            <HoverplateButton variant="blue" onClick={() => nav('/info')}>
+            <HoverplateButton variant="blue" onClick={() => nav("/info")}>
               <IconQuestionMark />
-              <span>{t('info')}</span>
+              <span>{t("info")}</span>
             </HoverplateButton>
             <HoverplateButton variant="orange" onClick={_logout}>
               <IconLogout />
-              <span>{t('logout')}</span>
+              <span>{t("logout")}</span>
             </HoverplateButton>
           </HoverplateContent>
-        }>
+        }
+      >
         {(self && (
           <SelfContainer>
             <DiscordImage src={self?.avatar_url} round />
@@ -131,7 +132,7 @@ export const BottomContainer: React.FC<Props> = ({ ...props }) => {
         )) || <Loader width="100%" height="2em" borderRadius="8px" />}
       </StyledHoverplate>
       {self?.bot_owner && (
-        <SettingsButton variant="gray" onClick={() => nav('/settings')}>
+        <SettingsButton variant="gray" onClick={() => nav("/settings")}>
           <IconSettings />
         </SettingsButton>
       )}

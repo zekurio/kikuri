@@ -1,5 +1,5 @@
-import { Element } from './Select';
-import styled from 'styled-components';
+import { Element } from "./Select";
+import styled from "styled-components";
 
 type Props<T> = {
   value: Element<T>;

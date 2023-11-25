@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { GuildMemberClient } from '../lib/kikuri-ts/src/bindings';
-import { Member } from '../lib/kikuri-ts/src';
-import { useApi } from './useApi';
+import { GuildMemberClient } from "../lib/kikuri-ts/src/bindings";
+import { Member } from "../lib/kikuri-ts/src";
+import { useApi } from "./useApi";
 
-type MemberRequester = <T>(req: (c: GuildMemberClient) => Promise<T>) => Promise<T>;
+type MemberRequester = <T>(
+  req: (c: GuildMemberClient) => Promise<T>,
+) => Promise<T>;
 
 export const useMember = (
   guildid?: string,

@@ -1,7 +1,7 @@
-import { Button } from '../Button';
-import { Modal } from './Modal';
-import { uid } from 'react-uid';
-import { useStore } from '../../services/store';
+import { Button } from "../Button";
+import { Modal } from "./Modal";
+import { uid } from "react-uid";
+import { useStore } from "../../services/store";
 
 type Props = {};
 
@@ -28,7 +28,8 @@ export const HookedModal: React.FC<Props> = () => {
         show={modal.isOpen}
         heading={modal.modal?.heading}
         controls={_controls}
-        onClose={_onClose}>
+        onClose={_onClose}
+      >
         {modal.modal?.content}
       </Modal>
     </>

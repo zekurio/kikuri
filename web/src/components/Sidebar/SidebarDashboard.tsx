@@ -1,14 +1,14 @@
-import styled from 'styled-components';
-import { BottomContainer, SelfContainer } from './BottomContainer';
-import { SIDEBAR_WIDTH, Sidebar } from './Sidebar';
-import { useNavigate, useParams } from 'react-router';
-import { Entry } from './Entry';
-import { GuildSelect } from '../GuildSelect/GuildSelect';
-import { useGuilds } from '../../hooks/useGuilds';
-import { useStore } from '../../services/store';
-import { MAX_WIDTH } from '../MaxWidthContainer';
-import { Guild } from '../../lib/kikuri-ts/src';
-import { useEffect } from 'react';
+import styled from "styled-components";
+import { BottomContainer, SelfContainer } from "./BottomContainer";
+import { SIDEBAR_WIDTH, Sidebar } from "./Sidebar";
+import { useNavigate, useParams } from "react-router";
+import { Entry } from "./Entry";
+import { GuildSelect } from "../GuildSelect/GuildSelect";
+import { useGuilds } from "../../hooks/useGuilds";
+import { useStore } from "../../services/store";
+import { MAX_WIDTH } from "../MaxWidthContainer";
+import { Guild } from "../../lib/kikuri-ts/src";
+import { useEffect } from "react";
 
 class Props {}
 
@@ -44,10 +44,14 @@ export const SidebarDashboard: React.FC<Props> = () => {
   const nav = useNavigate();
   const { guildid } = useParams();
   const guilds = useGuilds();
-  const [selectedGuild, setSelectedGuild] = useStore((s) => [s.selectedGuild, s.setSelectedGuild]);
+  const [selectedGuild, setSelectedGuild] = useStore((s) => [
+    s.selectedGuild,
+    s.setSelectedGuild,
+  ]);
 
   useEffect(() => {
-    if (!!guilds && !!guildid) setSelectedGuild(guilds.find((g) => g.id === guildid) ?? guilds[0]);
+    if (!!guilds && !!guildid)
+      setSelectedGuild(guilds.find((g) => g.id === guildid) ?? guilds[0]);
   }, [guildid, guilds]);
 
   const _onGuildSelect = (g: Guild) => {
