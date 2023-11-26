@@ -9,6 +9,7 @@ export interface AccessTokenModel {
   token: string;
   expires: string;
 }
+
 export interface FlatUser {
   id: string;
   username: string;

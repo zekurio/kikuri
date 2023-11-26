@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 
 import { RouteSuspense } from "./components/RouteSuspense";
@@ -84,6 +89,7 @@ export const App: React.FC = () => {
                 }
               />
             </Route>
+            <Route path="*" element={<Navigate to="dashboard" />} />
           </Routes>
         </Router>
       </AppContainer>

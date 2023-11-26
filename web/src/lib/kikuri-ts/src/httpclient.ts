@@ -52,20 +52,16 @@ export class HttpClient implements IHttpClient {
     kv<string, string>(this.options?.headers).forEach(([k, v]) =>
       headers.set(k, v),
     );
-    kv<string, string>(headers).forEach(([k, v]) => headers.set(k, v));
-
     if (this.options.authorization)
-      headers.set("Authorization", this.options.authorization);
+      headers.set("authorization", this.options.authorization);
     else if (this.accessToken) {
       if (Date.now() - this.accessToken.expiresDate.getTime() > 0) {
-        // Setting access token null here to avoid getting here again
-        // right after we call getAndSetAccessToken().
         this.accessToken = null;
         return await this.getAndSetAccessToken(() =>
           this.req(method, path, body, appendHeaders),
         );
       }
-      headers.set("Authorization", `accessToken ${this.accessToken.token}`);
+      headers.set("authorization", `accessToken ${this.accessToken.token}`);
     }
     const fullPath = replaceDoublePath(`${this.endpoint}/${path}`);
     const res = await window.fetch(fullPath, {

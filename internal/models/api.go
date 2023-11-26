@@ -203,3 +203,8 @@ type GuildSettings struct {
 	AutoVoice []string               `json:"auto_voice"`
 	Perms     map[string]perms.Array `json:"perms"`
 }
+
+type SearchResult struct {
+	Guilds  []*GuildReduced `json:"guilds"`
+	Members []*Member       `json:"members"`
+}
