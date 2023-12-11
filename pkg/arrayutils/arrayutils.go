@@ -44,7 +44,9 @@ func Contains[T comparable](s []T, e T) bool {
 	return IndexOf(s, e) != -1
 }
 
-// Contained returns a slice containing all the elements of the specified subset that are contained in the specified slice.
+// Contained returns a slice containing all the elements of the specified subset that are
+//
+//	contained in the specified slice.
 func Contained[T comparable](subset, s []T) []T {
 	var ct []T
 	for _, e := range subset {
@@ -63,6 +65,18 @@ func ContainsAny[T comparable](s []T, elements ...T) bool {
 		}
 	}
 	return false
+}
+
+// NotContained returns a slice containing all the elements of the specified subset that are not
+// contained in the specified slice.
+func NotContained[T comparable](subset, s []T) []T {
+	var ct []T
+	for _, e := range subset {
+		if !Contains(s, e) {
+			ct = append(ct, e)
+		}
+	}
+	return ct
 }
 
 // EqualsInOrder returns true if the two specified slices are equal and in the same order.

@@ -3,19 +3,19 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"github.com/zekurio/kikuri/internal/embedded"
+	"github.com/zekurio/kikuri/internal/models"
 	"strings"
-
-	"github.com/zekurio/daemon/internal/util"
+	"time"
 
 	"github.com/charmbracelet/log"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
-	"github.com/zekurio/daemon/internal/services/config"
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/util/embedded"
-	"github.com/zekurio/daemon/internal/util/vote"
-	"github.com/zekurio/daemon/pkg/perms"
+
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/util"
+	"github.com/zekurio/kikuri/pkg/perms"
 )
 
 type Postgres struct {
@@ -27,7 +27,7 @@ var (
 	guildTables                   = []string{"guilds", "permissions"}
 )
 
-func InitPostgres(c config.PostgresConfig) (*Postgres, error) {
+func NewPostgres(c models.DatabaseCreds) (*Postgres, error) {
 	var (
 		p   Postgres
 		err error
@@ -44,11 +44,6 @@ func InitPostgres(c config.PostgresConfig) (*Postgres, error) {
 		return nil, err
 	}
 
-	err = p.handleMigrations()
-	if err != nil {
-		return nil, err
-	}
-
 	goose.SetBaseFS(embedded.Migrations)
 	err = goose.SetDialect("postgres")
 	if err != nil {
@@ -61,23 +56,15 @@ func InitPostgres(c config.PostgresConfig) (*Postgres, error) {
 	}
 
 	return &p, nil
-
-}
-
-func (p *Postgres) handleMigrations() error {
-
-	return nil
-
 }
 
 func (p *Postgres) Close() error {
 	return p.db.Close()
-
 }
 
 // GUILDS
 
-func (p *Postgres) GetAutoRoles(guildID string) ([]string, error) {
+func (p *Postgres) GetGuildAutoRoles(guildID string) (autoroles []string, err error) {
 	roleStr, err := GetValue[string](p, "guilds", "autorole_ids", "guild_id", guildID)
 	if roleStr == "" {
 		return []string{}, err
@@ -86,11 +73,11 @@ func (p *Postgres) GetAutoRoles(guildID string) ([]string, error) {
 	return strings.Split(roleStr, ";"), nil
 }
 
-func (p *Postgres) SetAutoRoles(guildID string, roleIDs []string) error {
+func (p *Postgres) SetGuildAutoRoles(guildID string, roleIDs []string) error {
 	return SetValue(p, "guilds", "autorole_ids", strings.Join(roleIDs, ";"), "guild_id", guildID)
 }
 
-func (p *Postgres) GetAutoVoice(guildID string) ([]string, error) {
+func (p *Postgres) GetGuildAutoVoice(guildID string) (autovoices []string, err error) {
 	chStr, err := GetValue[string](p, "guilds", "autovoice_ids", "guild_id", guildID)
 	if chStr == "" {
 		return []string{}, err
@@ -99,14 +86,14 @@ func (p *Postgres) GetAutoVoice(guildID string) ([]string, error) {
 	return strings.Split(chStr, ";"), nil
 }
 
-func (p *Postgres) SetAutoVoice(guildID string, channelIDs []string) error {
+func (p *Postgres) SetGuildAutoVoice(guildID string, channelIDs []string) error {
 	return SetValue(p, "guilds", "autovoice_ids", strings.Join(channelIDs, ","), "guild_id", guildID)
 }
 
 // PERMISSIONS
 
-func (p *Postgres) GetPermissions(guildID string) (map[string]perms.Array, error) {
-	results := make(map[string]perms.Array)
+func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.Array, err error) {
+	permissions = make(map[string]perms.Array)
 	rows, err := p.db.Query(`SELECT role_id, perms FROM permissions WHERE guild_id = $1`, guildID)
 	if err != nil {
 		return nil, p.wrapErr(err)
@@ -121,20 +108,20 @@ func (p *Postgres) GetPermissions(guildID string) (map[string]perms.Array, error
 			return nil, p.wrapErr(err)
 		}
 
-		results[roleID] = strings.Split(permStr, ";")
+		permissions[roleID] = strings.Split(permStr, ";")
 	}
 
-	return results, nil
+	return
 }
 
-func (p *Postgres) SetPermissions(guildID, roleID string, perms perms.Array) error {
+func (p *Postgres) SetPermissions(guildID, roleID string, permissions perms.Array) error {
 
-	if len(perms) == 0 {
+	if len(permissions) == 0 {
 		_, err := p.db.Exec(`DELETE FROM permissions WHERE guild_id = $1 AND role_id = $2`, guildID, roleID)
 		return err
 	}
 
-	pStr := strings.Join(perms, ";")
+	pStr := strings.Join(permissions, ";")
 	res, err := p.db.Exec(`UPDATE permissions SET perms = $1 WHERE guild_id = $2 AND role_id = $3`, pStr, guildID, roleID)
 	if err != nil {
 		return err
@@ -153,32 +140,32 @@ func (p *Postgres) SetPermissions(guildID, roleID string, perms perms.Array) err
 
 // VOTES
 
-func (p *Postgres) GetVotes() (map[string]vote.Vote, error) {
+func (p *Postgres) GetVotes() (votes map[string]models.Vote, err error) {
+	votes = make(map[string]models.Vote)
 	rows, err := p.db.Query(`SELECT id, json_data FROM votes`)
 	if err != nil {
 		return nil, p.wrapErr(err)
 	}
 
-	var results = make(map[string]vote.Vote)
 	for rows.Next() {
 		var voteID, rawData string
 		err := rows.Scan(&voteID, &rawData)
 		if err != nil {
 			continue
 		}
-		vote, err := util.Unmarshal[vote.Vote](rawData)
+		vote, err := util.Unmarshal[models.Vote](rawData)
 		if err != nil {
 			p.DeleteVote(rawData)
 		} else {
-			results[vote.ID] = vote
+			votes[vote.ID] = vote
 		}
 
 	}
 
-	return results, nil
+	return
 }
 
-func (p *Postgres) AddUpdateVote(v vote.Vote) error {
+func (p *Postgres) AddUpdateVote(v models.Vote) error {
 	rawData, err := util.Marshal(v)
 	if err != nil {
 		return err
@@ -189,37 +176,61 @@ func (p *Postgres) AddUpdateVote(v vote.Vote) error {
 
 func (p *Postgres) DeleteVote(voteID string) error {
 	_, err := p.db.Exec(`DELETE FROM votes WHERE id = $1`, voteID)
-	return err
+	return p.wrapErr(err)
+}
+
+// OAUTH2
+
+func (p *Postgres) SetUserRefreshToken(ident, token string, expires time.Time) error {
+	_, err := p.db.Exec(`INSERT INTO refresh_tokens (ident, token, expires) VALUES ($1, $2, $3) ON CONFLICT (ident) DO UPDATE SET token = $2, expires = $3`, ident, token, expires)
+	return p.wrapErr(err)
+}
+
+func (p *Postgres) GetUserByRefreshToken(token string) (ident string, expires time.Time, err error) {
+	rows, err := p.db.Query(`SELECT ident, expires FROM refresh_tokens WHERE token = $1`, token)
+	if err != nil {
+		return "", time.Time{}, p.wrapErr(err)
+	}
+
+	if !rows.Next() {
+		return "", time.Time{}, p.wrapErr(sql.ErrNoRows)
+	}
+
+	err = rows.Scan(&ident, &expires)
+	if err != nil {
+		return "", time.Time{}, p.wrapErr(err)
+	}
+
+	return ident, expires, nil
+}
+
+func (p *Postgres) RevokeUserRefreshToken(ident string) error {
+	_, err := p.db.Exec(`DELETE FROM refresh_tokens WHERE ident = $1`, ident)
+	return p.wrapErr(err)
 }
 
 // DATA MANAGEMENT
 
 func (p *Postgres) FlushGuildData(guildID string) error {
-
 	return p.tx(func(tx *sql.Tx) error {
-
 		var (
 			err          error
-			failedGuilds []string
+			failedTables []string
 		)
 
 		for _, table := range guildTables {
-
-			_, err := tx.Exec(fmt.Sprintf(`DELETE FROM %s WHERE guild_id = $1`, table), guildID)
+			_, err = tx.Exec(fmt.Sprintf(`DELETE FROM %s WHERE guild_id = $1`, table), guildID)
 			if err != nil {
-				failedGuilds = append(failedGuilds, guildID)
+				failedTables = append(failedTables, table)
 			}
-
 		}
 
-		if len(failedGuilds) > 0 || err != nil {
-			return fmt.Errorf("failed to flush guild data for guilds: %v", failedGuilds)
+		if len(failedTables) > 0 {
+			return fmt.Errorf("failed to flush tables: %s", strings.Join(failedTables, ", "))
 		}
 
 		return nil
-
 	})
-
 }
 
 //

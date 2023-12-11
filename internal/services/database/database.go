@@ -1,8 +1,11 @@
 package database
 
 import (
-	"github.com/zekurio/daemon/internal/util/vote"
-	"github.com/zekurio/daemon/pkg/perms"
+	"time"
+
+	"github.com/zekurio/kikuri/internal/models"
+
+	"github.com/zekurio/kikuri/pkg/perms"
 )
 
 // Database is the interface for our database service
@@ -12,22 +15,28 @@ type Database interface {
 
 	// Guild settings
 
-	GetAutoRoles(guildID string) ([]string, error)
-	SetAutoRoles(guildID string, roleIDs []string) error
+	GetGuildAutoRoles(guildID string) (autoroles []string, err error)
+	SetGuildAutoRoles(guildID string, roleIDs []string) error
 
-	GetAutoVoice(guildID string) ([]string, error)
-	SetAutoVoice(guildID string, channelIDs []string) error
+	GetGuildAutoVoice(guildID string) (autovoices []string, err error)
+	SetGuildAutoVoice(guildID string, channelIDs []string) error
 
 	// Permissions
 
-	GetPermissions(guildID string) (map[string]perms.Array, error)
-	SetPermissions(guildID, roleID string, perms perms.Array) error
+	GetPermissions(guildID string) (permissions map[string]perms.Array, err error)
+	SetPermissions(guildID, roleID string, permissions perms.Array) error
 
 	// Votes
 
-	GetVotes() (map[string]vote.Vote, error)
-	AddUpdateVote(vote vote.Vote) error
+	GetVotes() (votes map[string]models.Vote, err error)
+	AddUpdateVote(vote models.Vote) error
 	DeleteVote(voteID string) error
+
+	// Oauth2
+
+	SetUserRefreshToken(ident, token string, expires time.Time) error
+	GetUserByRefreshToken(token string) (ident string, expires time.Time, err error)
+	RevokeUserRefreshToken(ident string) error
 
 	// Data management
 

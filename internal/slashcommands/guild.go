@@ -6,13 +6,14 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/colorutils"
-	"github.com/zekurio/daemon/pkg/discordutils"
-	"github.com/zekurio/daemon/pkg/quickembed"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/colorutils"
+	"github.com/zekurio/kikuri/pkg/discordutils"
+	"github.com/zekurio/kikuri/pkg/embedbuilder"
 )
 
 type Guild struct {
@@ -45,7 +46,7 @@ func (c *Guild) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Guild) Perm() string {
-	return "dm.chat.guild"
+	return "ki.chat.guild"
 }
 
 func (c *Guild) SubPerms() []permissions.SubCommandPerms {
@@ -58,10 +59,11 @@ func (c *Guild) Run(ctx ken.Context) (err error) {
 	}
 
 	s := ctx.GetSession()
+	st := ctx.Get(static.DiState).(*dgrs.State)
 
 	const maxGuildRoles = 16
 
-	guild, err := discordutils.GetGuild(s, ctx.GetEvent().GuildID)
+	guild, err := st.Guild(ctx.GetEvent().GuildID)
 	if err != nil {
 		return
 	}
@@ -118,7 +120,7 @@ func (c *Guild) Run(ctx ken.Context) (err error) {
 		return
 	}
 
-	emb := quickembed.New().
+	emb := embedbuilder.New().
 		SetTitle("About "+guild.Name).
 		SetThumbnail(guild.IconURL("1024"), "", 100, 100).
 		SetColor(color).

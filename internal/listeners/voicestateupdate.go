@@ -5,14 +5,15 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/discordutils"
+	"github.com/zekrotja/dgrs"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
 )
 
 type ListenerVoiceStateUpdate struct {
 	db              database.Database
+	st              *dgrs.State
 	pmw             *permissions.Permissions
 	voiceStateCache map[string]*discordgo.VoiceState
 	autovcCache     map[string]string
@@ -21,6 +22,7 @@ type ListenerVoiceStateUpdate struct {
 func NewListenerVoiceStateUpdate(ctn di.Container) *ListenerVoiceStateUpdate {
 	return &ListenerVoiceStateUpdate{
 		db:              ctn.Get(static.DiDatabase).(database.Database),
+		st:              ctn.Get(static.DiState).(*dgrs.State),
 		pmw:             ctn.Get(static.DiPermissions).(*permissions.Permissions),
 		voiceStateCache: map[string]*discordgo.VoiceState{},
 		autovcCache:     map[string]string{},
@@ -29,7 +31,7 @@ func NewListenerVoiceStateUpdate(ctn di.Container) *ListenerVoiceStateUpdate {
 
 func (l *ListenerVoiceStateUpdate) Handler(s *discordgo.Session, e *discordgo.VoiceStateUpdate) {
 
-	allowed, _, err := l.pmw.HasPerms(s, e.GuildID, e.UserID, "dm.chat.autochannel")
+	allowed, _, err := l.pmw.HasPerms(e.GuildID, e.UserID, "ki.chat.autochannel")
 	if err != nil || !allowed {
 		return
 	}
@@ -39,7 +41,7 @@ func (l *ListenerVoiceStateUpdate) Handler(s *discordgo.Session, e *discordgo.Vo
 
 	l.voiceStateCache[e.UserID] = vsNew
 
-	avIDs, err := l.db.GetAutoVoice(e.GuildID)
+	avIDs, err := l.db.GetGuildAutoVoice(e.GuildID)
 	if err != nil {
 		return
 	}
@@ -86,14 +88,16 @@ func (l *ListenerVoiceStateUpdate) Handler(s *discordgo.Session, e *discordgo.Vo
 }
 
 func (l *ListenerVoiceStateUpdate) createAutoVC(s *discordgo.Session, userID, guildID, parentChannelID string) error {
-	parentCh, err := discordutils.GetChannel(s, parentChannelID)
+	parentCh, err := l.st.Channel(parentChannelID)
 	if err != nil {
 		return err
 	}
-	member, err := discordutils.GetMember(s, guildID, userID)
+
+	member, err := l.st.Member(guildID, userID)
 	if err != nil {
 		return err
 	}
+
 	var chName string
 	if member.Nick != "" {
 		chName = member.Nick + "'s " + parentCh.Name

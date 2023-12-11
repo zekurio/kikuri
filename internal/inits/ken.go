@@ -6,21 +6,24 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
+	"github.com/zekrotja/ken/state"
 
-	"github.com/zekurio/daemon/internal/middlewares"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/slashcommands"
-	"github.com/zekurio/daemon/internal/usercommands"
-	"github.com/zekurio/daemon/internal/util/static"
+	"github.com/zekurio/kikuri/internal/middlewares"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/slashcommands"
+	"github.com/zekurio/kikuri/internal/usercommands"
+	"github.com/zekurio/kikuri/internal/util/static"
 )
 
-func InitKen(ctn di.Container) (*ken.Ken, error) {
+func InitKen(ctn di.Container) (k *ken.Ken, err error) {
 
 	s := ctn.Get(static.DiDiscordSession).(*discordgo.Session)
+	st := ctn.Get(static.DiState).(*dgrs.State)
 	p := ctn.Get(static.DiPermissions).(*permissions.Permissions)
 
-	k, err := ken.New(s, ken.Options{
+	k, err = ken.New(s, ken.Options{
 		EmbedColors: ken.EmbedColors{
 			Default: static.ColorDefault,
 			Error:   static.ColorRed,
@@ -28,6 +31,7 @@ func InitKen(ctn di.Container) (*ken.Ken, error) {
 		DependencyProvider: ctn,
 		OnSystemError:      systemErrorHandler,
 		OnCommandError:     commandErrorHandler,
+		State:              state.NewDgrs(st),
 	})
 
 	if err != nil {
@@ -57,7 +61,6 @@ func InitKen(ctn di.Container) (*ken.Ken, error) {
 	)
 
 	return k, err
-
 }
 
 func systemErrorHandler(context string, err error, args ...interface{}) {

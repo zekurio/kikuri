@@ -1,0 +1,46 @@
+[Discord]
+Token = 'TOKEN' # testing
+ClientID = 'CLIENTID'
+ClientSecret = 'CLIENTSECRET'
+OwnerID = 'OWNERID'
+GuildLimit = 20
+DisabledCommands = []
+
+[Database]
+Type = 'Postgres'
+
+[Database.Postgres]
+Host = 'localhost'
+Port = 5432
+Database = 'wickeddatabase'
+Username = 'wickedusername'
+Password = 'wickedpassword'
+
+[Cache]
+CacheDatabase = true
+
+[Cache.Redis]
+Addr = 'localhost:6379'
+Password = 'youshallnotpass'
+Type = 0
+
+[Cache.Lifetimes]
+Guild = "7d"
+Channel = "7d"
+User = "7d"
+Presence = "1h"
+
+[Permissions]
+UserRules = ['+ki.chat.*', '+ki.etc.*']
+AdminRules = ['+ki.guild.*', '+ki.chat.*', '+ki.etc.*']
+
+[Webserver]
+Enabled = true
+Addr = '0.0.0.0:8080'
+PublicAddr = 'http://localhost:8080'
+DebugAddr = 'http://localhost:5173'
+
+[Webserver.TLS]
+Enabled = false
+Cert = 'wickedcert.pem'
+Key = 'wickedkey.pem'

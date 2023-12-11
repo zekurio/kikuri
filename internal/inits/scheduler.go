@@ -3,7 +3,7 @@ package inits
 import (
 	"github.com/robfig/cron/v3"
 	"github.com/sarulabs/di/v2"
-	"github.com/zekurio/daemon/internal/services/scheduler"
+	"github.com/zekurio/kikuri/internal/services/scheduler"
 )
 
 func InitScheduler(ctn di.Container) scheduler.Provider {

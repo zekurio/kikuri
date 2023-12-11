@@ -2,7 +2,6 @@ package scheduler
 
 import (
 	"errors"
-
 	"github.com/robfig/cron/v3"
 )
 

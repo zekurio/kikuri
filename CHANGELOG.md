@@ -19,19 +19,19 @@
 
 # Docker
 
-You can find the DockerHub page of daemon [here](https://hub.docker.com/r/zekurio/daemon) and the GHCR
-Package [here](https://github.com/zekurio?tab=packages&repo_name=daemon)
+You can find the DockerHub page of Kikuri [here](https://hub.docker.com/r/zekurio/kikuri) and the GHCR
+Package [here](https://github.com/zekurio?tab=packages&repo_name=kikuri)
 
 Pull the docker image of this release:
 
 From DockerHub:
 
 ```bash
-docker pull zekurio/daemon:[VERSION]
+docker pull zekurio/kikuri:[VERSION]
 ```
 
 From GHCR:
 
 ```bash
-docker pull ghcr.io/zekurio/daemon:[VERSION]
+docker pull ghcr.io/zekurio/kikuri:[VERSION]
 ```

@@ -5,13 +5,14 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/discordutils"
-	"github.com/zekurio/daemon/pkg/quickembed"
-	"github.com/zekurio/daemon/pkg/stringutils"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/discordutils"
+	"github.com/zekurio/kikuri/pkg/embedbuilder"
+	"github.com/zekurio/kikuri/pkg/stringutils"
 )
 
 type Profile struct {
@@ -50,7 +51,7 @@ func (c *Profile) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Profile) Perm() string {
-	return "dm.chat.profile"
+	return "ki.chat.profile"
 }
 
 func (c *Profile) SubPerms() []permissions.SubCommandPerms {
@@ -62,7 +63,7 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		return
 	}
 
-	s := ctx.Get(static.DiDiscordSession).(*discordgo.Session)
+	st := ctx.Get(static.DiState).(*dgrs.State)
 	p := ctx.Get(static.DiPermissions).(*permissions.Permissions)
 
 	var user *discordgo.User
@@ -79,12 +80,12 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		}
 	}
 
-	member, err := discordutils.GetMember(s, ctx.GetEvent().GuildID, user.ID)
+	member, err := st.Member(ctx.GetEvent().GuildID, user.ID)
 	if err != nil {
 		return
 	}
 
-	guild, err := discordutils.GetGuild(s, ctx.GetEvent().GuildID)
+	guild, err := st.Guild(ctx.GetEvent().GuildID)
 	if err != nil {
 		return
 	}
@@ -108,7 +109,7 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		return
 	}
 
-	perms, _, err := p.GetPerms(s, ctx.GetEvent().GuildID, member.User.ID)
+	perms, _, err := p.GetPerms(ctx.GetEvent().GuildID, member.User.ID)
 	if err != nil {
 		return
 	}
@@ -121,7 +122,7 @@ func (c *Profile) Run(ctx ken.Context) (err error) {
 		roles[i] = "<@&" + rID + ">"
 	}
 
-	emb := quickembed.New().
+	emb := embedbuilder.New().
 		SetTitle("Profile of "+member.User.Username).
 		SetThumbnail(member.User.AvatarURL("256"), "", 100, 100).
 		SetColor(roleColor).

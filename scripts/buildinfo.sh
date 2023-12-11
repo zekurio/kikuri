@@ -11,7 +11,7 @@ function populate {
     echo "CHECK: $(cat $FILE)"
 }
 
-FILE_LOCATION="./internal/util/embedded"
+FILE_LOCATION="./internal/embedded"
 
 VERSION=$(git describe --tags --abbrev=0)
 COMMIT=$(git rev-parse HEAD)
@@ -22,4 +22,3 @@ COMMIT=$(git rev-parse HEAD)
 
 populate "$FILE_LOCATION/Version.txt" $VERSION
 populate "$FILE_LOCATION/Commit.txt" $COMMIT
-populate "$FILE_LOCATION/Release.txt" "true"

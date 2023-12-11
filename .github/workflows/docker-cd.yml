@@ -54,8 +54,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/daemon:${{ env.TAG }}
-            ghcr.io/${{ github.repository_owner }}/daemon:${{ env.TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/kikuri:${{ env.TAG }}
+            ghcr.io/${{ github.repository_owner }}/kikuri:${{ env.TAG }}
 
       - name: Deploy via SSH
         if: ${{ env.TAG == 'canary' || env.TAG == 'latest' }}
@@ -66,6 +66,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-              cd /home/worker/docker/daemon
-              docker compose pull daemon-${{ env.TAG }}
-              docker compose up -d daemon-${{ env.TAG }}
+              cd /home/worker/docker/kikuri
+              docker compose pull kikuri-${{ env.TAG }}
+              docker compose up -d kikuri-${{ env.TAG }}

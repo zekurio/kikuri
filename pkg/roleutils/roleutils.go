@@ -2,13 +2,14 @@ package roleutils
 
 import (
 	"errors"
+	"github.com/zekrotja/dgrs"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 // GetRoleByID returns the role with the given ID
-func GetRoleByID(session *discordgo.Session, guildID, roleID string) (*discordgo.Role, error) {
-	roles, err := session.GuildRoles(guildID)
+func GetRoleByID(state *dgrs.State, guildID, roleID string) (*discordgo.Role, error) {
+	roles, err := state.Roles(guildID, true)
 	if err != nil {
 		return nil, err
 	}
@@ -39,13 +40,13 @@ func Sort(roles []*discordgo.Role, reversed bool) []*discordgo.Role {
 
 // GetSortedMemberRoles returns the guilds roles sorted either ascending or
 // descending. Can also include the @everyone role.
-func GetSortedMemberRoles(session *discordgo.Session, guildID, memberID string, includeEveryone, reversed bool) ([]*discordgo.Role, error) {
-	member, err := session.GuildMember(guildID, memberID)
+func GetSortedMemberRoles(state *dgrs.State, guildID, memberID string, includeEveryone, reversed bool) ([]*discordgo.Role, error) {
+	member, err := state.Member(guildID, memberID)
 	if err != nil {
 		return nil, err
 	}
 
-	roles, err := session.GuildRoles(guildID)
+	roles, err := state.Roles(guildID, true)
 	if err != nil {
 		return nil, err
 	}
@@ -76,8 +77,8 @@ func GetSortedMemberRoles(session *discordgo.Session, guildID, memberID string, 
 
 // GetSortedGuildRoles returns the guilds roles sorted either ascending or
 // descending.
-func GetSortedGuildRoles(session *discordgo.Session, guildID string, reversed bool) ([]*discordgo.Role, error) {
-	roles, err := session.GuildRoles(guildID)
+func GetSortedGuildRoles(state *dgrs.State, guildID string, reversed bool) ([]*discordgo.Role, error) {
+	roles, err := state.Roles(guildID, true)
 	if err != nil {
 		return nil, err
 	}

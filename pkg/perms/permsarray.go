@@ -1,6 +1,6 @@
 package perms
 
-// Array defines the permissions a given user or role has.PermsArray
+// PermsArray defines the permissions a given user or role has.PermsArray
 // A permission looks something like that:
 // "+admin.kick"
 // "+admin.ban"
@@ -87,5 +87,4 @@ func (p Array) Has(neededPerm string) bool {
 	}
 
 	return allow
-
 }

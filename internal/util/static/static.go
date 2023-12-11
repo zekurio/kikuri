@@ -1,6 +1,10 @@
 package static
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"time"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 const (
 	ColorRed     = 0xEA8A8A
@@ -25,17 +29,29 @@ const (
 		discordgo.IntentsGuildMembers |
 		discordgo.IntentsGuildVoiceStates |
 		discordgo.IntentsDirectMessages
+
+	EndpointAuthCB = "/api/auth/oauthcallback"
+
+	PublicCanaryInvite = "https://kikuri.xyz/invite"
+
+	AuthSessionExpiration  = 7 * 24 * time.Hour
+	ApiTokenExpiration     = 365 * 24 * time.Hour
+	RefreshTokenCookieName = "refreshToken"
 )
 
 var (
 	DefaultAdminRules = []string{
-		"+dm.guild.*",
-		"+dm.etc.*",
-		"+dm.chat.*",
+		"+ki.guild.*",
+		"+ki.etc.*",
+		"+ki.chat.*",
 	}
 
 	DefaultUserRules = []string{
-		"+dm.etc.*",
-		"+dm.chat.*",
+		"+ki.etc.*",
+		"+ki.chat.*",
+	}
+
+	AdditinalPerms = []string{
+		"ki.etc.autochannel",
 	}
 )

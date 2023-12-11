@@ -4,15 +4,17 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/zekrotja/dgrs"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/zekrotja/ken"
 
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/perms"
-	"github.com/zekurio/daemon/pkg/roleutils"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/perms"
+	"github.com/zekurio/kikuri/pkg/roleutils"
 )
 
 type Perms struct {
@@ -91,7 +93,7 @@ func (c *Perms) Options() []*discordgo.ApplicationCommandOption {
 }
 
 func (c *Perms) Perm() string {
-	return "dm.guild.config.perms"
+	return "ki.guild.config.perms"
 }
 
 func (c *Perms) SubPerms() []permissions.SubCommandPerms {
@@ -113,14 +115,14 @@ func (c *Perms) Run(ctx ken.Context) (err error) {
 
 func (c *Perms) list(ctx ken.SubCommandContext) (err error) {
 	db := ctx.Get(static.DiDatabase).(database.Database)
-	s := ctx.Get(static.DiDiscordSession).(*discordgo.Session)
+	st := ctx.Get(static.DiState).(*dgrs.State)
 
 	gPerms, err := db.GetPermissions(ctx.GetEvent().GuildID)
 	if err != nil && err != dberr.ErrNotFound {
 		return
 	}
 
-	sortedGuildRoles, err := roleutils.GetSortedGuildRoles(s, ctx.GetEvent().GuildID, true)
+	sortedGuildRoles, err := roleutils.GetSortedGuildRoles(st, ctx.GetEvent().GuildID, true)
 	if err != nil {
 		return err
 	}

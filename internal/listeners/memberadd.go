@@ -5,10 +5,10 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/sarulabs/di/v2"
 
-	"github.com/zekurio/daemon/internal/services/database"
-	"github.com/zekurio/daemon/internal/services/database/dberr"
-	"github.com/zekurio/daemon/internal/util/static"
-	"github.com/zekurio/daemon/pkg/arrayutils"
+	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
+	"github.com/zekurio/kikuri/internal/util/static"
+	"github.com/zekurio/kikuri/pkg/arrayutils"
 )
 
 type ListenerMemberAdd struct {
@@ -22,9 +22,9 @@ func NewListenerMemberAdd(ctn di.Container) *ListenerMemberAdd {
 }
 
 func (g *ListenerMemberAdd) Handler(s *discordgo.Session, e *discordgo.GuildMemberAdd) {
-	autoroleIDs, err := g.db.GetAutoRoles(e.GuildID)
+	autoroleIDs, err := g.db.GetGuildAutoRoles(e.GuildID)
 	if err != nil && err != dberr.ErrNotFound {
-		log.With(err).Error("Failed getting auto role settings")
+		log.With("err", err).Error("Failed getting auto role settings")
 		return
 	}
 
@@ -34,7 +34,7 @@ func (g *ListenerMemberAdd) Handler(s *discordgo.Session, e *discordgo.GuildMemb
 		if apiErr, ok := err.(*discordgo.RESTError); ok && apiErr.Message.Code == discordgo.ErrCodeUnknownRole {
 			invalidAutoRoleIDs = append(invalidAutoRoleIDs, rid)
 		} else if err != nil {
-			log.With(err).Error("Failed setting autorole for member")
+			log.With("err", err).Error("Failed setting autorole for member")
 		}
 	}
 
@@ -45,9 +45,9 @@ func (g *ListenerMemberAdd) Handler(s *discordgo.Session, e *discordgo.GuildMemb
 				newAutoRoleIDs = append(newAutoRoleIDs, rid)
 			}
 		}
-		err = g.db.SetAutoRoles(e.GuildID, newAutoRoleIDs)
+		err = g.db.SetGuildAutoRoles(e.GuildID, newAutoRoleIDs)
 		if err != nil {
-			log.With(err).Error("Failed updating auto role settings")
+			log.With("err", err).Error("Failed updating auto role settings")
 		}
 	}
 }

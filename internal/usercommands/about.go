@@ -2,8 +2,8 @@ package usercommands
 
 import (
 	"github.com/zekrotja/ken"
-	"github.com/zekurio/daemon/internal/services/permissions"
-	"github.com/zekurio/daemon/internal/slashcommands"
+	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/slashcommands"
 )
 
 type About struct {
