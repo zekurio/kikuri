@@ -13,17 +13,17 @@ RUN go mod download
 # Build
 RUN go build -o ./bin/kikuri ./cmd/kikuri/main.go
 # Step 2: Build React Frontend
-FROM node:18-alpine AS build-fe
-WORKDIR /build
+#FROM node:18-alpine AS build-fe
+#WORKDIR /build
 
 # Copy web files
-COPY web .
+#COPY web .
 
 # Install dependencies
-RUN npm install
+#RUN npm install
 
 # Build
-RUN npm run build --base=/ --outDir=dist
+#RUN npm run build --base=/ --outDir=dist
 
 # Step 3: Build runtime
 # Set up runtime
@@ -32,7 +32,7 @@ WORKDIR /app
 
 # Copy Kikuri
 COPY --from=build-dm /build/bin/kikuri /app/kikuri
-COPY --from=build-fe /build/dist web/dist
+#COPY --from=build-fe /build/dist web/dist
 
 # Prepare config directory
 RUN mkdir -p /etc/kikuri
