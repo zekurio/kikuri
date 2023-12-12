@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"time"
+
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
@@ -59,6 +61,14 @@ func (c *AuthController) postAccessToken(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
+	ctx.Cookie(&fiber.Cookie{
+		Name:     "accesstoken",
+		Value:    token,
+		Expires:  time.Now().Add(time.Duration(expires.Unix()) * time.Second),
+		HTTPOnly: true,
+		Secure:   true,
+	})
 
 	return ctx.JSON(&models.AccessTokenResponse{
 		Token:   token,

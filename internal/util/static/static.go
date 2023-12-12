@@ -36,7 +36,7 @@ const (
 
 	AuthSessionExpiration  = 7 * 24 * time.Hour
 	ApiTokenExpiration     = 365 * 24 * time.Hour
-	RefreshTokenCookieName = "refreshToken"
+	RefreshTokenCookieName = "refreshtoken"
 )
 
 var (
