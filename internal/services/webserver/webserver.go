@@ -2,14 +2,16 @@ package webserver
 
 import (
 	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekurio/kikuri/internal/embedded"
-	"github.com/zekurio/kikuri/internal/models"
+	sharedmodels "github.com/zekurio/kikuri/internal/models"
 	v1 "github.com/zekurio/kikuri/internal/services/webserver/v1"
 	"github.com/zekurio/kikuri/internal/services/webserver/v1/controllers"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 	"github.com/zekurio/kikuri/internal/services/webserver/wsutil"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/debug"
@@ -17,7 +19,7 @@ import (
 
 type WebServer struct {
 	app       *fiber.App
-	cfg       models.Config
+	cfg       sharedmodels.Config
 	container di.Container
 }
 
@@ -27,7 +29,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 
 	ws.container = ctn
 
-	ws.cfg = ctn.Get(static.DiConfig).(models.Config)
+	ws.cfg = ctn.Get(static.DiConfig).(sharedmodels.Config)
 
 	ws.app = fiber.New(fiber.Config{
 		AppName:               "kikuri",

@@ -1,20 +1,22 @@
 package controllers
 
 import (
+	"strings"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
 	"github.com/zekrotja/ken"
-	"github.com/zekurio/kikuri/internal/models"
+	sharedmodels "github.com/zekurio/kikuri/internal/models"
 	"github.com/zekurio/kikuri/internal/services/database"
 	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 	"github.com/zekurio/kikuri/internal/services/webserver/wsutil"
 	"github.com/zekurio/kikuri/internal/util"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/discordutils"
-	"strings"
 )
 
 type GuildMembersController struct {
@@ -23,12 +25,12 @@ type GuildMembersController struct {
 	st         *dgrs.State
 	cmdHandler *ken.Ken
 	pmw        *permissions.Permissions
-	cfg        models.Config
+	cfg        sharedmodels.Config
 }
 
 func (c *GuildMembersController) Setup(ctn di.Container, router fiber.Router) {
 	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
-	c.cfg = ctn.Get(static.DiConfig).(models.Config)
+	c.cfg = ctn.Get(static.DiConfig).(sharedmodels.Config)
 	c.db = ctn.Get(static.DiDatabase).(database.Database)
 	c.pmw = ctn.Get(static.DiPermissions).(*permissions.Permissions)
 	c.cmdHandler = ctn.Get(static.DiCommandHandler).(*ken.Ken)

@@ -1,0 +1,1088 @@
+basePath: /api/v1
+definitions:
+  discordgo.Channel:
+    properties:
+      application_id:
+        description: ApplicationID of the DM creator Zeroed if guild channel or not
+          a bot user
+        type: string
+      applied_tags:
+        description: The IDs of the set of tags that have been applied to a thread
+          in a forum channel.
+        items:
+          type: string
+        type: array
+      available_tags:
+        description: The set of tags that can be used in a forum channel.
+        items:
+          $ref: '#/definitions/discordgo.ForumTag'
+        type: array
+      bitrate:
+        description: The bitrate of the channel, if it is a voice channel.
+        type: integer
+      default_forum_layout:
+        allOf:
+        - $ref: '#/definitions/discordgo.ForumLayout'
+        description: |-
+          The default forum layout view used to display posts in forum channels.
+          Defaults to ForumLayoutNotSet, which indicates a layout view has not been set by a channel admin.
+      default_reaction_emoji:
+        allOf:
+        - $ref: '#/definitions/discordgo.ForumDefaultReaction'
+        description: Emoji to use as the default reaction to a forum post.
+      default_sort_order:
+        allOf:
+        - $ref: '#/definitions/discordgo.ForumSortOrderType'
+        description: |-
+          The default sort order type used to order posts in forum channels.
+          Defaults to null, which indicates a preferred sort order hasn't been set by a channel admin.
+      default_thread_rate_limit_per_user:
+        description: |-
+          The initial RateLimitPerUser to set on newly created threads in a channel.
+          This field is copied to the thread at creation time and does not live update.
+        type: integer
+      flags:
+        allOf:
+        - $ref: '#/definitions/discordgo.ChannelFlags'
+        description: Channel flags.
+      guild_id:
+        description: |-
+          The ID of the guild to which the channel belongs, if it is in a guild.
+          Else, this ID is empty (e.g. DM channels).
+        type: string
+      icon:
+        description: Icon of the group DM channel.
+        type: string
+      id:
+        description: The ID of the channel.
+        type: string
+      last_message_id:
+        description: |-
+          The ID of the last message sent in the channel. This is not
+          guaranteed to be an ID of a valid message.
+        type: string
+      last_pin_timestamp:
+        description: |-
+          The timestamp of the last pinned message in the channel.
+          nil if the channel has no pinned messages.
+        type: string
+      member_count:
+        description: An approximate count of users in a thread, stops counting at
+          50
+        type: integer
+      message_count:
+        description: An approximate count of messages in a thread, stops counting
+          at 50
+        type: integer
+      name:
+        description: The name of the channel.
+        type: string
+      nsfw:
+        description: Whether the channel is marked as NSFW.
+        type: boolean
+      owner_id:
+        description: ID of the creator of the group DM or thread
+        type: string
+      parent_id:
+        description: The ID of the parent channel, if the channel is under a category.
+          For threads - id of the channel thread was created in.
+        type: string
+      permission_overwrites:
+        description: A list of permission overwrites present for the channel.
+        items:
+          $ref: '#/definitions/discordgo.PermissionOverwrite'
+        type: array
+      position:
+        description: The position of the channel, used for sorting in client.
+        type: integer
+      rate_limit_per_user:
+        description: |-
+          Amount of seconds a user has to wait before sending another message or creating another thread (0-21600)
+          bots, as well as users with the permission manage_messages or manage_channel, are unaffected
+        type: integer
+      recipients:
+        description: The recipients of the channel. This is only populated in DM channels.
+        items:
+          $ref: '#/definitions/discordgo.User'
+        type: array
+      thread_member:
+        allOf:
+        - $ref: '#/definitions/discordgo.ThreadMember'
+        description: Thread member object for the current user, if they have joined
+          the thread, only included on certain API endpoints
+      thread_metadata:
+        allOf:
+        - $ref: '#/definitions/discordgo.ThreadMetadata'
+        description: Thread-specific fields not needed by other channels
+      topic:
+        description: The topic of the channel.
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/discordgo.ChannelType'
+        description: The type of the channel.
+      user_limit:
+        description: The user limit of the voice channel.
+        type: integer
+    type: object
+  discordgo.ChannelFlags:
+    enum:
+    - 2
+    - 16
+    type: integer
+    x-enum-varnames:
+    - ChannelFlagPinned
+    - ChannelFlagRequireTag
+  discordgo.ChannelType:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 10
+    - 11
+    - 12
+    - 13
+    - 15
+    type: integer
+    x-enum-varnames:
+    - ChannelTypeGuildText
+    - ChannelTypeDM
+    - ChannelTypeGuildVoice
+    - ChannelTypeGroupDM
+    - ChannelTypeGuildCategory
+    - ChannelTypeGuildNews
+    - ChannelTypeGuildStore
+    - ChannelTypeGuildNewsThread
+    - ChannelTypeGuildPublicThread
+    - ChannelTypeGuildPrivateThread
+    - ChannelTypeGuildStageVoice
+    - ChannelTypeGuildForum
+  discordgo.ForumDefaultReaction:
+    properties:
+      emoji_id:
+        description: The id of a guild's custom emoji.
+        type: string
+      emoji_name:
+        description: The unicode character of the emoji.
+        type: string
+    type: object
+  discordgo.ForumLayout:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - ForumLayoutNotSet
+    - ForumLayoutListView
+    - ForumLayoutGalleryView
+  discordgo.ForumSortOrderType:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - ForumSortOrderLatestActivity
+    - ForumSortOrderCreationDate
+  discordgo.ForumTag:
+    properties:
+      emoji_id:
+        type: string
+      emoji_name:
+        type: string
+      id:
+        type: string
+      moderated:
+        type: boolean
+      name:
+        type: string
+    type: object
+  discordgo.MfaLevel:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - MfaLevelNone
+    - MfaLevelElevated
+  discordgo.PermissionOverwrite:
+    properties:
+      allow:
+        example: "0"
+        type: string
+      deny:
+        example: "0"
+        type: string
+      id:
+        type: string
+      type:
+        $ref: '#/definitions/discordgo.PermissionOverwriteType'
+    type: object
+  discordgo.PermissionOverwriteType:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - PermissionOverwriteTypeRole
+    - PermissionOverwriteTypeMember
+  discordgo.PremiumTier:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - PremiumTierNone
+    - PremiumTier1
+    - PremiumTier2
+    - PremiumTier3
+  discordgo.Role:
+    properties:
+      color:
+        description: The hex color of this role.
+        type: integer
+      hoist:
+        description: Whether this role is hoisted (shows up separately in member list).
+        type: boolean
+      id:
+        description: The ID of the role.
+        type: string
+      managed:
+        description: |-
+          Whether this role is managed by an integration, and
+          thus cannot be manually added to, or taken from, members.
+        type: boolean
+      mentionable:
+        description: Whether this role is mentionable.
+        type: boolean
+      name:
+        description: The name of the role.
+        type: string
+      permissions:
+        description: |-
+          The permissions of the role on the guild (doesn't include channel overrides).
+          This is a combination of bit masks; the presence of a certain permission can
+          be checked by performing a bitwise AND between this int and the permission.
+        example: "0"
+        type: string
+      position:
+        description: The position of this role in the guild's role hierarchy.
+        type: integer
+    type: object
+  discordgo.ThreadMember:
+    properties:
+      flags:
+        description: Any user-thread settings, currently only used for notifications
+        type: integer
+      id:
+        description: The id of the thread
+        type: string
+      join_timestamp:
+        description: The time the current user last joined the thread
+        type: string
+      user_id:
+        description: The id of the user
+        type: string
+    type: object
+  discordgo.ThreadMetadata:
+    properties:
+      archive_timestamp:
+        description: Timestamp when the thread's archive status was last changed,
+          used for calculating recent activity
+        type: string
+      archived:
+        description: Whether the thread is archived
+        type: boolean
+      auto_archive_duration:
+        description: 'Duration in minutes to automatically archive the thread after
+          recent activity, can be set to: 60, 1440, 4320, 10080'
+        type: integer
+      invitable:
+        description: Whether non-moderators can add other non-moderators to a thread;
+          only available on private threads
+        type: boolean
+      locked:
+        description: Whether the thread is locked; when a thread is locked, only users
+          with MANAGE_THREADS can unarchive it
+        type: boolean
+    type: object
+  discordgo.User:
+    properties:
+      accent_color:
+        description: User's banner color, encoded as an integer representation of
+          hexadecimal color code
+        type: integer
+      avatar:
+        description: |-
+          The hash of the user's avatar. Use Session.UserAvatar
+          to retrieve the avatar itself.
+        type: string
+      banner:
+        description: The hash of the user's banner image.
+        type: string
+      bot:
+        description: Whether the user is a bot.
+        type: boolean
+      discriminator:
+        description: The discriminator of the user (4 numbers after name).
+        type: string
+      email:
+        description: |-
+          The email of the user. This is only present when
+          the application possesses the email scope for the user.
+        type: string
+      flags:
+        description: |-
+          The flags on a user's account.
+          Only available when the request is authorized via a Bearer token.
+        type: integer
+      id:
+        description: The ID of the user.
+        type: string
+      locale:
+        description: The user's chosen language option.
+        type: string
+      mfa_enabled:
+        description: Whether the user has multi-factor authentication enabled.
+        type: boolean
+      premium_type:
+        description: |-
+          The type of Nitro subscription on a user's account.
+          Only available when the request is authorized via a Bearer token.
+        type: integer
+      public_flags:
+        allOf:
+        - $ref: '#/definitions/discordgo.UserFlags'
+        description: |-
+          The public flags on a user's account.
+          This is a combination of bit masks; the presence of a certain flag can
+          be checked by performing a bitwise AND between this int and the flag.
+      system:
+        description: Whether the user is an Official Discord System user (part of
+          the urgent message system).
+        type: boolean
+      token:
+        description: |-
+          The token of the user. This is only present for
+          the user represented by the current session.
+        type: string
+      username:
+        description: The user's username.
+        type: string
+      verified:
+        description: Whether the user's email is verified.
+        type: boolean
+    type: object
+  discordgo.UserFlags:
+    enum:
+    - 1
+    - 2
+    - 4
+    - 8
+    - 64
+    - 128
+    - 256
+    - 512
+    - 1024
+    - 4096
+    - 16384
+    - 65536
+    - 131072
+    - 262144
+    type: integer
+    x-enum-varnames:
+    - UserFlagDiscordEmployee
+    - UserFlagDiscordPartner
+    - UserFlagHypeSquadEvents
+    - UserFlagBugHunterLevel1
+    - UserFlagHouseBravery
+    - UserFlagHouseBrilliance
+    - UserFlagHouseBalance
+    - UserFlagEarlySupporter
+    - UserFlagTeamUser
+    - UserFlagSystem
+    - UserFlagBugHunterLevel2
+    - UserFlagVerifiedBot
+    - UserFlagVerifiedBotDeveloper
+    - UserFlagDiscordCertifiedModerator
+  discordgo.VerificationLevel:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-varnames:
+    - VerificationLevelNone
+    - VerificationLevelLow
+    - VerificationLevelMedium
+    - VerificationLevelHigh
+    - VerificationLevelVeryHigh
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.AccessTokenResponse:
+    properties:
+      expires:
+        type: string
+      token:
+        type: string
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error:
+    properties:
+      code:
+        type: integer
+      context:
+        type: string
+      error:
+        type: string
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.Guild:
+    properties:
+      afk_channel_id:
+        type: string
+      banner:
+        type: string
+      channels:
+        items:
+          $ref: '#/definitions/discordgo.Channel'
+        type: array
+      description:
+        type: string
+      icon:
+        type: string
+      icon_url:
+        type: string
+      id:
+        type: string
+      joined_at:
+        type: string
+      large:
+        type: boolean
+      member_count:
+        type: integer
+      mfa_level:
+        $ref: '#/definitions/discordgo.MfaLevel'
+      name:
+        type: string
+      owner_id:
+        type: string
+      premium_subscription_count:
+        type: integer
+      premium_tier:
+        $ref: '#/definitions/discordgo.PremiumTier'
+      region:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/discordgo.Role'
+        type: array
+      self_member:
+        $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member'
+      splash:
+        type: string
+      unavailable:
+        type: boolean
+      verification_level:
+        $ref: '#/definitions/discordgo.VerificationLevel'
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildReduced:
+    properties:
+      icon:
+        type: string
+      icon_url:
+        type: string
+      id:
+        type: string
+      joined_at:
+        type: string
+      member_count:
+        type: integer
+      name:
+        type: string
+      online_member_count:
+        type: integer
+      owner_id:
+        type: string
+      region:
+        type: string
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildSettings:
+    properties:
+      auto_roles:
+        items:
+          type: string
+        type: array
+      auto_voice:
+        items:
+          type: string
+        type: array
+      perms:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member:
+    properties:
+      avatar:
+        description: The hash of the avatar for the guild member, if any.
+        type: string
+      avatar_url:
+        type: string
+      communication_disabled_until:
+        description: |-
+          The time at which the member's timeout will expire.
+          Time in the past or nil if the user is not timed out.
+        type: string
+      created_at:
+        type: string
+      deaf:
+        description: Whether the member is deafened at a guild level.
+        type: boolean
+      guild_id:
+        description: The guild ID on which the member exists.
+        type: string
+      guild_name:
+        type: string
+      joined_at:
+        description: The time at which the member joined the guild.
+        type: string
+      mute:
+        description: Whether the member is muted at a guild level.
+        type: boolean
+      nick:
+        description: The nickname of the member, if they have one.
+        type: string
+      pending:
+        description: Is true while the member hasn't accepted the membership screen.
+        type: boolean
+      permissions:
+        description: Total permissions of the member in the channel, including overrides,
+          returned when in the interaction object.
+        example: "0"
+        type: string
+      premium_since:
+        description: When the user used their Nitro boost on the server
+        type: string
+      privilege:
+        type: integer
+      roles:
+        description: A list of IDs of the roles which are possessed by the member.
+        items:
+          type: string
+        type: array
+      user:
+        allOf:
+        - $ref: '#/definitions/discordgo.User'
+        description: The underlying user on which the member is based.
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.PermissionsResponse:
+    properties:
+      permissions:
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.SearchResult:
+    properties:
+      guilds:
+        items:
+          $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildReduced'
+        type: array
+      members:
+        items:
+          $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member'
+        type: array
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.User:
+    properties:
+      accent_color:
+        description: User's banner color, encoded as an integer representation of
+          hexadecimal color code
+        type: integer
+      avatar:
+        description: |-
+          The hash of the user's avatar. Use Session.UserAvatar
+          to retrieve the avatar itself.
+        type: string
+      avatar_url:
+        type: string
+      banner:
+        description: The hash of the user's banner image.
+        type: string
+      bot:
+        description: Whether the user is a bot.
+        type: boolean
+      bot_owner:
+        type: boolean
+      created_at:
+        type: string
+      discriminator:
+        description: The discriminator of the user (4 numbers after name).
+        type: string
+      email:
+        description: |-
+          The email of the user. This is only present when
+          the application possesses the email scope for the user.
+        type: string
+      flags:
+        description: |-
+          The flags on a user's account.
+          Only available when the request is authorized via a Bearer token.
+        type: integer
+      id:
+        description: The ID of the user.
+        type: string
+      locale:
+        description: The user's chosen language option.
+        type: string
+      mfa_enabled:
+        description: Whether the user has multi-factor authentication enabled.
+        type: boolean
+      premium_type:
+        description: |-
+          The type of Nitro subscription on a user's account.
+          Only available when the request is authorized via a Bearer token.
+        type: integer
+      public_flags:
+        allOf:
+        - $ref: '#/definitions/discordgo.UserFlags'
+        description: |-
+          The public flags on a user's account.
+          This is a combination of bit masks; the presence of a certain flag can
+          be checked by performing a bitwise AND between this int and the flag.
+      system:
+        description: Whether the user is an Official Discord System user (part of
+          the urgent message system).
+        type: boolean
+      token:
+        description: |-
+          The token of the user. This is only present for
+          the user represented by the current session.
+        type: string
+      username:
+        description: The user's username.
+        type: string
+      verified:
+        description: Whether the user's email is verified.
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: Kikuri API.
+  title: Kikuri API
+  version: "1.0"
+paths:
+  /auth/accesstoken:
+    post:
+      consumes:
+      - application/json
+      description: Exchanges a refresh token for an access token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.AccessTokenResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Access Token Exchange
+      tags:
+      - Authorization
+  /auth/check:
+    get:
+      consumes:
+      - application/json
+      description: Check if provided authorization token is valid.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Check
+      tags:
+      - Authorization
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Reovkes the currently used access token and clears the refresh
+        token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status'
+      summary: Logout
+      tags:
+      - Authorization
+  /guilds:
+    get:
+      consumes:
+      - application/json
+      description: Returns all guilds the bot and the user have in common.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Wrapped in models.ListResponse
+          schema:
+            items:
+              $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildReduced'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guilds
+      tags:
+      - Guilds
+  /guilds/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a single guild object by its ID.
+      parameters:
+      - description: The ID of the guild.
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Guild'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guild
+      tags:
+      - Guilds
+  /guilds/{id}/{memberid}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a single guild member by ID.
+      parameters:
+      - description: The ID of the guild.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The ID of the member.
+        in: path
+        name: memberid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guild Member
+      tags:
+      - Members
+  /guilds/{id}/{memberid}/permissions:
+    get:
+      consumes:
+      - application/json
+      description: Returns the permission array of the given user.
+      parameters:
+      - description: The ID of the guild.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The ID of the member.
+        in: path
+        name: memberid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.PermissionsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guild Member Permissions
+      tags:
+      - Members
+  /guilds/{id}/{memberid}/permissions/allowed:
+    get:
+      consumes:
+      - application/json
+      description: Returns all detailed permission DNS which the member is alloed
+        to perform.
+      parameters:
+      - description: The ID of the guild.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The ID of the member.
+        in: path
+        name: memberid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Wrapped in models.ListResponse
+          schema:
+            items:
+              type: string
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guild Member Allowed Permissions
+      tags:
+      - Members
+  /guilds/{id}/members:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of guild members.
+      parameters:
+      - description: The ID of the guild.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request members after the given member ID.
+        in: query
+        name: after
+        type: string
+      - default: 100
+        description: The amount of results returned.
+        in: query
+        maximum: 1000
+        minimum: 1
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Wraped in models.ListResponse
+          schema:
+            items:
+              $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guild Member List
+      tags:
+      - Members
+  /guilds/{id}/settings:
+    get:
+      consumes:
+      - application/json
+      description: Returns the specified general guild settings.
+      parameters:
+      - description: The ID of the guild.
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildSettings'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guild Settings
+      tags:
+      - Guild Settings
+    post:
+      consumes:
+      - application/json
+      description: Returns the specified general guild settings.
+      parameters:
+      - description: The ID of the guild.
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Modified guild settings payload.
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildSettings'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "403":
+          description: Forbidden
+          schema:
+            type: Object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Get Guild Settings
+      tags:
+      - Guild Settings
+  /me:
+    get:
+      consumes:
+      - application/json
+      description: Returns the user object of the currently authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.User'
+      summary: Me
+      tags:
+      - Misc
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: Search through guilds and members by ID, name or displayname.
+      parameters:
+      - description: The search query (either ID, name or displayname).
+        in: query
+        name: query
+        required: true
+        type: string
+      - default: 50
+        description: The maximum amount of result items (per group).
+        in: query
+        maximum: 100
+        minimum: 1
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.SearchResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: Global Search
+      tags:
+      - Search
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a user by their id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.User'
+      summary: User
+      tags:
+      - Users
+swagger: "2.0"
+tags:
+- name: Authorization
+- name: Misc
+- name: Users
+- name: Guilds
+- name: Guild Settings
+- name: Guild Members

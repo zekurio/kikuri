@@ -5,10 +5,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	models2 "github.com/zekurio/kikuri/internal/models"
+	sharedmodels "github.com/zekurio/kikuri/internal/models"
 	"github.com/zekurio/kikuri/internal/services/database"
 	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 	"github.com/zekurio/kikuri/internal/services/webserver/wsutil"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/arrayutils"
@@ -18,7 +19,7 @@ type GuildSettingsController struct {
 	db      database.Database
 	st      *dgrs.State
 	session *discordgo.Session
-	cfg     models2.Config
+	cfg     sharedmodels.Config
 	pmw     *permissions.Permissions
 }
 
@@ -26,7 +27,7 @@ func (c *GuildSettingsController) Setup(ctn di.Container, router fiber.Router) {
 	c.db = ctn.Get(static.DiDatabase).(database.Database)
 	c.st = ctn.Get(static.DiState).(*dgrs.State)
 	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
-	c.cfg = ctn.Get(static.DiConfig).(models2.Config)
+	c.cfg = ctn.Get(static.DiConfig).(sharedmodels.Config)
 	c.pmw = ctn.Get(static.DiPermissions).(*permissions.Permissions)
 
 	router.Get("", c.getGuildSettings)
@@ -46,7 +47,7 @@ func (c *GuildSettingsController) Setup(ctn di.Container, router fiber.Router) {
 func (c *GuildSettingsController) getGuildSettings(ctx *fiber.Ctx) error {
 	guildID := ctx.Params("guildid")
 
-	gs := new(models2.GuildSettings)
+	gs := new(models.GuildSettings)
 	var err error
 
 	if gs.AutoRoles, err = c.db.GetGuildAutoRoles(guildID); err != nil && !dberr.IsErrNotFound(err) {
@@ -84,7 +85,7 @@ func (c *GuildSettingsController) postGuildSettings(ctx *fiber.Ctx) error {
 
 	var err error
 
-	gs := new(models2.GuildSettings)
+	gs := new(models.GuildSettings)
 	if err = ctx.BodyParser(gs); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
@@ -149,5 +150,5 @@ func (c *GuildSettingsController) postGuildSettings(ctx *fiber.Ctx) error {
 		}
 	}
 
-	return ctx.JSON(models2.Ok)
+	return ctx.JSON(models.Ok)
 }

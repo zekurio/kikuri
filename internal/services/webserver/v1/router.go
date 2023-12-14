@@ -16,15 +16,43 @@ func (r *Router) SetContainer(ctn di.Container) {
 	r.ctn = ctn
 }
 
+// @Title Kikuri API
+// @Description Kikuri API.
+// @Version 1.0
+
+// @Tag.Name Authorization
+// @TagDescription Authorization endpoints.
+
+// @Tag.Name Misc
+// @TagDescription Miscellaneous endpoints.
+
+// @Tag.Name Users
+// @TagDescription User endpoints.
+
+// @Tag.Name Guilds
+// @TagDescription Guild endpoints.
+
+// @Tag.Name Guild Settings
+// @TagDescription Guild settings endpoints.
+
+// @Tag.Name Guild Members
+// @TagDescription Guild member endpoints.
+
+// @BasePath /api/v1
+
 func (r *Router) Route(router fiber.Router) {
 	authMw := r.ctn.Get(static.DiAuthMiddleware).(auth.Middleware)
-	// TODO build routes
+
 	new(controllers.AuthController).Setup(r.ctn, router.Group("/auth"))
-	// TODO build middlewares
+	new(controllers.MiscController).Setup(r.ctn, router.Group("/misc"))
+
+	// Apply auth middleware to all routes below
+
 	router.Use(authMw.Handle)
 
 	new(controllers.UsersController).Setup(r.ctn, router.Group("/users"))
 	new(controllers.GuildsController).Setup(r.ctn, router.Group("/guilds"))
 	new(controllers.GuildSettingsController).Setup(r.ctn, router.Group("/guilds/:guildid/settings"))
 	new(controllers.GuildMembersController).Setup(r.ctn, router.Group("/guilds/:guildid"))
+	new(controllers.SearchController).Setup(r.ctn, router.Group("/search"))
 }

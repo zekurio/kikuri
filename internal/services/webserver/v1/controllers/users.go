@@ -5,22 +5,23 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	"github.com/zekurio/kikuri/internal/models"
+	sharedmodels "github.com/zekurio/kikuri/internal/models"
 	"github.com/zekurio/kikuri/internal/services/webserver/auth"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/discordutils"
 )
 
 type UsersController struct {
 	session *discordgo.Session
-	cfg     models.Config
+	cfg     sharedmodels.Config
 	authMw  auth.Middleware
 	st      *dgrs.State
 }
 
 func (c *UsersController) Setup(ctn di.Container, router fiber.Router) {
 	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
-	c.cfg = ctn.Get(static.DiConfig).(models.Config)
+	c.cfg = ctn.Get(static.DiConfig).(sharedmodels.Config)
 	c.authMw = ctn.Get(static.DiAuthMiddleware).(auth.Middleware)
 	c.st = ctn.Get(static.DiState).(*dgrs.State)
 

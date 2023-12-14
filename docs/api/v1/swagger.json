@@ -1,0 +1,1497 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Kikuri API.",
+        "title": "Kikuri API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/auth/accesstoken": {
+            "post": {
+                "description": "Exchanges a refresh token for an access token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authorization"
+                ],
+                "summary": "Access Token Exchange",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.AccessTokenResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/check": {
+            "get": {
+                "description": "Check if provided authorization token is valid.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authorization"
+                ],
+                "summary": "Check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "description": "Reovkes the currently used access token and clears the refresh token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authorization"
+                ],
+                "summary": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status"
+                        }
+                    }
+                }
+            }
+        },
+        "/guilds": {
+            "get": {
+                "description": "Returns all guilds the bot and the user have in common.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Guilds"
+                ],
+                "summary": "Get Guilds",
+                "responses": {
+                    "200": {
+                        "description": "Wrapped in models.ListResponse",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildReduced"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/guilds/{id}": {
+            "get": {
+                "description": "Returns a single guild object by its ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Guilds"
+                ],
+                "summary": "Get Guild",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the guild.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Guild"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/guilds/{id}/members": {
+            "get": {
+                "description": "Returns a list of guild members.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get Guild Member List",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the guild.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Request members after the given member ID.",
+                        "name": "after",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 1000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 100,
+                        "description": "The amount of results returned.",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Wraped in models.ListResponse",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/guilds/{id}/settings": {
+            "get": {
+                "description": "Returns the specified general guild settings.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Guild Settings"
+                ],
+                "summary": "Get Guild Settings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the guild.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildSettings"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Returns the specified general guild settings.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Guild Settings"
+                ],
+                "summary": "Get Guild Settings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the guild.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Modified guild settings payload.",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildSettings"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "Object"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/guilds/{id}/{memberid}": {
+            "get": {
+                "description": "Returns a single guild member by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get Guild Member",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the guild.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The ID of the member.",
+                        "name": "memberid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/guilds/{id}/{memberid}/permissions": {
+            "get": {
+                "description": "Returns the permission array of the given user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get Guild Member Permissions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the guild.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The ID of the member.",
+                        "name": "memberid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.PermissionsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/guilds/{id}/{memberid}/permissions/allowed": {
+            "get": {
+                "description": "Returns all detailed permission DNS which the member is alloed to perform.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get Guild Member Allowed Permissions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the guild.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The ID of the member.",
+                        "name": "memberid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Wrapped in models.ListResponse",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "description": "Returns the user object of the currently authenticated user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Misc"
+                ],
+                "summary": "Me",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/search": {
+            "get": {
+                "description": "Search through guilds and members by ID, name or displayname.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Global Search",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The search query (either ID, name or displayname).",
+                        "name": "query",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum amount of result items (per group).",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.SearchResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "description": "Returns a user by their id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.User"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "discordgo.Channel": {
+            "type": "object",
+            "properties": {
+                "application_id": {
+                    "description": "ApplicationID of the DM creator Zeroed if guild channel or not a bot user",
+                    "type": "string"
+                },
+                "applied_tags": {
+                    "description": "The IDs of the set of tags that have been applied to a thread in a forum channel.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "available_tags": {
+                    "description": "The set of tags that can be used in a forum channel.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/discordgo.ForumTag"
+                    }
+                },
+                "bitrate": {
+                    "description": "The bitrate of the channel, if it is a voice channel.",
+                    "type": "integer"
+                },
+                "default_forum_layout": {
+                    "description": "The default forum layout view used to display posts in forum channels.\nDefaults to ForumLayoutNotSet, which indicates a layout view has not been set by a channel admin.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.ForumLayout"
+                        }
+                    ]
+                },
+                "default_reaction_emoji": {
+                    "description": "Emoji to use as the default reaction to a forum post.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.ForumDefaultReaction"
+                        }
+                    ]
+                },
+                "default_sort_order": {
+                    "description": "The default sort order type used to order posts in forum channels.\nDefaults to null, which indicates a preferred sort order hasn't been set by a channel admin.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.ForumSortOrderType"
+                        }
+                    ]
+                },
+                "default_thread_rate_limit_per_user": {
+                    "description": "The initial RateLimitPerUser to set on newly created threads in a channel.\nThis field is copied to the thread at creation time and does not live update.",
+                    "type": "integer"
+                },
+                "flags": {
+                    "description": "Channel flags.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.ChannelFlags"
+                        }
+                    ]
+                },
+                "guild_id": {
+                    "description": "The ID of the guild to which the channel belongs, if it is in a guild.\nElse, this ID is empty (e.g. DM channels).",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "Icon of the group DM channel.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "The ID of the channel.",
+                    "type": "string"
+                },
+                "last_message_id": {
+                    "description": "The ID of the last message sent in the channel. This is not\nguaranteed to be an ID of a valid message.",
+                    "type": "string"
+                },
+                "last_pin_timestamp": {
+                    "description": "The timestamp of the last pinned message in the channel.\nnil if the channel has no pinned messages.",
+                    "type": "string"
+                },
+                "member_count": {
+                    "description": "An approximate count of users in a thread, stops counting at 50",
+                    "type": "integer"
+                },
+                "message_count": {
+                    "description": "An approximate count of messages in a thread, stops counting at 50",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "The name of the channel.",
+                    "type": "string"
+                },
+                "nsfw": {
+                    "description": "Whether the channel is marked as NSFW.",
+                    "type": "boolean"
+                },
+                "owner_id": {
+                    "description": "ID of the creator of the group DM or thread",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "The ID of the parent channel, if the channel is under a category. For threads - id of the channel thread was created in.",
+                    "type": "string"
+                },
+                "permission_overwrites": {
+                    "description": "A list of permission overwrites present for the channel.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/discordgo.PermissionOverwrite"
+                    }
+                },
+                "position": {
+                    "description": "The position of the channel, used for sorting in client.",
+                    "type": "integer"
+                },
+                "rate_limit_per_user": {
+                    "description": "Amount of seconds a user has to wait before sending another message or creating another thread (0-21600)\nbots, as well as users with the permission manage_messages or manage_channel, are unaffected",
+                    "type": "integer"
+                },
+                "recipients": {
+                    "description": "The recipients of the channel. This is only populated in DM channels.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/discordgo.User"
+                    }
+                },
+                "thread_member": {
+                    "description": "Thread member object for the current user, if they have joined the thread, only included on certain API endpoints",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.ThreadMember"
+                        }
+                    ]
+                },
+                "thread_metadata": {
+                    "description": "Thread-specific fields not needed by other channels",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.ThreadMetadata"
+                        }
+                    ]
+                },
+                "topic": {
+                    "description": "The topic of the channel.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The type of the channel.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.ChannelType"
+                        }
+                    ]
+                },
+                "user_limit": {
+                    "description": "The user limit of the voice channel.",
+                    "type": "integer"
+                }
+            }
+        },
+        "discordgo.ChannelFlags": {
+            "type": "integer",
+            "enum": [
+                2,
+                16
+            ],
+            "x-enum-varnames": [
+                "ChannelFlagPinned",
+                "ChannelFlagRequireTag"
+            ]
+        },
+        "discordgo.ChannelType": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                10,
+                11,
+                12,
+                13,
+                15
+            ],
+            "x-enum-varnames": [
+                "ChannelTypeGuildText",
+                "ChannelTypeDM",
+                "ChannelTypeGuildVoice",
+                "ChannelTypeGroupDM",
+                "ChannelTypeGuildCategory",
+                "ChannelTypeGuildNews",
+                "ChannelTypeGuildStore",
+                "ChannelTypeGuildNewsThread",
+                "ChannelTypeGuildPublicThread",
+                "ChannelTypeGuildPrivateThread",
+                "ChannelTypeGuildStageVoice",
+                "ChannelTypeGuildForum"
+            ]
+        },
+        "discordgo.ForumDefaultReaction": {
+            "type": "object",
+            "properties": {
+                "emoji_id": {
+                    "description": "The id of a guild's custom emoji.",
+                    "type": "string"
+                },
+                "emoji_name": {
+                    "description": "The unicode character of the emoji.",
+                    "type": "string"
+                }
+            }
+        },
+        "discordgo.ForumLayout": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-varnames": [
+                "ForumLayoutNotSet",
+                "ForumLayoutListView",
+                "ForumLayoutGalleryView"
+            ]
+        },
+        "discordgo.ForumSortOrderType": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "ForumSortOrderLatestActivity",
+                "ForumSortOrderCreationDate"
+            ]
+        },
+        "discordgo.ForumTag": {
+            "type": "object",
+            "properties": {
+                "emoji_id": {
+                    "type": "string"
+                },
+                "emoji_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "moderated": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "discordgo.MfaLevel": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "MfaLevelNone",
+                "MfaLevelElevated"
+            ]
+        },
+        "discordgo.PermissionOverwrite": {
+            "type": "object",
+            "properties": {
+                "allow": {
+                    "type": "string",
+                    "example": "0"
+                },
+                "deny": {
+                    "type": "string",
+                    "example": "0"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/discordgo.PermissionOverwriteType"
+                }
+            }
+        },
+        "discordgo.PermissionOverwriteType": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "PermissionOverwriteTypeRole",
+                "PermissionOverwriteTypeMember"
+            ]
+        },
+        "discordgo.PremiumTier": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "x-enum-varnames": [
+                "PremiumTierNone",
+                "PremiumTier1",
+                "PremiumTier2",
+                "PremiumTier3"
+            ]
+        },
+        "discordgo.Role": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "The hex color of this role.",
+                    "type": "integer"
+                },
+                "hoist": {
+                    "description": "Whether this role is hoisted (shows up separately in member list).",
+                    "type": "boolean"
+                },
+                "id": {
+                    "description": "The ID of the role.",
+                    "type": "string"
+                },
+                "managed": {
+                    "description": "Whether this role is managed by an integration, and\nthus cannot be manually added to, or taken from, members.",
+                    "type": "boolean"
+                },
+                "mentionable": {
+                    "description": "Whether this role is mentionable.",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "The name of the role.",
+                    "type": "string"
+                },
+                "permissions": {
+                    "description": "The permissions of the role on the guild (doesn't include channel overrides).\nThis is a combination of bit masks; the presence of a certain permission can\nbe checked by performing a bitwise AND between this int and the permission.",
+                    "type": "string",
+                    "example": "0"
+                },
+                "position": {
+                    "description": "The position of this role in the guild's role hierarchy.",
+                    "type": "integer"
+                }
+            }
+        },
+        "discordgo.ThreadMember": {
+            "type": "object",
+            "properties": {
+                "flags": {
+                    "description": "Any user-thread settings, currently only used for notifications",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "The id of the thread",
+                    "type": "string"
+                },
+                "join_timestamp": {
+                    "description": "The time the current user last joined the thread",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "The id of the user",
+                    "type": "string"
+                }
+            }
+        },
+        "discordgo.ThreadMetadata": {
+            "type": "object",
+            "properties": {
+                "archive_timestamp": {
+                    "description": "Timestamp when the thread's archive status was last changed, used for calculating recent activity",
+                    "type": "string"
+                },
+                "archived": {
+                    "description": "Whether the thread is archived",
+                    "type": "boolean"
+                },
+                "auto_archive_duration": {
+                    "description": "Duration in minutes to automatically archive the thread after recent activity, can be set to: 60, 1440, 4320, 10080",
+                    "type": "integer"
+                },
+                "invitable": {
+                    "description": "Whether non-moderators can add other non-moderators to a thread; only available on private threads",
+                    "type": "boolean"
+                },
+                "locked": {
+                    "description": "Whether the thread is locked; when a thread is locked, only users with MANAGE_THREADS can unarchive it",
+                    "type": "boolean"
+                }
+            }
+        },
+        "discordgo.User": {
+            "type": "object",
+            "properties": {
+                "accent_color": {
+                    "description": "User's banner color, encoded as an integer representation of hexadecimal color code",
+                    "type": "integer"
+                },
+                "avatar": {
+                    "description": "The hash of the user's avatar. Use Session.UserAvatar\nto retrieve the avatar itself.",
+                    "type": "string"
+                },
+                "banner": {
+                    "description": "The hash of the user's banner image.",
+                    "type": "string"
+                },
+                "bot": {
+                    "description": "Whether the user is a bot.",
+                    "type": "boolean"
+                },
+                "discriminator": {
+                    "description": "The discriminator of the user (4 numbers after name).",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "The email of the user. This is only present when\nthe application possesses the email scope for the user.",
+                    "type": "string"
+                },
+                "flags": {
+                    "description": "The flags on a user's account.\nOnly available when the request is authorized via a Bearer token.",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "The ID of the user.",
+                    "type": "string"
+                },
+                "locale": {
+                    "description": "The user's chosen language option.",
+                    "type": "string"
+                },
+                "mfa_enabled": {
+                    "description": "Whether the user has multi-factor authentication enabled.",
+                    "type": "boolean"
+                },
+                "premium_type": {
+                    "description": "The type of Nitro subscription on a user's account.\nOnly available when the request is authorized via a Bearer token.",
+                    "type": "integer"
+                },
+                "public_flags": {
+                    "description": "The public flags on a user's account.\nThis is a combination of bit masks; the presence of a certain flag can\nbe checked by performing a bitwise AND between this int and the flag.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.UserFlags"
+                        }
+                    ]
+                },
+                "system": {
+                    "description": "Whether the user is an Official Discord System user (part of the urgent message system).",
+                    "type": "boolean"
+                },
+                "token": {
+                    "description": "The token of the user. This is only present for\nthe user represented by the current session.",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "The user's username.",
+                    "type": "string"
+                },
+                "verified": {
+                    "description": "Whether the user's email is verified.",
+                    "type": "boolean"
+                }
+            }
+        },
+        "discordgo.UserFlags": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                4,
+                8,
+                64,
+                128,
+                256,
+                512,
+                1024,
+                4096,
+                16384,
+                65536,
+                131072,
+                262144
+            ],
+            "x-enum-varnames": [
+                "UserFlagDiscordEmployee",
+                "UserFlagDiscordPartner",
+                "UserFlagHypeSquadEvents",
+                "UserFlagBugHunterLevel1",
+                "UserFlagHouseBravery",
+                "UserFlagHouseBrilliance",
+                "UserFlagHouseBalance",
+                "UserFlagEarlySupporter",
+                "UserFlagTeamUser",
+                "UserFlagSystem",
+                "UserFlagBugHunterLevel2",
+                "UserFlagVerifiedBot",
+                "UserFlagVerifiedBotDeveloper",
+                "UserFlagDiscordCertifiedModerator"
+            ]
+        },
+        "discordgo.VerificationLevel": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-varnames": [
+                "VerificationLevelNone",
+                "VerificationLevelLow",
+                "VerificationLevelMedium",
+                "VerificationLevelHigh",
+                "VerificationLevelVeryHigh"
+            ]
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.AccessTokenResponse": {
+            "type": "object",
+            "properties": {
+                "expires": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "context": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.Guild": {
+            "type": "object",
+            "properties": {
+                "afk_channel_id": {
+                    "type": "string"
+                },
+                "banner": {
+                    "type": "string"
+                },
+                "channels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/discordgo.Channel"
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "icon_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "joined_at": {
+                    "type": "string"
+                },
+                "large": {
+                    "type": "boolean"
+                },
+                "member_count": {
+                    "type": "integer"
+                },
+                "mfa_level": {
+                    "$ref": "#/definitions/discordgo.MfaLevel"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner_id": {
+                    "type": "string"
+                },
+                "premium_subscription_count": {
+                    "type": "integer"
+                },
+                "premium_tier": {
+                    "$ref": "#/definitions/discordgo.PremiumTier"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/discordgo.Role"
+                    }
+                },
+                "self_member": {
+                    "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member"
+                },
+                "splash": {
+                    "type": "string"
+                },
+                "unavailable": {
+                    "type": "boolean"
+                },
+                "verification_level": {
+                    "$ref": "#/definitions/discordgo.VerificationLevel"
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildReduced": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "icon_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "joined_at": {
+                    "type": "string"
+                },
+                "member_count": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "online_member_count": {
+                    "type": "integer"
+                },
+                "owner_id": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildSettings": {
+            "type": "object",
+            "properties": {
+                "auto_roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "auto_voice": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "perms": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "The hash of the avatar for the guild member, if any.",
+                    "type": "string"
+                },
+                "avatar_url": {
+                    "type": "string"
+                },
+                "communication_disabled_until": {
+                    "description": "The time at which the member's timeout will expire.\nTime in the past or nil if the user is not timed out.",
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deaf": {
+                    "description": "Whether the member is deafened at a guild level.",
+                    "type": "boolean"
+                },
+                "guild_id": {
+                    "description": "The guild ID on which the member exists.",
+                    "type": "string"
+                },
+                "guild_name": {
+                    "type": "string"
+                },
+                "joined_at": {
+                    "description": "The time at which the member joined the guild.",
+                    "type": "string"
+                },
+                "mute": {
+                    "description": "Whether the member is muted at a guild level.",
+                    "type": "boolean"
+                },
+                "nick": {
+                    "description": "The nickname of the member, if they have one.",
+                    "type": "string"
+                },
+                "pending": {
+                    "description": "Is true while the member hasn't accepted the membership screen.",
+                    "type": "boolean"
+                },
+                "permissions": {
+                    "description": "Total permissions of the member in the channel, including overrides, returned when in the interaction object.",
+                    "type": "string",
+                    "example": "0"
+                },
+                "premium_since": {
+                    "description": "When the user used their Nitro boost on the server",
+                    "type": "string"
+                },
+                "privilege": {
+                    "type": "integer"
+                },
+                "roles": {
+                    "description": "A list of IDs of the roles which are possessed by the member.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "user": {
+                    "description": "The underlying user on which the member is based.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.User"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.PermissionsResponse": {
+            "type": "object",
+            "properties": {
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.SearchResult": {
+            "type": "object",
+            "properties": {
+                "guilds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.GuildReduced"
+                    }
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Member"
+                    }
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.User": {
+            "type": "object",
+            "properties": {
+                "accent_color": {
+                    "description": "User's banner color, encoded as an integer representation of hexadecimal color code",
+                    "type": "integer"
+                },
+                "avatar": {
+                    "description": "The hash of the user's avatar. Use Session.UserAvatar\nto retrieve the avatar itself.",
+                    "type": "string"
+                },
+                "avatar_url": {
+                    "type": "string"
+                },
+                "banner": {
+                    "description": "The hash of the user's banner image.",
+                    "type": "string"
+                },
+                "bot": {
+                    "description": "Whether the user is a bot.",
+                    "type": "boolean"
+                },
+                "bot_owner": {
+                    "type": "boolean"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "discriminator": {
+                    "description": "The discriminator of the user (4 numbers after name).",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "The email of the user. This is only present when\nthe application possesses the email scope for the user.",
+                    "type": "string"
+                },
+                "flags": {
+                    "description": "The flags on a user's account.\nOnly available when the request is authorized via a Bearer token.",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "The ID of the user.",
+                    "type": "string"
+                },
+                "locale": {
+                    "description": "The user's chosen language option.",
+                    "type": "string"
+                },
+                "mfa_enabled": {
+                    "description": "Whether the user has multi-factor authentication enabled.",
+                    "type": "boolean"
+                },
+                "premium_type": {
+                    "description": "The type of Nitro subscription on a user's account.\nOnly available when the request is authorized via a Bearer token.",
+                    "type": "integer"
+                },
+                "public_flags": {
+                    "description": "The public flags on a user's account.\nThis is a combination of bit masks; the presence of a certain flag can\nbe checked by performing a bitwise AND between this int and the flag.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/discordgo.UserFlags"
+                        }
+                    ]
+                },
+                "system": {
+                    "description": "Whether the user is an Official Discord System user (part of the urgent message system).",
+                    "type": "boolean"
+                },
+                "token": {
+                    "description": "The token of the user. This is only present for\nthe user represented by the current session.",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "The user's username.",
+                    "type": "string"
+                },
+                "verified": {
+                    "description": "Whether the user's email is verified.",
+                    "type": "boolean"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authorization"
+        },
+        {
+            "name": "Misc"
+        },
+        {
+            "name": "Users"
+        },
+        {
+            "name": "Guilds"
+        },
+        {
+            "name": "Guild Settings"
+        },
+        {
+            "name": "Guild Members"
+        }
+    ]
+}

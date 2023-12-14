@@ -1,9 +1,10 @@
 package auth
 
 import (
-	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 	"time"
+
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"

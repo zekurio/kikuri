@@ -5,9 +5,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sarulabs/di/v2"
 	"github.com/zekrotja/dgrs"
-	"github.com/zekurio/kikuri/internal/models"
+	sharedmodels "github.com/zekurio/kikuri/internal/models"
 	"github.com/zekurio/kikuri/internal/services/database"
 	"github.com/zekurio/kikuri/internal/services/permissions"
+	"github.com/zekurio/kikuri/internal/services/webserver/v1/models"
 	"github.com/zekurio/kikuri/internal/util/static"
 	"github.com/zekurio/kikuri/pkg/arrayutils"
 )
@@ -17,7 +18,7 @@ type GuildsController struct {
 	pmw     *permissions.Permissions
 	session *discordgo.Session
 	st      *dgrs.State
-	cfg     models.Config
+	cfg     sharedmodels.Config
 }
 
 func (c *GuildsController) Setup(ctn di.Container, router fiber.Router) {
@@ -25,7 +26,7 @@ func (c *GuildsController) Setup(ctn di.Container, router fiber.Router) {
 	c.pmw = ctn.Get(static.DiPermissions).(*permissions.Permissions)
 	c.session = ctn.Get(static.DiDiscordSession).(*discordgo.Session)
 	c.st = ctn.Get(static.DiState).(*dgrs.State)
-	c.cfg = ctn.Get(static.DiConfig).(models.Config)
+	c.cfg = ctn.Get(static.DiConfig).(sharedmodels.Config)
 
 	router.Get("", c.getGuilds)
 	router.Get("/:guildid", c.getGuild)
