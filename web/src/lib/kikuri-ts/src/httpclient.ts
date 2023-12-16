@@ -1,24 +1,18 @@
-import { AccessTokenModel, ErrorResponse } from "./models";
+import { AccessTokenModel, ErrorResponse } from './models';
 
-import { APIError } from "./errors";
-import { replaceDoublePath } from "./util";
+import { APIError } from './errors';
+import { replaceDoublePath } from './util';
 
-export type HttpMethod =
-  | "GET"
-  | "PUT"
-  | "POST"
-  | "DELETE"
-  | "PATCH"
-  | "OPTIONS";
+export type HttpMethod = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'PATCH' | 'OPTIONS';
 
 export type HttpHeadersMap = { [key: string]: string };
 
 export interface IHttpClient {
   req<T>(
-    method: HttpMethod,
-    path: string,
-    body?: object,
-    appendHeaders?: HttpHeadersMap,
+      method: HttpMethod,
+      path: string,
+      body?: object,
+      appendHeaders?: HttpHeadersMap,
   ): Promise<T>;
 }
 
@@ -35,40 +29,34 @@ export class HttpClient implements IHttpClient {
   private accessToken: AccessToken | null = null;
   private accessTokenRequest: Promise<AccessTokenModel> | undefined;
 
-  constructor(
-    protected endpoint: string,
-    private options = {} as HttpClientOptions,
-  ) {}
+  constructor(protected endpoint: string, private options = {} as HttpClientOptions) {}
 
   async req<T>(
-    method: HttpMethod,
-    path: string,
-    body?: object,
-    appendHeaders?: HttpHeadersMap,
+      method: HttpMethod,
+      path: string,
+      body?: object,
+      appendHeaders?: HttpHeadersMap,
   ): Promise<T> {
     const headers = new Headers();
-    headers.set("Content-Type", "application/json");
-    headers.set("Accept", "application/json");
-    kv<string, string>(this.options?.headers).forEach(([k, v]) =>
-      headers.set(k, v),
-    );
-    if (this.options.authorization)
-      headers.set("authorization", this.options.authorization);
+    headers.set('Content-Type', 'application/json');
+    headers.set('Accept', 'application/json');
+    kv<string, string>(this.options?.headers).forEach(([k, v]) => headers.set(k, v));
+    kv<string, string>(headers).forEach(([k, v]) => headers.set(k, v));
+
+    if (this.options.authorization) headers.set('Authorization', this.options.authorization);
     else if (this.accessToken) {
       if (Date.now() - this.accessToken.expiresDate.getTime() > 0) {
         this.accessToken = null;
-        return await this.getAndSetAccessToken(() =>
-          this.req(method, path, body, appendHeaders),
-        );
+        return await this.getAndSetAccessToken(() => this.req(method, path, body, appendHeaders));
       }
-      headers.set("authorization", `accessToken ${this.accessToken.token}`);
+      headers.set('Authorization', `accessToken ${this.accessToken.token}`);
     }
     const fullPath = replaceDoublePath(`${this.endpoint}/${path}`);
     const res = await window.fetch(fullPath, {
       method,
       headers,
       body: body ? JSON.stringify(body) : null,
-      credentials: "include",
+      credentials: 'include',
     });
 
     if (res.status === 204) {
@@ -80,13 +68,8 @@ export class HttpClient implements IHttpClient {
       data = await res.json();
     } catch {}
 
-    if (
-      res.status === 401 &&
-      (data as ErrorResponse).error === "invalid access token"
-    ) {
-      return await this.getAndSetAccessToken(() =>
-        this.req(method, path, body, appendHeaders),
-      );
+    if (res.status === 401 && (data as ErrorResponse).error === 'invalid access token') {
+      return await this.getAndSetAccessToken(() => this.req(method, path, body, appendHeaders));
     }
 
     if (res.status >= 400) throw new APIError(res, data as ErrorResponse);
@@ -95,8 +78,7 @@ export class HttpClient implements IHttpClient {
   }
 
   private async getAccessToken(): Promise<AccessTokenModel> {
-    if (!this.accessTokenRequest)
-      this.accessTokenRequest = this.req("POST", "auth/accesstoken");
+    if (!this.accessTokenRequest) this.accessTokenRequest = this.req('POST', 'auth/accesstoken');
     return this.accessTokenRequest;
   }
 

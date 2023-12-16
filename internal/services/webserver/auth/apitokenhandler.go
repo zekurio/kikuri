@@ -31,9 +31,9 @@ func NewAPITokenHandlerImpl(ctn di.Container) *APITokenHandlerImpl {
 	}
 }
 
-func (ath *APITokenHandlerImpl) GetAPIToken(ident string) (token string, err error) {
+func (ath *APITokenHandlerImpl) GetAPIToken(ident string) (token string, expires time.Time, err error) {
 	now := time.Now()
-	expires := now.Add(static.ApiTokenExpiration)
+	expires = now.Add(static.ApiTokenExpiration)
 
 	salt, err := randutils.GetRandBase64Str(16)
 	if err != nil {
@@ -102,4 +102,8 @@ func (ath *APITokenHandlerImpl) ValidateAPIToken(token string) (ident string, er
 	}
 
 	return "", fmt.Errorf("invalid token")
+}
+
+func (ath *APITokenHandlerImpl) RevokeToken(ident string) error {
+	return ath.db.DeleteAPIToken(ident)
 }

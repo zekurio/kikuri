@@ -50,7 +50,7 @@ func (r *Router) Route(router fiber.Router) {
 	authMw := r.ctn.Get(static.DiAuthMiddleware).(auth.Middleware)
 
 	new(controllers.AuthController).Setup(r.ctn, router.Group("/auth"))
-	new(controllers.MiscController).Setup(r.ctn, router.Group("/misc"))
+	new(controllers.MiscController).Setup(r.ctn, router)
 
 	// Apply auth middleware to all routes below
 
