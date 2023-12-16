@@ -30,8 +30,20 @@ CREATE TABLE IF NOT EXISTS autovoice
     PRIMARY KEY (user_id)
 );
 
+CREATE TABLE IF NOT EXISTS apitokens
+(
+    user_id     VARCHAR(25) NOT NULL DEFAULT '',
+    salt        text        NOT NULL DEFAULT '',
+    created     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    lastaccess  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    hits        INT         NOT NULL DEFAULT 0,
+    PRIMARY KEY (user_id)
+);
+
 -- +goose Down
 DROP TABLE IF EXISTS guilds;
 DROP TABLE IF EXISTS permissions;
 DROP TABLE IF EXISTS votes;
 DROP TABLE IF EXISTS autovoice;
+DROP TABLE IF EXISTS apitokens;
