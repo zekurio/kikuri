@@ -18,16 +18,16 @@ import (
 )
 
 type WebServer struct {
-	app       *fiber.App
-	cfg       sharedmodels.Config
-	container di.Container
+	app *fiber.App
+	cfg sharedmodels.Config
+	ctn di.Container
 }
 
 func New(ctn di.Container) (ws *WebServer, err error) {
 
 	ws = new(WebServer)
 
-	ws.container = ctn
+	ws.ctn = ctn
 
 	ws.cfg = ctn.Get(static.DiConfig).(sharedmodels.Config)
 
@@ -48,7 +48,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 		}))
 	}
 
-	new(controllers.InviteController).Setup(ws.container, ws.app.Group("/invite"))
+	new(controllers.InviteController).Setup(ws.ctn, ws.app.Group("/invite"))
 
 	ws.registerRouter(new(v1.Router), []string{"/api/v1", "/api"})
 
@@ -69,7 +69,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 }
 
 func (ws *WebServer) registerRouter(router *v1.Router, routes []string, middlewares ...fiber.Handler) {
-	router.SetContainer(ws.container)
+	router.SetContainer(ws.ctn)
 	for _, r := range routes {
 		router.Route(ws.app.Group(r, middlewares...))
 	}

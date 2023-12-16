@@ -7,12 +7,16 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/go-redis/redis/v8"
+	"github.com/zekurio/kikuri/internal/models"
 	"github.com/zekurio/kikuri/internal/services/database"
+	"github.com/zekurio/kikuri/internal/util"
 )
 
 const (
 	keyGuildAutoRoles = "GUILD:AUTOROLES"
 	keyGuildAutoVoice = "GUILD:AUTOVOICE"
+
+	keyAPIToken = "API:TOKEN"
 )
 
 type RedisMiddleware struct {
@@ -107,4 +111,51 @@ func (r *RedisMiddleware) SetGuildAutoVoice(guildID string, channelIDs []string)
 	}
 
 	return r.client.Set(context.Background(), key, strings.Join(channelIDs, ";"), 0).Err()
+}
+
+func (r *RedisMiddleware) SetAPIToken(token models.APITokenEntry) error {
+	var key = fmt.Sprintf("%s:%s", keyAPIToken, token.UserID)
+
+	data, err := util.Marshal(token)
+	if err != nil {
+		return err
+	}
+
+	if err := r.client.Set(context.Background(), key, data, 0).Err(); err != nil {
+		return err
+	}
+
+	return r.Database.SetAPIToken(token)
+}
+
+func (r *RedisMiddleware) GetAPIToken(userID string) (models.APITokenEntry, error) {
+	var key = fmt.Sprintf("%s:%s", keyAPIToken, userID)
+
+	res, err := r.client.Get(context.Background(), key).Result()
+	if err == redis.Nil {
+		token, err := r.Database.GetAPIToken(userID)
+		if err != nil {
+			return token, err
+		}
+
+		data, err := util.Marshal(token)
+		if err != nil {
+			return token, err
+		}
+
+		err = r.client.Set(context.Background(), key, data, 0).Err()
+		return token, err
+	}
+
+	return util.Unmarshal[models.APITokenEntry](res)
+}
+
+func (r *RedisMiddleware) DeleteAPIToken(userID string) error {
+	var key = fmt.Sprintf("%s:%s", keyAPIToken, userID)
+
+	if err := r.client.Del(context.Background(), key).Err(); err != nil {
+		return err
+	}
+
+	return r.Database.DeleteAPIToken(userID)
 }

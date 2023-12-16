@@ -12,17 +12,19 @@ var (
 	errInvalidAccessToken = fiber.NewError(fiber.StatusUnauthorized, "invalid access token")
 )
 
-type AccessTokenMiddleware struct {
-	ath AccessTokenHandler
+type TokenMiddleware struct {
+	acth  AccessTokenHandler
+	apith APITokenHandler
 }
 
-func NewAccessTokenMiddleware(container di.Container) *AccessTokenMiddleware {
-	return &AccessTokenMiddleware{
-		ath: container.Get(static.DiAuthAccessTokenHandler).(AccessTokenHandler),
+func NewTokenMiddleware(ctn di.Container) *TokenMiddleware {
+	return &TokenMiddleware{
+		acth:  ctn.Get(static.DiAuthAccessTokenHandler).(AccessTokenHandler),
+		apith: ctn.Get(static.DiAuthAPITokenHandler).(APITokenHandler),
 	}
 }
 
-func (m *AccessTokenMiddleware) Handle(ctx *fiber.Ctx) (err error) {
+func (m *TokenMiddleware) Handle(ctx *fiber.Ctx) (err error) {
 	var ident string
 
 	authHeader := ctx.Get("authorization")
@@ -38,12 +40,14 @@ func (m *AccessTokenMiddleware) Handle(ctx *fiber.Ctx) (err error) {
 	switch strings.ToLower(split[0]) {
 
 	case "accesstoken":
-		if ident, err = m.ath.ValidateAccessToken(split[1]); err != nil || ident == "" {
+		if ident, err = m.acth.ValidateAccessToken(split[1]); err != nil || ident == "" {
 			return errInvalidAccessToken
 		}
 
 	case "bearer":
-		// TODO write api token handler
+		if ident, err = m.apith.ValidateAPIToken(split[1]); err != nil || ident == "" {
+			return errInvalidAccessToken
+		}
 
 	default:
 		return fiber.ErrUnauthorized

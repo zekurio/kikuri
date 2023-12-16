@@ -425,6 +425,19 @@ definitions:
     - VerificationLevelMedium
     - VerificationLevelHigh
     - VerificationLevelVeryHigh
+  github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse:
+    properties:
+      created:
+        type: string
+      expires:
+        type: string
+      hits:
+        type: integer
+      last_access:
+        type: string
+      token:
+        type: string
+    type: object
   github_com_zekurio_kikuri_internal_services_webserver_v1_models.AccessTokenResponse:
     properties:
       expires:
@@ -1063,6 +1076,65 @@ paths:
       summary: Global Search
       tags:
       - Search
+  /token:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes the users API token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: API Token Deletion
+      tags:
+      - Tokens
+    get:
+      consumes:
+      - application/json
+      description: Returns API Token metadata, not the token itself.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+        "404":
+          description: Is returned when no token was generated before.
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: API Token Info
+      tags:
+      - Tokens
+    post:
+      consumes:
+      - application/json
+      description: Generates an API Token and returns it and its metadata.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error'
+      summary: API Token Generation
+      tags:
+      - Tokens
   /users/{id}:
     get:
       consumes:

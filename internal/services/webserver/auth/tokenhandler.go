@@ -17,3 +17,12 @@ type AccessTokenHandler interface {
 
 	ValidateAccessToken(token string) (ident string, err error)
 }
+
+// APITokenHandler is an interface for handling user API tokens.
+type APITokenHandler interface {
+	GetAPIToken(ident string) (token string, expires time.Time, err error)
+
+	ValidateAPIToken(token string) (ident string, err error)
+
+	RevokeToken(ident string) error
+}

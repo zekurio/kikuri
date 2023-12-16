@@ -47,10 +47,10 @@ func getLifetimes(cfg models.Config) (dgrs.Lifetimes, bool, error) {
 	return target, set, nil
 }
 
-func InitState(container di.Container) (s *dgrs.State, err error) {
-	session := container.Get(static.DiDiscordSession).(*discordgo.Session)
-	rd := container.Get(static.DiRedis).(*redis.Client)
-	cfg := container.Get(static.DiConfig).(models.Config)
+func InitState(ctn di.Container) (s *dgrs.State, err error) {
+	session := ctn.Get(static.DiDiscordSession).(*discordgo.Session)
+	rd := ctn.Get(static.DiRedis).(*redis.Client)
+	cfg := ctn.Get(static.DiConfig).(models.Config)
 
 	lf, set, err := getLifetimes(cfg)
 	if err != nil {

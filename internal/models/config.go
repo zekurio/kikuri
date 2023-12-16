@@ -91,6 +91,7 @@ type Webserver struct {
 	Addr        string
 	PublicAddr  string
 	DebugAddr   string
+	APITokenKey string
 	AccessToken AccessToken
 	TLS         TLS
 }

@@ -38,6 +38,12 @@ func (r *Router) SetContainer(ctn di.Container) {
 // @Tag.Name Guild Members
 // @TagDescription Guild member endpoints.
 
+// @Tag Name Search
+// @TagDescription Search endpoints.
+
+// @Tag Name Token
+// @TagDescription API Token endpoints.
+
 // @BasePath /api/v1
 
 func (r *Router) Route(router fiber.Router) {
@@ -55,4 +61,5 @@ func (r *Router) Route(router fiber.Router) {
 	new(controllers.GuildSettingsController).Setup(r.ctn, router.Group("/guilds/:guildid/settings"))
 	new(controllers.GuildMembersController).Setup(r.ctn, router.Group("/guilds/:guildid"))
 	new(controllers.SearchController).Setup(r.ctn, router.Group("/search"))
+	new(controllers.TokenController).Setup(r.ctn, router.Group("/token"))
 }

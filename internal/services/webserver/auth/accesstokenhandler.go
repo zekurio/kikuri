@@ -24,8 +24,8 @@ type AccessTokenHandlerImpl struct {
 	sessionSecret     []byte
 }
 
-func NewAccessTokenHandlerImpl(container di.Container) *AccessTokenHandlerImpl {
-	cfg := container.Get(static.DiConfig).(models.Config)
+func NewAccessTokenHandlerImpl(ctn di.Container) *AccessTokenHandlerImpl {
+	cfg := ctn.Get(static.DiConfig).(models.Config)
 
 	return &AccessTokenHandlerImpl{
 		sessionExpiration: time.Duration(cfg.Webserver.AccessToken.LifetimeSeconds) * time.Second,

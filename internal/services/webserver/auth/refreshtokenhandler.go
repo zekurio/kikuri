@@ -19,11 +19,11 @@ type RefreshTokenHandlerImpl struct {
 	session *discordgo.Session
 }
 
-func NewRefreshTokenHandlerImpl(container di.Container) *RefreshTokenHandlerImpl {
+func NewRefreshTokenHandlerImpl(ctn di.Container) *RefreshTokenHandlerImpl {
 	return &RefreshTokenHandlerImpl{
-		db:      container.Get(static.DiDatabase).(database.Database),
-		st:      container.Get(static.DiState).(*dgrs.State),
-		session: container.Get(static.DiDiscordSession).(*discordgo.Session),
+		db:      ctn.Get(static.DiDatabase).(database.Database),
+		st:      ctn.Get(static.DiState).(*dgrs.State),
+		session: ctn.Get(static.DiDiscordSession).(*discordgo.Session),
 	}
 }
 

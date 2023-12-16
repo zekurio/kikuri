@@ -318,6 +318,60 @@ Search through guilds and members by ID, name or displayname.
 | 401 | Unauthorized | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelserror) |
 
 ---
+## default
+
+### /token
+
+#### GET
+##### Summary
+
+API Token Info
+
+##### Description
+
+Returns API Token metadata, not the token itself.
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | OK | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelsapitokenresponse) |
+| 401 | Unauthorized | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelserror) |
+| 404 | Is returned when no token was generated before. | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelserror) |
+
+#### POST
+##### Summary
+
+API Token Generation
+
+##### Description
+
+Generates an API Token and returns it and its metadata.
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | OK | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelsapitokenresponse) |
+| 401 | Unauthorized | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelserror) |
+
+#### DELETE
+##### Summary
+
+API Token Deletion
+
+##### Description
+
+Deletes the users API token.
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | OK | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelsstatus) |
+| 401 | Unauthorized | [github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error](#github_com_zekurio_kikuri_internal_services_webserver_v1_modelserror) |
+
+---
 ## Users
 
 ### /users/{id}
@@ -506,6 +560,16 @@ Returns a user by their id
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | discordgo.VerificationLevel | integer |  |  |
+
+#### github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| created | string |  | No |
+| expires | string |  | No |
+| hits | integer |  | No |
+| last_access | string |  | No |
+| token | string |  | No |
 
 #### github_com_zekurio_kikuri_internal_services_webserver_v1_models.AccessTokenResponse
 

@@ -20,11 +20,11 @@ type RefreshTokenRequestHandler struct {
 	refreshTokenHandler RefreshTokenHandler
 }
 
-func NewRefreshTokenRequestHandler(container di.Container) *RefreshTokenRequestHandler {
+func NewRefreshTokenRequestHandler(ctn di.Container) *RefreshTokenRequestHandler {
 	return &RefreshTokenRequestHandler{
-		session:             container.Get(static.DiDiscordSession).(*discordgo.Session),
-		accessTokenHandler:  container.Get(static.DiAuthAccessTokenHandler).(AccessTokenHandler),
-		refreshTokenHandler: container.Get(static.DiAuthRefreshTokenHandler).(RefreshTokenHandler),
+		session:             ctn.Get(static.DiDiscordSession).(*discordgo.Session),
+		accessTokenHandler:  ctn.Get(static.DiAuthAccessTokenHandler).(AccessTokenHandler),
+		refreshTokenHandler: ctn.Get(static.DiAuthRefreshTokenHandler).(RefreshTokenHandler),
 	}
 }
 

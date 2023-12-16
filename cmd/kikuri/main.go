@@ -137,6 +137,14 @@ func main() {
 		},
 	})
 
+	// Auth API handler handler
+	diBuilder.Add(di.Def{
+		Name: static.DiAuthAPITokenHandler,
+		Build: func(ctn di.Container) (interface{}, error) {
+			return auth.NewAPITokenHandlerImpl(ctn), nil
+		},
+	})
+
 	// OAuth API handler implementation
 	diBuilder.Add(di.Def{
 		Name: static.DiOAuthHandler,
@@ -149,7 +157,7 @@ func main() {
 	diBuilder.Add(di.Def{
 		Name: static.DiAuthMiddleware,
 		Build: func(ctn di.Container) (interface{}, error) {
-			return auth.NewAccessTokenMiddleware(ctn), nil
+			return auth.NewTokenMiddleware(ctn), nil
 		},
 	})
 

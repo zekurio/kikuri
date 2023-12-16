@@ -572,6 +572,95 @@
                 }
             }
         },
+        "/token": {
+            "get": {
+                "description": "Returns API Token metadata, not the token itself.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tokens"
+                ],
+                "summary": "API Token Info",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Is returned when no token was generated before.",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Generates an API Token and returns it and its metadata.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tokens"
+                ],
+                "summary": "API Token Generation",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes the users API token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tokens"
+                ],
+                "summary": "API Token Deletion",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Status"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_zekurio_kikuri_internal_services_webserver_v1_models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "description": "Returns a user by their id",
@@ -1121,6 +1210,26 @@
                 "VerificationLevelHigh",
                 "VerificationLevelVeryHigh"
             ]
+        },
+        "github_com_zekurio_kikuri_internal_services_webserver_v1_models.APITokenResponse": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "expires": {
+                    "type": "string"
+                },
+                "hits": {
+                    "type": "integer"
+                },
+                "last_access": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
         },
         "github_com_zekurio_kikuri_internal_services_webserver_v1_models.AccessTokenResponse": {
             "type": "object",

@@ -209,3 +209,11 @@ type SearchResult struct {
 	Guilds  []*GuildReduced `json:"guilds"`
 	Members []*Member       `json:"members"`
 }
+
+type APITokenResponse struct {
+	Created    time.Time `json:"created"`
+	Expires    time.Time `json:"expires"`
+	LastAccess time.Time `json:"last_access"`
+	Hits       int       `json:"hits"`
+	Token      string    `json:"token,omitempty"`
+}

@@ -116,7 +116,6 @@ func (p *Postgres) GetPermissions(guildID string) (permissions map[string]perms.
 }
 
 func (p *Postgres) SetPermissions(guildID, roleID string, permissions perms.Array) error {
-
 	if len(permissions) == 0 {
 		_, err := p.db.Exec(`DELETE FROM permissions WHERE guild_id = $1 AND role_id = $2`, guildID, roleID)
 		return err
@@ -207,6 +206,43 @@ func (p *Postgres) GetUserByRefreshToken(token string) (ident string, expires ti
 
 func (p *Postgres) RevokeUserRefreshToken(ident string) error {
 	_, err := p.db.Exec(`DELETE FROM refresh_tokens WHERE ident = $1`, ident)
+	return p.wrapErr(err)
+}
+
+// API TOKENS
+
+func (p *Postgres) SetAPIToken(token models.APITokenEntry) error {
+	res, err := p.db.Exec(`UPDATE apitokens 
+	SET salt = $1, created = $2, expires = $3, lastaccess = $4, hits = $5 WHERE user_id = $6`,
+		token.Salt, token.Created, token.Expires, token.LastAccess, token.Hits, token.UserID)
+	if err != nil {
+		return err
+	}
+
+	ar, err := res.RowsAffected()
+
+	if err != nil {
+		return err
+	}
+
+	if ar == 0 {
+		_, err := p.db.Exec(`INSERT INTO apitokens (user_id, salt, created, expires, lastaccess, hits) VALUES ($1, $2, $3, $4, $5, $6)`,
+			token.UserID, token.Salt, token.Created, token.Expires, token.LastAccess, token.Hits)
+		return err
+	}
+
+	return nil
+}
+
+func (p *Postgres) GetAPIToken(userID string) (models.APITokenEntry, error) {
+	var token models.APITokenEntry
+	err := p.db.QueryRow(`SELECT user_id, salt, created, expires, lastaccess, hits FROM apitokens WHERE user_id = $1`, userID).
+		Scan(&token.UserID, &token.Salt, &token.Created, &token.Expires, &token.LastAccess, &token.Hits)
+	return token, p.wrapErr(err)
+}
+
+func (p *Postgres) DeleteAPIToken(userID string) error {
+	_, err := p.db.Exec(`DELETE FROM apitokens WHERE user_id = $1`, userID)
 	return p.wrapErr(err)
 }
 

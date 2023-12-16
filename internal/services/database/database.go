@@ -38,6 +38,12 @@ type Database interface {
 	GetUserByRefreshToken(token string) (ident string, expires time.Time, err error)
 	RevokeUserRefreshToken(ident string) error
 
+	// API tokens
+
+	SetAPIToken(token models.APITokenEntry) error
+	GetAPIToken(userID string) (models.APITokenEntry, error)
+	DeleteAPIToken(userID string) error
+
 	// Data management
 
 	FlushGuildData(guildID string) error
