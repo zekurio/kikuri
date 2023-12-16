@@ -3,10 +3,11 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"github.com/zekurio/kikuri/internal/embedded"
-	"github.com/zekurio/kikuri/internal/models"
 	"strings"
 	"time"
+
+	"github.com/zekurio/kikuri/internal/embedded"
+	"github.com/zekurio/kikuri/internal/models"
 
 	"github.com/charmbracelet/log"
 	_ "github.com/lib/pq"

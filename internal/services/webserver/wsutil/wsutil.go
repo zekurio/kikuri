@@ -2,13 +2,14 @@ package wsutil
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2"
-	"github.com/zekurio/kikuri/internal/embedded"
-	"github.com/zekurio/kikuri/internal/services/database/dberr"
 	"io/fs"
 	"net/http"
 	"os"
 	"strconv"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/zekurio/kikuri/internal/embedded"
+	"github.com/zekurio/kikuri/internal/services/database/dberr"
 
 	"github.com/charmbracelet/log"
 )

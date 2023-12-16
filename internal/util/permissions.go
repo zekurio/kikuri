@@ -2,10 +2,11 @@ package util
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/zekrotja/ken"
 	"github.com/zekurio/kikuri/internal/services/permissions"
 	"github.com/zekurio/kikuri/internal/util/static"
-	"strings"
 )
 
 var allPermissions []string

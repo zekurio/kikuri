@@ -2,6 +2,7 @@ package roleutils
 
 import (
 	"errors"
+
 	"github.com/zekrotja/dgrs"
 
 	"github.com/bwmarrin/discordgo"

@@ -1,8 +1,9 @@
 package middlewares
 
 import (
-	"github.com/zekrotja/ken"
 	"time"
+
+	"github.com/zekrotja/ken"
 )
 
 type CooldownMiddleware struct {

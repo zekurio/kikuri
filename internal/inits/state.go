@@ -1,9 +1,10 @@
 package inits
 
 import (
-	"github.com/zekurio/kikuri/internal/models"
 	"reflect"
 	"time"
+
+	"github.com/zekurio/kikuri/internal/models"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"

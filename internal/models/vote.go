@@ -2,6 +2,8 @@ package models
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/rs/xid"
 	"github.com/zekrotja/ken"
@@ -9,7 +11,6 @@ import (
 	"github.com/zekurio/kikuri/pkg/arrayutils"
 	"github.com/zekurio/kikuri/pkg/discordutils"
 	"github.com/zekurio/kikuri/pkg/hashutils"
-	"time"
 )
 
 // Vote is a struct for a vote
