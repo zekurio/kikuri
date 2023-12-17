@@ -1,8 +1,6 @@
 import { AppTheme, getSystemTheme } from "../theme/theme";
 import { Guild, User } from "../lib/kikuri-api/src";
-import { ModalState } from "../hooks/useModal";
 import LocalStorageUtil from "../util/localstorage";
-import { Notification } from "../components/Notifications";
 import { create } from "zustand";
 
 export type FetchLocked<T> = {
@@ -25,12 +23,6 @@ export interface Store {
 
   selectedGuild?: Guild;
   setSelectedGuild: (selectedGuild: Guild) => void;
-
-  modal: ModalState<any>;
-  setModal: (modal: ModalState<any>) => void;
-
-  notifications: Notification[];
-  setNotifications: (notifications: Notification[]) => void;
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -60,10 +52,4 @@ export const useStore = create<Store>((set, get) => ({
     if (!!selectedGuild)
       LocalStorageUtil.set("kikuri.selectedguild", selectedGuild.id);
   },
-
-  modal: { isOpen: false },
-  setModal: (modal) => set({ modal }),
-
-  notifications: [],
-  setNotifications: (notifications) => set({ notifications }),
 }));

@@ -21,12 +21,14 @@ export class AxiosClient {
 
         // Add the token to every request
         if (this.accessToken) {
-          config.headers["Authorization"] = `Bearer ${this.accessToken.token}`;
+          config.headers[
+            "Authorization"
+          ] = `Accesstoken ${this.accessToken.token}`;
         }
 
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     this.axiosInstance.interceptors.response.use(
@@ -39,7 +41,7 @@ export class AxiosClient {
           return this.axiosInstance(originalRequest);
         }
         return Promise.reject(error);
-      }
+      },
     );
   }
 
@@ -65,9 +67,13 @@ export class AxiosClient {
     this.refreshingToken = true;
 
     try {
-      const response = await this.axiosInstance.post('/auth/accesstoken', {}, {
-        withCredentials: true
-      });
+      const response = await this.axiosInstance.post(
+        "/auth/accesstoken",
+        {},
+        {
+          withCredentials: true,
+        },
+      );
 
       if (response.status === 200 && response.data) {
         this.accessToken = response.data;
@@ -75,7 +81,7 @@ export class AxiosClient {
         throw new Error(`Failed to refresh access token: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error refreshing token:', error);
+      console.error("Error refreshing token:", error);
       throw error;
     } finally {
       this.refreshingToken = false;

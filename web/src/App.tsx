@@ -1,22 +1,11 @@
 import React, { useEffect } from "react";
-import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
-
-import { RouteSuspense } from "./components/RouteSuspense";
 
 import { stripSuffix } from "./util/utils";
 import { useStoredTheme } from "./hooks/useStoredTheme";
 import { StartRoute } from "./routes/Start";
-import { DashboardRoute } from "./routes/Dashboard";
-
-const GuildMembersRoute = React.lazy(
-  () => import("./routes/Dashboard/Guilds/GuildMembers"),
-);
+import { DebugRoute } from "./routes/Debug";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -71,25 +60,8 @@ export const App: React.FC = () => {
       <AppContainer>
         <Router basename={import.meta.env.BASE_URL}>
           <Routes>
-            <Route
-              path="start"
-              element={
-                <RouteSuspense>
-                  <StartRoute />
-                </RouteSuspense>
-              }
-            />
-            <Route path="dashboard" element={<DashboardRoute />}>
-              <Route
-                path="guilds/:guildid/members"
-                element={
-                  <RouteSuspense>
-                    <GuildMembersRoute />
-                  </RouteSuspense>
-                }
-              />
-            </Route>
-            <Route path="*" element={<Navigate to="dashboard" />} />
+            <Route path="start" element={<StartRoute />} />
+            <Route path="debug" element={<DebugRoute />} />
           </Routes>
         </Router>
       </AppContainer>

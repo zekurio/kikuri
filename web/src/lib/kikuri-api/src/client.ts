@@ -4,6 +4,7 @@ import {
   GuildsClient,
   MiscClient,
   SearchClient,
+  TokensClient,
   UsersClient,
 } from "./bindings";
 
@@ -13,6 +14,7 @@ export class Client extends AxiosClient {
   guilds = new GuildsClient(this);
   users = new UsersClient(this);
   search = new SearchClient(this);
+  tokens = new TokensClient(this);
 
   constructor(endpoint: string = "/api") {
     super(endpoint);

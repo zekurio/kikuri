@@ -14,9 +14,6 @@ export function useStoredTheme() {
       theme = {
         ...LightTheme,
         accent: accentColor ?? LightTheme.accent,
-        accentDarker: accentColor
-          ? Color(accentColor).mix(Color("#ffffffa0")).hexa()
-          : LightTheme.accentDarker,
       };
       editorTheme = "light";
       break;
@@ -25,9 +22,6 @@ export function useStoredTheme() {
       theme = {
         ...DarkTheme,
         accent: accentColor ?? DarkTheme.accent,
-        accentDarker: accentColor
-          ? Color(accentColor).mix(Color("#000000a0")).hexa()
-          : DarkTheme.accentDarker,
       };
       editorTheme = "vs-dark";
   }
