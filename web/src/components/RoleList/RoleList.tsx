@@ -1,5 +1,5 @@
 import { Flex } from "../Flex";
-import { Role } from "../../lib/kikuri-ts/src";
+import { Role } from "../../lib/kikuri-api/src";
 import { Tag } from "../Tag";
 import styled from "styled-components";
 

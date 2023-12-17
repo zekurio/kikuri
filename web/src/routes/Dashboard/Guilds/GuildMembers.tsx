@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 
 import { Button } from "../../../components/Button";
 import { Loader } from "../../../components/Loader";
-import { Member } from "../../../lib/kikuri-ts/src";
+import { Member } from "../../../lib/kikuri-api/src";
 import { MemberTileLarge } from "../../../components/MemberTileLarge";
 import { MemberTile } from "../../../components/MemberTile";
 import { SearchBar } from "../../../components/Searchbar";

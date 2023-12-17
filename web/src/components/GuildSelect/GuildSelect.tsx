@@ -1,6 +1,6 @@
 import { Element, Select } from "../Select";
 import { Option } from "./Option";
-import { Guild } from "../../lib/kikuri-ts/src";
+import { Guild } from "../../lib/kikuri-api/src";
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   guilds: Guild[];

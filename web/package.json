@@ -13,7 +13,6 @@
   "dependencies": {
     "@react-buddy/ide-toolbox": "^2.4.0",
     "@tabler/icons-react": "^2.40.0",
-    "axios": "^1.6.2",
     "color": "^4.2.3",
     "debounce": "^2.0.0",
     "react": "^18.2.0",

@@ -7,7 +7,7 @@ import { GuildSelect } from "../GuildSelect/GuildSelect";
 import { useGuilds } from "../../hooks/useGuilds";
 import { useStore } from "../../services/store";
 import { MAX_WIDTH } from "../MaxWidthContainer";
-import { Guild } from "../../lib/kikuri-ts/src";
+import { Guild } from "../../lib/kikuri-api/src";
 import { useEffect } from "react";
 
 class Props {}

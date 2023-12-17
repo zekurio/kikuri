@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Member } from "../lib/kikuri-ts/src";
+import { Member } from "../lib/kikuri-api/src";
 import { useApi } from "./useApi";
 import { useSelfUser } from "./useSelfUser";
 

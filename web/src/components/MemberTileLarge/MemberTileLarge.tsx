@@ -1,4 +1,4 @@
-import { Guild, Member } from "../../lib/kikuri-ts/src";
+import { Guild, Member } from "../../lib/kikuri-api/src";
 
 import { Clickable } from "../styleParts";
 import { Container } from "../Container";

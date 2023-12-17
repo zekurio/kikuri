@@ -116,6 +116,14 @@ export interface SearchResult {
   members: Member[];
 }
 
+export interface APIToken {
+  created: Date;
+  expires: Date;
+  last_access: Date;
+  hits: number;
+  token?: string;
+}
+
 export interface CodeResponse {
   code: number;
 }

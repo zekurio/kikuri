@@ -1,7 +1,7 @@
 import { useNotifications } from "./useNotifications";
 import { APIClient } from "../services/api";
-import { APIError } from "../lib/kikuri-ts/src/errors";
-import { Client } from "../lib/kikuri-ts/src";
+import { APIError } from "../lib/kikuri-api/src/errors";
+import { Client } from "../lib/kikuri-api/src";
 import { useNavigate } from "react-router";
 
 export const useApi = () => {

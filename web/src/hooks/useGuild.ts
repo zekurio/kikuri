@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Guild } from "../lib/kikuri-ts/src";
+import { Guild } from "../lib/kikuri-api/src";
 import { useApi } from "./useApi";
 
 export const useGuild = (id?: string) => {

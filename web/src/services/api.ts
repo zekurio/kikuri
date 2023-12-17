@@ -1,4 +1,4 @@
-import { Client } from "../lib/kikuri-ts/src";
+import { Client } from "../lib/kikuri-api/src";
 
 const API_ENDPOINT = import.meta.env.PROD
   ? "/api"

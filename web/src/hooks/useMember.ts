@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { GuildMemberClient } from "../lib/kikuri-ts/src/bindings";
-import { Member } from "../lib/kikuri-ts/src";
+import { GuildMemberClient } from "../lib/kikuri-api/src/bindings";
+import { Member } from "../lib/kikuri-api/src";
 import { useApi } from "./useApi";
 
 type MemberRequester = <T>(

@@ -1,5 +1,5 @@
 import { AppTheme, getSystemTheme } from "../theme/theme";
-import { Guild, User } from "../lib/kikuri-ts/src";
+import { Guild, User } from "../lib/kikuri-api/src";
 import { ModalState } from "../hooks/useModal";
 import LocalStorageUtil from "../util/localstorage";
 import { Notification } from "../components/Notifications";

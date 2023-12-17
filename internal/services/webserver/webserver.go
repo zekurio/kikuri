@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/sarulabs/di/v2"
@@ -40,6 +41,7 @@ func New(ctn di.Container) (ws *WebServer, err error) {
 	})
 
 	if debug.Enabled() {
+		log.Warn("Debug mode enabled, CORS is set to allow all origins")
 		ws.app.Use(cors.New(cors.Config{
 			AllowOrigins:     ws.cfg.Webserver.DebugAddr,
 			AllowHeaders:     "authorization, content-type, set-cookie, cookie, server",

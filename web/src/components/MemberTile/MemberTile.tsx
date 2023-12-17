@@ -2,7 +2,7 @@ import { IconRobot } from "@tabler/icons-react";
 import { Clickable } from "../styleParts";
 import { Container } from "../Container";
 import { DiscordImage } from "../DiscordImage";
-import { Member } from "../../lib/kikuri-ts/src";
+import { Member } from "../../lib/kikuri-api/src";
 import { memberName } from "../../util/users";
 import styled from "styled-components";
 
