@@ -1,6 +1,5 @@
 import { AppTheme, DarkTheme, LightTheme, Theme } from "../theme/theme";
 
-import Color from "color";
 import { useStore } from "../services/store";
 
 export function useStoredTheme() {
