@@ -1,5 +1,3 @@
-import Color from "color";
-
 export enum AppTheme {
   DARK = 0,
   LIGHT = 1,
