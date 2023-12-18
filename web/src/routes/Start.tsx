@@ -23,7 +23,7 @@ const Header = styled.header`
   padding-top: 20vh;
 
   > span {
-    font-family: "Nunito Sans";
+    font-family: "Nunito Sans",sans-serif;
     font-size: 1.1rem;
     font-weight: lighter;
     text-align: center;
@@ -77,21 +77,59 @@ const Brand = styled.div`
   }
 `;
 
+
+const LoginButton = styled(Button)`
+  position: fixed;
+  top: 1.5em;
+  right: 1.5em;
+
+  width: 3em;
+  height: 3em;
+  padding: 0 0.6em;
+  display: flex;
+  justify-content: flex-start;
+  gap: 1em;
+  overflow: hidden;
+  background: ${(p) => p.theme.background3};
+  opacity: 0.5;
+  color: ${(p) => p.theme.text};
+
+  transition: all 0.25s ease;
+  transform: none !important;
+
+  > svg {
+    min-height: 2em;
+    min-width: 2em;
+  }
+
+  &:hover {
+    width: 8em;
+    background: ${(p) => p.theme.accent};
+    opacity: 1;
+    color: ${(p) => p.theme.textAlt};
+  }
+`;
+
 const Features = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2em;
   align-items: start;
   margin: 8em 4em 4em 4em;
-  h1 {
-    text-transform: uppercase;
-    opacity: 0.8;
-  }
+
+  /* Set up grid for a maximum of 3 columns */
+  grid-template-columns: repeat(auto-fit, minmax(300px, calc(100% / 3 - 2em)));
 
   @media (max-width: 50em) {
     margin: 8em 1em 4em 1em;
   }
+
+  h1 {
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
 `;
+
+
 
 const Card = styled.div`
   display: flex;
@@ -130,37 +168,6 @@ const Card = styled.div`
   }
 `;
 
-const LoginButton = styled(Button)`
-  position: fixed;
-  top: 1.5em;
-  right: 1.5em;
-
-  width: 3em;
-  height: 3em;
-  padding: 0 0.6em;
-  display: flex;
-  justify-content: flex-start;
-  gap: 1em;
-  overflow: hidden;
-  background: ${(p) => p.theme.background3};
-  opacity: 0.5;
-  color: ${(p) => p.theme.text};
-
-  transition: all 0.25s ease;
-  transform: none !important;
-
-  > svg {
-    min-height: 2em;
-    min-width: 2em;
-  }
-
-  &:hover {
-    width: 8em;
-    background: ${(p) => p.theme.accent};
-    opacity: 1;
-    color: ${(p) => p.theme.textAlt};
-  }
-`;
 
 const Footer = styled.footer`
   display: flex;
@@ -185,10 +192,19 @@ const Footer = styled.footer`
   }
 `;
 
+type Feature = {
+  heading: string;
+  description?: string;
+  features?: string[];
+};
+
 export const StartRoute: React.FC<Props> = () => {
   const _loginRoute = loginRoute();
   const { t } = useTranslation("routes.start");
   const theme = useTheme();
+  const otherFeatures: Feature = t("other", { returnObjects: true }) as Feature;
+  const upcomingFeatures: Feature = t("upcoming", { returnObjects: true }) as Feature;
+
 
   return (
     <StartContainer>
@@ -256,6 +272,26 @@ export const StartRoute: React.FC<Props> = () => {
             <div>
               <h1>{t("features.votes.heading")}</h1>
               <span>{t("features.votes.description")}</span>
+            </div>
+          </Card>
+          <Card>
+            <div>
+              <h1>{otherFeatures.heading}</h1>
+              <ul>
+                {otherFeatures.features?.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+          </Card>
+          <Card>
+            <div>
+              <h1>{upcomingFeatures.heading}</h1>
+              <ul>
+                {upcomingFeatures.features?.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                ))}
+              </ul>
             </div>
           </Card>
         </Features>

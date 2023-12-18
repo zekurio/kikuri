@@ -15,9 +15,6 @@ type Database interface {
 
 	// Guild settings
 
-	GetGuildAutoRoles(guildID string) (autoroles []string, err error)
-	SetGuildAutoRoles(guildID string, roleIDs []string) error
-
 	GetGuildAutoVoice(guildID string) (autovoices []string, err error)
 	SetGuildAutoVoice(guildID string, channelIDs []string) error
 

@@ -13,7 +13,6 @@ import (
 )
 
 const (
-	keyGuildAutoRoles = "GUILD:AUTOROLES"
 	keyGuildAutoVoice = "GUILD:AUTOVOICE"
 
 	keyAPIToken = "API:TOKEN"
@@ -43,42 +42,6 @@ func (r *RedisMiddleware) Close() error {
 	}
 
 	return nil
-}
-
-func (r *RedisMiddleware) GetGuildAutoRoles(guildID string) ([]string, error) {
-	var key = fmt.Sprintf("%s:%s", keyGuildAutoRoles, guildID)
-
-	valC, err := r.client.Get(context.Background(), key).Result()
-	val := strings.Split(valC, ";")
-	if err == redis.Nil {
-		val, err = r.Database.GetGuildAutoRoles(guildID)
-		if err != nil {
-			return nil, err
-		}
-
-		err = r.client.Set(context.Background(), key, strings.Join(val, ";"), 0).Err()
-		return val, err
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	if valC == "" {
-		return []string{}, nil
-	}
-
-	return val, nil
-}
-
-func (r *RedisMiddleware) SetGuildAutoRoles(guildID string, roleIDs []string) error {
-	var key = fmt.Sprintf("%s:%s", keyGuildAutoRoles, guildID)
-
-	err := r.Database.SetGuildAutoRoles(guildID, roleIDs)
-	if err != nil {
-		return err
-	}
-
-	return r.client.Set(context.Background(), key, strings.Join(roleIDs, ";"), 0).Err()
 }
 
 func (r *RedisMiddleware) GetGuildAutoVoice(guildID string) ([]string, error) {

@@ -65,19 +65,6 @@ func (p *Postgres) Close() error {
 
 // GUILDS
 
-func (p *Postgres) GetGuildAutoRoles(guildID string) (autoroles []string, err error) {
-	roleStr, err := GetValue[string](p, "guilds", "autorole_ids", "guild_id", guildID)
-	if roleStr == "" {
-		return []string{}, err
-	}
-
-	return strings.Split(roleStr, ";"), nil
-}
-
-func (p *Postgres) SetGuildAutoRoles(guildID string, roleIDs []string) error {
-	return SetValue(p, "guilds", "autorole_ids", strings.Join(roleIDs, ";"), "guild_id", guildID)
-}
-
 func (p *Postgres) GetGuildAutoVoice(guildID string) (autovoices []string, err error) {
 	chStr, err := GetValue[string](p, "guilds", "autovoice_ids", "guild_id", guildID)
 	if chStr == "" {
