@@ -18,7 +18,7 @@ export type ButtonProps = {
 
 export const Button = styled.button<ButtonProps>`
   font-size: 1rem;
-  font-family: "Roboto", sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: ${(p) => p.theme.textAlt};
   background: ${(p) => p.theme.accent};
   border: none;

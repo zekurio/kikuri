@@ -1,0 +1,26 @@
+{
+    "login": "Login",
+    "header": {
+      "under": "Your simple multi purpose Discord bot. Free and <1>open source</1> forever.",
+      "invite": "Invite",
+      "selfhost": "Self hosting"
+    },
+    "features": {
+      "votes": {
+        "heading": "Votes",
+        "description": "Want to settle a dispute or make a decision? Let your members vote on it. You can create polls with multiple options and all with Discords new message components."
+      },
+      "autovoice" : {
+        "heading": "Automatic voice channels",
+        "description": "Create voice channels by simply joining a voice channel. Don't worry about leftovers, they will be deleted automatically."
+      }
+    },
+    "discover": {
+      "header": "And much more to be discovered ...",
+      "features": [
+        "custom permission system",
+        "responsive web interface",
+        "and more coming soon ..."
+      ]
+    }
+  }

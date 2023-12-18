@@ -77,6 +77,8 @@ func (v *Vote) AsEmbed(s *discordgo.Session, state ...VoteState) (*discordgo.Mes
 		title = "Vote expired"
 		color = static.ColorViolet
 		expires = fmt.Sprintf("Expired <t:%d:R>", v.Expires.Unix())
+	default:
+		panic("unhandled default case")
 	}
 
 	totalVotes := map[int]int{}
