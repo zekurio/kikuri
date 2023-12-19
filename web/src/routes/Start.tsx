@@ -10,20 +10,26 @@ import KikuriIcon from "../assets/ki-icon.png";
 import MockupVotingLight from "../assets/mockups/light/voting.png";
 import MockupVotingDark from "../assets/mockups/dark/voting.png";
 import { loginRoute } from "../services/api";
+import React from "react";
 
-class Props {}
+type Props = NonNullable<unknown>;
 
-const StartContainer = styled.div``;
+const StartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
 
 const Header = styled.header`
   display: flex;
   flex-direction: column;
   gap: 3em;
   align-items: center;
-  padding-top: 20vh;
+
+  padding-top: 10vh;
 
   > span {
-    font-family: "Nunito Sans",sans-serif;
+    font-family: "Nunito Sans", sans-serif;
     font-size: 1.1rem;
     font-weight: lighter;
     text-align: center;
@@ -77,7 +83,6 @@ const Brand = styled.div`
   }
 `;
 
-
 const LoginButton = styled(Button)`
   position: fixed;
   top: 1.5em;
@@ -116,7 +121,6 @@ const Features = styled.div`
   align-items: start;
   margin: 8em 4em 4em 4em;
 
-  /* Set up grid for a maximum of 3 columns */
   grid-template-columns: repeat(auto-fit, minmax(300px, calc(100% / 3 - 2em)));
 
   @media (max-width: 50em) {
@@ -128,8 +132,6 @@ const Features = styled.div`
     opacity: 0.8;
   }
 `;
-
-
 
 const Card = styled.div`
   display: flex;
@@ -168,6 +170,9 @@ const Card = styled.div`
   }
 `;
 
+const MainContent = styled.main`
+  flex-grow: 1;
+`;
 
 const Footer = styled.footer`
   display: flex;
@@ -175,7 +180,7 @@ const Footer = styled.footer`
   padding: 2em;
   justify-content: center;
   color: ${(p) => p.theme.text};
-  background-color: ${(p) => Color(p.theme.background2).alpha(0.5).hexa()};
+  background-color: ${(p) => p.theme.background2};
   backdrop-filter: blur(5em);
 
   a {
@@ -203,8 +208,9 @@ export const StartRoute: React.FC<Props> = () => {
   const { t } = useTranslation("routes.start");
   const theme = useTheme();
   const otherFeatures: Feature = t("other", { returnObjects: true }) as Feature;
-  const upcomingFeatures: Feature = t("upcoming", { returnObjects: true }) as Feature;
-
+  const upcomingFeatures: Feature = t("upcoming", {
+    returnObjects: true,
+  }) as Feature;
 
   return (
     <StartContainer>
@@ -240,9 +246,12 @@ export const StartRoute: React.FC<Props> = () => {
           <a href="https://github.com/zekurio/kikuri/wiki/selfhost">
             <Button>{t("header.selfhost")}</Button>
           </a>
+          <a href="https://discord.gg/ay5YXMv5nT">
+            <Button>{t("header.support")}</Button>
+          </a>
         </HeaderButtons>
       </Header>
-      <main>
+      <MainContent>
         <Features>
           <Card>
             <img
@@ -255,31 +264,11 @@ export const StartRoute: React.FC<Props> = () => {
             </div>
           </Card>
           <Card>
-            <img
-                src={theme._isDark ? MockupVotingDark : MockupVotingLight}
-                alt=""
-            />
-            <div>
-              <h1>{t("features.votes.heading")}</h1>
-              <span>{t("features.votes.description")}</span>
-            </div>
-          </Card>
-          <Card>
-            <img
-                src={theme._isDark ? MockupVotingDark : MockupVotingLight}
-                alt=""
-            />
-            <div>
-              <h1>{t("features.votes.heading")}</h1>
-              <span>{t("features.votes.description")}</span>
-            </div>
-          </Card>
-          <Card>
             <div>
               <h1>{otherFeatures.heading}</h1>
               <ul>
                 {otherFeatures.features?.map((feature, index) => (
-                    <li key={index}>{feature}</li>
+                  <li key={index}>{feature}</li>
                 ))}
               </ul>
             </div>
@@ -289,13 +278,13 @@ export const StartRoute: React.FC<Props> = () => {
               <h1>{upcomingFeatures.heading}</h1>
               <ul>
                 {upcomingFeatures.features?.map((feature, index) => (
-                    <li key={index}>{feature}</li>
+                  <li key={index}>{feature}</li>
                 ))}
               </ul>
             </div>
           </Card>
         </Features>
-      </main>
+      </MainContent>
       <Footer>
         <div>
           <span>KIKURI - きくり</span>

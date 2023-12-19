@@ -200,7 +200,6 @@ type PermissionsResponse struct {
 // GuildSettings is a response for the settings and
 // preferences of a guild.
 type GuildSettings struct {
-	AutoRoles []string               `json:"auto_roles"`
 	AutoVoice []string               `json:"auto_voice"`
 	Perms     map[string]perms.Array `json:"perms"`
 }

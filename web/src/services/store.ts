@@ -49,7 +49,7 @@ export const useStore = create<Store>((set, get) => ({
   selectedGuild: undefined,
   setSelectedGuild: (selectedGuild) => {
     set({ selectedGuild });
-    if (!!selectedGuild)
+    if (selectedGuild)
       LocalStorageUtil.set("kikuri.selectedguild", selectedGuild.id);
   },
 }));

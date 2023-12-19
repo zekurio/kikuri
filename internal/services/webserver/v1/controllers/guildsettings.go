@@ -50,10 +50,6 @@ func (c *GuildSettingsController) getGuildSettings(ctx *fiber.Ctx) error {
 	gs := new(models.GuildSettings)
 	var err error
 
-	if gs.AutoRoles, err = c.db.GetGuildAutoRoles(guildID); err != nil && !dberr.IsErrNotFound(err) {
-		return err
-	}
-
 	if gs.AutoVoice, err = c.db.GetGuildAutoVoice(guildID); err != nil && !dberr.IsErrNotFound(err) {
 		return err
 	}
@@ -88,37 +84,6 @@ func (c *GuildSettingsController) postGuildSettings(ctx *fiber.Ctx) error {
 	gs := new(models.GuildSettings)
 	if err = ctx.BodyParser(gs); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	if gs.AutoRoles != nil {
-		if ok, _, err := c.pmw.HasPerms(guildID, uid, "ki.guild.config.autorole"); err != nil {
-			return err
-		} else if !ok {
-			return fiber.NewError(fiber.StatusForbidden, "missing permissions")
-		}
-
-		if arrayutils.ContainsAny[string](gs.AutoRoles, "@everyone") {
-			return fiber.NewError(fiber.StatusBadRequest,
-				"@everyone can not be set as an autorole")
-		}
-
-		guildRoles, err := c.st.Roles(guildID, true)
-		if err != nil {
-			return err
-		}
-		guildRoleIDs := make([]string, len(guildRoles))
-		for i, role := range guildRoles {
-			guildRoleIDs[i] = role.ID
-		}
-
-		if nc := arrayutils.Contained[string](gs.AutoRoles, guildRoleIDs); len(nc) != len(gs.AutoRoles) {
-			return fiber.NewError(fiber.StatusBadRequest,
-				"one or more roles are not part of this guild")
-		}
-
-		if err = c.db.SetGuildAutoRoles(guildID, gs.AutoRoles); err != nil {
-			return wsutil.IsErrInternalOrNotFound(err)
-		}
 	}
 
 	if gs.AutoVoice != nil {

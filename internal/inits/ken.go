@@ -42,7 +42,6 @@ func InitKen(ctn di.Container) (k *ken.Ken, err error) {
 	err = k.RegisterCommands(
 		// slashcommands
 		new(slashcommands.Profile),
-		new(slashcommands.Autorole),
 		new(slashcommands.Autovoice),
 		new(slashcommands.Guild),
 		new(slashcommands.Perms),

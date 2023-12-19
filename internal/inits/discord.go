@@ -21,7 +21,6 @@ func InitDiscord(ctn di.Container) (err error) {
 	session.StateEnabled = false
 
 	session.AddHandler(listeners.NewListenerReady(ctn).Handler)
-	session.AddHandler(listeners.NewListenerMemberAdd(ctn).Handler)
 	session.AddHandler(listeners.NewListenerGuildCreate(ctn).Handler)
 	session.AddHandler(listeners.NewListenerVoiceStateUpdate(ctn).Handler)
 

@@ -3,7 +3,8 @@
   "header": {
     "under": "Your simple multi purpose Discord bot. Free and <1>open source</1> forever.",
     "invite": "Invite",
-    "selfhost": "Self hosting"
+    "selfhost": "Self hosting",
+    "support": "Support server"
   },
   "features": {
     "votes": {
