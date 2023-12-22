@@ -213,9 +213,6 @@ func (v *Vote) Close(ken ken.IKen, voteState ...VoteState) error {
 
 	ken.Components().Unregister(compIDs...)
 
-	// TODO handle deletion of vote in vote service
-	// delete(RunningVotes, v.ID)
-
 	return nil
 }
 

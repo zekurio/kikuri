@@ -50,3 +50,25 @@ func TestSnowflake(t *testing.T) {
 		assert.NotEqual(t, hash1, hash2)
 	}
 }
+
+func TestSumMD5(t *testing.T) {
+	hash, err := SumMD5("test")
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	expected := "098f6bcd4621d373cade4e832627b4f6"
+	if hash != expected {
+		t.Errorf("Expected %s, got %s", expected, hash)
+	}
+}
+
+func TestSumSHA256(t *testing.T) {
+	hash, err := SumSHA256("test")
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	expected := "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+	if hash != expected {
+		t.Errorf("Expected %s, got %s", expected, hash)
+	}
+}
