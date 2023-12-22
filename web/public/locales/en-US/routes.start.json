@@ -9,11 +9,15 @@
   "features": {
     "votes": {
       "heading": "Votes",
-      "description": "Want to settle a dispute or make a decision? Let your members vote on it. You can create polls with multiple options and all with Discords new message components."
+      "description": "Want to settle a dispute or make a decision? Let your members vote on it. You can create polls with multiple options. Uses the new Message Component feature."
     },
     "autovoice": {
       "heading": "Automatic voice channels",
       "description": "Create voice channels by simply joining a voice channel. Don't worry about leftovers, they will be deleted automatically."
+    },
+    "reddit": {
+      "heading": "Reddit",
+      "description": "Upvote and downvote messages to affect their author's karma. Be careful though, low karma users might get punished."
     }
   },
   "other": {

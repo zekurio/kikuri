@@ -115,57 +115,61 @@ const LoginButton = styled(Button)`
   }
 `;
 
-const Features = styled.div`
-  display: grid;
+const Card = styled.div`
+  flex: 0 0 100%;
+  display: flex;
   gap: 2em;
-  align-items: start;
+  width: 100%;
+  max-width: 80em;
+  padding: 2em;
+  border-radius: 12px;
+  background-color: ${(p) => Color(p.theme.background2).alpha(0.8).hexa()};
+  backdrop-filter: blur(5em);
+`;
+
+const Features = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
   margin: 8em 4em 4em 4em;
-
-  grid-template-columns: repeat(auto-fit, minmax(300px, calc(100% / 3 - 2em)));
-
-  @media (max-width: 50em) {
-    margin: 8em 1em 4em 1em;
-  }
 
   h1 {
     text-transform: uppercase;
     opacity: 0.8;
   }
-`;
 
-const Card = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2em;
-  width: 100%;
-  padding: 2em;
-  border-radius: 12px;
-  background-color: ${(p) => Color(p.theme.background2).alpha(0.8).hexa()};
-  backdrop-filter: blur(5em);
-
-  > img {
-    width: 30%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 1em 2em 0 rgba(0 0 0 / 25%);
-    order: 2;
-  }
-
-  > div {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    order: 1;
-    h1 {
-      font-size: 1.6rem;
-      margin-bottom: 0.5em;
+  > ${Card} {
+    > img {
+      max-width: 20em;
+      width: 40vw;
+      height: auto;
+      z-index: 5;
+      border-radius: 8px;
+      box-shadow: 0 1em 2em 0 rgba(0 0 0 / 25%);
     }
 
     span {
-      font-size: 1.2rem;
-      line-height: 1.4em;
+      font-size: 1.4rem;
+      line-height: 1.5em;
+      font-weight: lighter;
+    }
+  }
+
+  @media (max-width: 50em) {
+    margin: 8em 1em 4em 1em;
+  }
+
+  @media (max-width: 40em) {
+    > div {
+      flex-direction: column !important;
+      align-items: center;
+
+      img {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+      }
     }
   }
 `;
@@ -197,20 +201,10 @@ const Footer = styled.footer`
   }
 `;
 
-type Feature = {
-  heading: string;
-  description?: string;
-  features?: string[];
-};
-
 export const StartRoute: React.FC<Props> = () => {
   const _loginRoute = loginRoute();
   const { t } = useTranslation("routes.start");
   const theme = useTheme();
-  const otherFeatures: Feature = t("other", { returnObjects: true }) as Feature;
-  const upcomingFeatures: Feature = t("upcoming", {
-    returnObjects: true,
-  }) as Feature;
 
   return (
     <StartContainer>
@@ -253,36 +247,36 @@ export const StartRoute: React.FC<Props> = () => {
       </Header>
       <MainContent>
         <Features>
-          <Card>
-            <img
-              src={theme._isDark ? MockupVotingDark : MockupVotingLight}
-              alt=""
-            />
-            <div>
-              <h1>{t("features.votes.heading")}</h1>
-              <span>{t("features.votes.description")}</span>
-            </div>
-          </Card>
-          <Card>
-            <div>
-              <h1>{otherFeatures.heading}</h1>
-              <ul>
-                {otherFeatures.features?.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-            </div>
-          </Card>
-          <Card>
-            <div>
-              <h1>{upcomingFeatures.heading}</h1>
-              <ul>
-                {upcomingFeatures.features?.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-            </div>
-          </Card>
+            <Card>
+              <img
+                src={theme._isDark ? MockupVotingDark : MockupVotingLight}
+                alt=""
+              />
+              <div>
+                <h1>{t("features.votes.heading")}</h1>
+                <span>{t("features.votes.description")}</span>
+              </div>
+            </Card>
+            <Card>
+              <img
+                  src={theme._isDark ? MockupVotingDark : MockupVotingLight}
+                  alt=""
+              />
+              <div>
+                <h1>{t("features.autovoice.heading")}</h1>
+                <span>{t("features.autovoice.description")}</span>
+              </div>
+            </Card>
+            <Card>
+              <img
+                  src={theme._isDark ? MockupVotingDark : MockupVotingLight}
+                  alt=""
+              />
+              <div>
+                <h1>{t("features.autovoice.heading")}</h1>
+                <span>{t("features.autovoice.description")}</span>
+              </div>
+            </Card>
         </Features>
       </MainContent>
       <Footer>
