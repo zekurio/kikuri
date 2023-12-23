@@ -4,7 +4,7 @@ import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 
 import { stripSuffix } from "./util/utils";
 import { useStoredTheme } from "./hooks/useStoredTheme";
-import { StartRoute } from "./routes/Start";
+import { LandingRoute } from "./routes/Landing";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -60,7 +60,7 @@ export const App: React.FC = () => {
       <AppContainer>
         <Router basename={import.meta.env.BASE_URL}>
           <Routes>
-            <Route path="start" element={<StartRoute />} />
+            <Route path="/" element={<LandingRoute />} />
           </Routes>
         </Router>
       </AppContainer>

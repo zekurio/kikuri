@@ -1,0 +1,13 @@
+{
+  "footer": {
+    "license": "Covered by the MIT Licence.",
+    "repo": "GitHub Repository",
+    "invitestable": "Invite Kikuri (stable branch)",
+    "invitecanary": "Invite Kikuri (canary branch)",
+    "wiki": "Github Wiki",
+    "selfhost": "Self-hosting",
+    "commands": "Commands",
+    "permissions": "Permissions",
+    "api": "API Documentation"
+  }
+}
