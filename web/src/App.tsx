@@ -5,6 +5,7 @@ import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import { stripSuffix } from "./util/utils";
 import { useStoredTheme } from "./hooks/useStoredTheme";
 import { LandingRoute } from "./routes/Landing";
+import { DashboardRoute } from "./routes/Dashboard";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -61,6 +62,7 @@ export const App: React.FC = () => {
         <Router basename={import.meta.env.BASE_URL}>
           <Routes>
             <Route path="/" element={<LandingRoute />} />
+            <Route path="/dashboard" element={<DashboardRoute />} />
           </Routes>
         </Router>
       </AppContainer>
