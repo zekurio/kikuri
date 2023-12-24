@@ -1,0 +1,8 @@
+{
+  "links": {
+    "about": "About",
+    "features": "Features"
+  },
+  "dashboard": "Dashboard",
+  "logout": "Logout"
+}

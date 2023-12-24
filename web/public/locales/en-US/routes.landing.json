@@ -8,6 +8,6 @@
     "selfhost": "Self-hosting",
     "commands": "Commands",
     "permissions": "Permissions",
-    "api": "API Documentation"
+    "restapi": "API Documentation"
   }
 }

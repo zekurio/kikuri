@@ -1,7 +1,9 @@
 import { Trans, useTranslation } from "react-i18next";
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import React from "react";
 import { NavbarLanding } from "../components/Navbar";
+import HeaderBackground from "../assets/header-background.jpg";
+import KIIcon from "../assets/ki-icon.png";
 
 type Props = NonNullable<unknown>;
 
@@ -9,6 +11,43 @@ const LandingContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+`;
+
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-image: url(${HeaderBackground});
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: move 30s linear infinite;
+    height: 400px;
+
+    @keyframes move {
+        0% { background-position: 0 0; }
+        100% { background-position: 100% 0; }
+    }
+`;
+
+const Brand = styled.div`
+    display: flex;
+    gap: 1em;
+    align-items: center;
+
+    width: 80vw;
+    height: 15vw;
+
+    max-height: 6rem;
+    max-width: 30rem;
+
+    > img {
+        height: 100%;
+    }
+
+    > svg {
+        width: 100%;
+        height: 100%;
+    }
 `;
 
 const Footer = styled.footer`
@@ -40,6 +79,11 @@ export const LandingRoute: React.FC<Props> = () => {
   return (
     <LandingContainer>
       <NavbarLanding />
+      <Header>
+        <Brand>
+          <img src={KIIcon} alt="kikuri icon" />
+        </Brand>
+      </Header>
       <Footer>
         <div>
           <span>KIKURI - きくり</span>

@@ -1,30 +1,35 @@
-import React from "react";
 import styled from "styled-components";
+import React, { PropsWithChildren } from "react";
+import KIIcon from "../../assets/ki-icon.png";
+import { PropsWithStyle } from "../props";
 
-// Styled components
-const StyledNavbar = styled.nav`
+type Props = PropsWithChildren & PropsWithStyle;
+
+const Brand = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: 1em;
-  background-color: ${(p) => p.theme.background};
+  table-layout: fixed;
+  margin: 10px;
+  > img {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
-const NavSection = styled.div`
+const StyledNav = styled.nav`
   display: flex;
-  align-items: center;
-  gap: 1em;
+  background-color: ${(p) => p.theme.background3};
+  color: ${(p) => p.theme.text};
+  height: 60px;
+  width: 100%;
 `;
 
-export type NavbarProps = {
-  children: React.ReactNode;
-  rightContent?: React.ReactNode; // additional content on the right
-};
-
-export const Navbar: React.FC<NavbarProps> = ({ children, rightContent }) => {
+export const Navbar: React.FC<Props> = ({ children, ...props }) => {
   return (
-    <StyledNavbar>
-      <NavSection>{children}</NavSection>
-      {rightContent && <NavSection>{rightContent}</NavSection>}
-    </StyledNavbar>
+    <StyledNav {...props}>
+      <Brand>
+        <img src={KIIcon} alt="kikuri logo" />
+      </Brand>
+      {children}
+    </StyledNav>
   );
 };
