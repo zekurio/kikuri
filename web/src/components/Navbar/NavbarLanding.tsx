@@ -3,33 +3,33 @@ import styled from "styled-components";
 import { Navbar } from "./Navbar";
 import { Button } from "../Button";
 import { useTranslation } from "react-i18next";
-import {NavContent} from "./Content";
+import { NavContent } from "./Content";
+import { useSelfUser } from "../../hooks/useSelfUser";
+import {useNavigate} from "react-router";
+import {useApi} from "../../hooks/useApi";
 
 const StyledNav = styled(Navbar)``;
 
 const NavLinks = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 15px;
 `;
 
 const NavLink = styled.a`
   color: ${(p) => p.theme.text};
   text-decoration: none;
-  margin-right: 20px;
+    margin: 0 5px;
 `;
 
 const RightNav = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 15px;
 `;
 
 const DashboardButton = styled(Button)`
     background: transparent;
     border: 1px solid ${(p) => p.theme.accent};
-    margin-right: 10px; // Adds space between the buttons
-
+    margin: 0 10px 0 10px;
     &:hover {
         background: ${(p) => p.theme.accent}};
 }
@@ -38,25 +38,35 @@ const DashboardButton = styled(Button)`
 const LogoutButton = styled(Button)`
     background: transparent;
     border: 1px solid ${(p) => p.theme.red};
-
+    margin: 0 10px 0 0;
     &:hover {
         background: ${(p) => p.theme.red}};
 }
 `;
 
 export const NavbarLanding: React.FC = () => {
+  const self = useSelfUser();
+  const fetch = useApi();
   const { t } = useTranslation("components.navbar.landing");
+  const nav = useNavigate();
+
+  const _logout = () => {
+    fetch((c) => c.auth.logout())
+      .then(() => nav('/'))
+      .catch();
+  };
 
   return (
     <StyledNav>
       <NavContent>
         <NavLinks>
-          <NavLink href="#Features">Features</NavLink>
-          <NavLink href="#About">About</NavLink>
+          <NavLink href="#Features">{t("links.features")}</NavLink>
+          <NavLink href="#About">{t("links.about")}</NavLink>
+          <NavLink href="/status">{t("links.status")}</NavLink>
         </NavLinks>
         <RightNav>
-          <DashboardButton>{t("Dashboard")}</DashboardButton>
-          <LogoutButton>{t("logout")}</LogoutButton>
+          <DashboardButton onClick={() => nav('/dashboard')}>{t("dashboard")}</DashboardButton>
+          {self && <LogoutButton onClick={_logout}>{t("logout")}</LogoutButton>}
         </RightNav>
       </NavContent>
     </StyledNav>

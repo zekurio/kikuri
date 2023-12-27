@@ -1,6 +1,6 @@
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { NavbarLanding } from "../components/Navbar";
 import HeaderBackground from "../assets/header-background.jpg";
 import KIIcon from "../assets/ki-icon.png";
@@ -13,6 +13,27 @@ const LandingContainer = styled.div`
   min-height: 100vh;
 `;
 
+const Brand = styled.div`
+  display: flex;
+  gap: 1em;
+  align-items: center;
+
+  width: 80vw;
+  height: 15vw;
+
+  max-height: 6rem;
+  max-width: 30rem;
+
+  > img {
+    height: 100%;
+  }
+
+  > svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const Header = styled.div`
     display: flex;
     align-items: center;
@@ -20,34 +41,16 @@ const Header = styled.div`
     background-image: url(${HeaderBackground});
     background-size: cover;
     background-repeat: no-repeat;
-    animation: move 30s linear infinite;
     height: 400px;
-
-    @keyframes move {
-        0% { background-position: 0 0; }
-        100% { background-position: 100% 0; }
-    }
+    background-position: center;
 `;
 
-const Brand = styled.div`
-    display: flex;
-    gap: 1em;
-    align-items: center;
-
-    width: 80vw;
-    height: 15vw;
-
-    max-height: 6rem;
-    max-width: 30rem;
-
-    > img {
-        height: 100%;
-    }
-
-    > svg {
-        width: 100%;
-        height: 100%;
-    }
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: center;
+  padding: 2em;
 `;
 
 const Footer = styled.footer`
@@ -76,14 +79,38 @@ const Footer = styled.footer`
 export const LandingRoute: React.FC<Props> = () => {
   const { t } = useTranslation("routes.landing");
 
+  const [backgroundPosition, setBackgroundPosition] = useState('center');
+
+  const handleMouseMove = (event: MouseEvent) => {
+    const { clientX, clientY } = event;
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    const backgroundX = (clientX / screenWidth) * 100;
+    const backgroundY = (clientY / screenHeight) * 100;
+
+    setBackgroundPosition(`${backgroundX}% ${backgroundY}%`);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   return (
     <LandingContainer>
       <NavbarLanding />
-      <Header>
+      <Header style={{ backgroundPosition }}>
         <Brand>
           <img src={KIIcon} alt="kikuri icon" />
         </Brand>
       </Header>
+      <Main>
+        <h1>{t("main.wip")}</h1>
+      </Main>
       <Footer>
         <div>
           <span>KIKURI - きくり</span>

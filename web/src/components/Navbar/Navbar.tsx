@@ -8,7 +8,7 @@ type Props = PropsWithChildren & PropsWithStyle;
 const Brand = styled.div`
   display: flex;
   table-layout: fixed;
-  margin: 10px;
+  margin: 10px 5px 0 10px;
   > img {
     width: 40px;
     height: 40px;

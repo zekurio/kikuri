@@ -1,4 +1,7 @@
 {
+  "main": {
+    "wip": "Work in progress"
+  },
   "footer": {
     "license": "Covered by the MIT Licence.",
     "repo": "GitHub Repository",
