@@ -2,16 +2,11 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { NavbarLanding } from "../components/Navbar";
-import HeaderBackground from "../assets/header-background.jpg";
 import KIIcon from "../assets/ki-icon.png";
 
 type Props = NonNullable<unknown>;
 
-const LandingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`;
+const LandingContainer = styled.div``;
 
 const Brand = styled.div`
   display: flex;
@@ -34,15 +29,20 @@ const Brand = styled.div`
   }
 `;
 
-const Header = styled.div`
+const Header = styled.header`
     display: flex;
+    flex-direction: column;
+    gap: 3em;
     align-items: center;
-    justify-content: space-around;
-    background-image: url(${HeaderBackground});
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 400px;
-    background-position: center;
+    padding-top: 20vh;
+
+    > span {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.1rem;
+        font-weight: lighter;
+        text-align: center;
+        max-width: 20em;
+    }
 `;
 
 const Main = styled.main`

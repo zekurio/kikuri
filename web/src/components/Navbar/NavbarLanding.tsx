@@ -10,7 +10,13 @@ import {useApi} from "../../hooks/useApi";
 
 const StyledNav = styled(Navbar)``;
 
-const NavLinks = styled.div`
+const StyledContent = styled(NavContent)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const LinksContainer = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -21,7 +27,7 @@ const NavLink = styled.a`
     margin: 0 5px;
 `;
 
-const RightNav = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -58,17 +64,17 @@ export const NavbarLanding: React.FC = () => {
 
   return (
     <StyledNav>
-      <NavContent>
-        <NavLinks>
+      <StyledContent>
+        <LinksContainer>
           <NavLink href="#Features">{t("links.features")}</NavLink>
           <NavLink href="#About">{t("links.about")}</NavLink>
           <NavLink href="/status">{t("links.status")}</NavLink>
-        </NavLinks>
-        <RightNav>
+        </LinksContainer>
+        <ButtonContainer>
           <DashboardButton onClick={() => nav('/dashboard')}>{t("dashboard")}</DashboardButton>
           {self && <LogoutButton onClick={_logout}>{t("logout")}</LogoutButton>}
-        </RightNav>
-      </NavContent>
+        </ButtonContainer>
+      </StyledContent>
     </StyledNav>
   );
 };
